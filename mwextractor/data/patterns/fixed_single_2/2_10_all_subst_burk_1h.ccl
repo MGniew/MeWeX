@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"10_AllSubstBurkAxB_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[2], {burk}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	) 
+)
+
+@b:"10_AllSubstBurkBxA_2" (
+	and(
+		inter(class[2], {subst,ger,depr,ign}),
+		inter(class[0], {burk}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	) 
+)

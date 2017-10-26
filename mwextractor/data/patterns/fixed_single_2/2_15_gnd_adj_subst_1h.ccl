@@ -1,0 +1,32 @@
+///////////////////////////////////////////////
+@b:"15_GndAdjSubstAxB_2" (
+	and(
+		not(in(["coś"], base[2])),
+		
+		inter(class[0], {adj,ppas,pact}),
+		inter(class[2], {subst,ger,depr}),
+		
+		agrpp(0,2, {nmb,cas}),
+		in({f}, gnd[0]),
+		not(in({f}, gnd[2])),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)   
+	)
+)
+
+@b:"15_GndAdjSubstBxA_2" (
+	and(
+		not(in(["coś"], base[0])),
+		
+		inter(class[2], {adj,ppas,pact}),
+		inter(class[0], {subst,ger,depr}),
+		
+		agrpp(0,2, {nmb,cas}),
+		in({f}, gnd[2]),
+		not(in({f}, gnd[0])),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)

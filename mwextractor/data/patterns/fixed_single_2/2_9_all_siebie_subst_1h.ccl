@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"9_AllSiebieSubstAxB_2" (
+	and(
+		inter(class[2], {subst,ger,depr,ign}),
+		inter(class[0], {siebie}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)
+
+@b:"9_AllSiebieSubstBxA_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[2], {siebie}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)

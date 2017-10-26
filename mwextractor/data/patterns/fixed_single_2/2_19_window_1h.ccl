@@ -1,0 +1,18 @@
+///////////////////////////////////////////////
+@b:"19_Window2AxB_2"(
+        and (
+                not(empty(orth[2])),
+
+                setvar($Pos1, 0),
+                setvar($Pos2, 2)
+        )
+)
+
+@b:"19_Window2BxA_2"(
+        and (
+                not(empty(orth[2])),
+
+                setvar($Pos1, 2),
+                setvar($Pos2, 0)
+        )
+)

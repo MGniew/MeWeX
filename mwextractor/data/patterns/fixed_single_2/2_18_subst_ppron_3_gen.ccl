@@ -1,0 +1,22 @@
+/////////////////////////////////////////////// 
+@b:"18_SubstPpron3GenAB_2" (
+	and(
+		inter(class[1], {ppron3}),
+		inter(cas[1], {gen}),
+		inter(class[0], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)
+
+@b:"18_SubstPpron3GenBA_2" (
+	and(
+		inter(class[0], {ppron3}),
+		inter(cas[0], {gen}),
+		inter(class[1], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+)

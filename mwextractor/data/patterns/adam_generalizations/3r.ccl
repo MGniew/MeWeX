@@ -1,0 +1,131 @@
+//(np. skalarna wielkość fizyczna) 
+@b:"AdjSubstAdj_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], subst),
+		inter(class[2], {adj,pact,ppas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. ruch jednostajny przyspieszony) 
+@b:"SubstAdjAdj_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[2], {adj,pact,ppas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. bezinteresowna polska zawiść) 
+@b:"AdjAdjSubst_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. gaz elektronowy Fermiego, człowiek starej daty) 
+@b:"SubstAdjSubst_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. generator prądu elektrycznego, wino patykiem pisane) 
+@b:"SubstSubstAdj_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], subst),
+		inter(class[2], {adj,pact,ppas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. równikowy pas ciszy) 
+@b:"AdjSubstSubst_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], subst),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. wieża kontroli lotów) 
+@b:"SubstSubstSubst_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], subst),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. ruch jednostajnie przyspieszony) 
+@b:"SubstAdvAdj_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], adv),
+		inter(class[2], {adj,pact,ppas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. bieg na przełaj) 
+@b:"SubstPrepSubst_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], prep),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. brzydki jak noc) // to jest de facto jednostka przymiotnikowa 
+@b:"AdjPrepSubst_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], prep),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+//(np. dzień i noc ???) 
+@b:"SubstConjSubst_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], conj),
+		inter(class[2], subst),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)

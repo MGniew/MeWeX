@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"5_AllGerQubAxB_2" (
+	and(
+		inter(class[0], {ger}),
+		inter(class[2], {qub}),  
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)
+
+@b:"5_AllGerQubBxA_2" (
+	and(
+		inter(class[2], {ger}),
+		inter(class[0], {qub}),  
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)

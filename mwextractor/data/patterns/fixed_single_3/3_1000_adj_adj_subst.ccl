@@ -1,0 +1,13 @@
+@b:"1000_AdjAdjSubstABC_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[2], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 2)
+	)
+)
+
+

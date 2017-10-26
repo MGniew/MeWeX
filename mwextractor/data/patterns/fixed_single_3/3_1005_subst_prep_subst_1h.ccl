@@ -1,0 +1,24 @@
+@b:"1005_SubstPrepSubstABxC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], prep),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1005_SubstPrepSubstAxBC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[2], prep),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2),
+		setvar($Pos3, 3)
+	)
+)
+

@@ -1,0 +1,24 @@
+@b:"1003_SubstAdvAdjABxC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], adv),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1003_SubstAdvAdjAxBC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[2], adv),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2),
+		setvar($Pos3, 3)
+	)
+)
+

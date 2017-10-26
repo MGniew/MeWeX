@@ -1,0 +1,2588 @@
+\documentclass[11pt,a4paper]{llncs}
+
+%% margins
+\usepackage{geometry}
+\newgeometry{tmargin=2cm, bmargin=2cm, lmargin=2cm, rmargin=2cm}
+
+%% various tools
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+%\usepackage{alltt}
+%\usepackage{url}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{color}
+
+%% polish diacritic symbols and times new roman for the win
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{mathptmx}
+
+%% algorithms
+\usepackage{algpseudocode} 
+\usepackage{algorithm}
+
+
+\begin{document}
+
+
+\mainmatter  
+
+\title{Opracowanie koncepcji systemu do konstruowania dynamicznego słownika wielowyrazowych jednostek leksykalnych na podstawie korpusu tekstów}
+
+\author{Michał Wendelberger, Bernadetta Maleszka}
+\authorrunning{Michał Wendelberger, Bernadetta Maleszka}
+
+\institute{Politechnika Wrocławska}
+
+\maketitle
+
+\begin{abstract}
+W niniejszym raporcie zaprezentowano koncepcję systemu do konstruowania dynamicznego słownika wielowyrazowych jednostek leksykalnych na podstawie korpusu tekstów. Problem wydobywania jednostek wielowyrazowych jest rozważany w literaturze światowej, jednak nie istnieją narzędzia dedykowane dla języka polskiego. Proces budowy dynamicznego słownika został szczegółowo opisany w 6 krokach, w których zawiera się zarówno sama metoda ekstrakcji kolokacji, jak i zaproponowane podejście do badania wydobytych jednostek, dzięki którym możliwe jest doskonalenie opracowanych metod. Przeprowadzone badania eksperymentalne dają obiecujące wyniki.
+\end{abstract}
+
+
+\section{Wprowadzenie}
+
+Celem niniejszego raportu jest przedstawienie prac realizowanych w ramach zadania A14 projektu \emph{,,Polska część infrastruktury naukowej CLARIN ERIC: Wspólne zasoby językowe i infrastruktura technologiczna''}. W zadaniu tym należy opracować system do wydobywania z tekstu opisanych strukturalnie, wielowyrazowych lematów języka polskiego z dużych zbiorów tekstów wyposażony we wzorcową ręcznie skonstruowaną bazę danych polskich wielowyrazowych lematów opisanych strukturalnie.
+
+W raporcie została zaprezentowana koncepcja systemu do konstruowania dynamicznego słownika wielowyrazowych jednostek leksykalnych na podstawie korpusu tekstów. Jednostki wielowyrazowe to wyrażenia języka składające się z 2 lub więcej wyrazów, które wyróżniają się takimi własnościami jak niekompozycyjność składniowa i/lub semantyczna, często ustalona kolejność składników itp. Wydobywabie jednostek wielowyrazowych z tekstu jest istotne istotne dla praktycznych zastosowań przetwarzania języka naturalnego. Szczególnie ciekawym aspektem może być badanie, jak szybko jednostki wielowyrazowe zmieniają się w czasie i jak silnie zależą od dziedziny zastosowań.
+
+Automatyczna ekstrakcja jednostek wielowyrazowych jest typowo przeprowadzana w oparciu o analizę statystyczną wystąpień słów w korpusie \cite{baldwin}. W pracy tej wzięto pod uwagę fakt, że wystąpienia słów mogą być nieciągłe, natomiast problemy swobodnego szyku wyrazów w zdaniu i bogatej fleksji są poruszane znacznie rzadziej, ze względu na to, że większość metod ekstrakcji została opracowana dla języka angielskiego. Bardziej zaawansowane metody używają automatycznej lematyzacji (sprowadzenia wyrazów do form podstawowych) i filtrowania potencjalnych kandydatów na kolokacje pod względem ich struktury składniowej.  
+
+Autorzy pracy \cite{broda} zaproponowali podejście oparte na dwustopniowym procesie przetwarzania: po lematyzacji zostają zidentyfikowane proto-kolokacje (tj. wstępne kolokacje składające się z form podstawowych słów). Następnie dokonywana jest analiza statystyczna wystąpień proto-kolokacji w określonych wzorcach składniowych w korpusie tekstów. W wyniku otrzymywany jest opis binarnych jednostek wielowyrazowych wraz z ich opisami opartymi na ograniczeniach morfo-syntaktycznych.
+
+W ramach wspomnianego zadania projektu CLARIN proponowane jest zbliżone podejście. Mianowicie, proces wydobywania kolokacji bazuje na statystycznych miarach częstości występowania ciągów słów, natomiast wydobyci w ten sposób kandydaci na jednostki wielowyrazowe są oceniane przez lingwistów. Do bazy jednostek zostają dodane te elementy, które zostały pozytywnie ocenione przez lingwistów. 
+
+Niniejszy raport został podzielony w następujący sposób. Rozdział \ref{s2} zawiera informacje dotyczące narzędzi i oprogramowania, który wykorzystano do realizacji systemu. Szczegółowy opis procesu wydobywania jednostek został zawarty w rozdziale \ref{s3}. Zostały przedstawione również funkcjonalności dodatkowe, informacje dotyczące formatów wydobywanych jednostek wielowyrazowych oraz matematycznego modelu wykorzystanych funkcji. W rozdziale \ref{s4} zaprezentowano metodologię badań eksperymentalnych oraz wyniki pierwszych badań. Pracę podsumowano w rozdziale \ref{s5}.
+
+
+\section{Narzędzie i oprogramowanie wykorzystane na potrzeby realizacji tematu}\label{s2}
+
+
+\subsection{Biblioteka Corpus2}
+
+Biblioteka \emph{Corpus2} to zestaw struktur danych i funkcji do przetwarzania korpusów, które są oznaczone morfo-syntaktycznie, z tagsetem pozycyjnym. 
+Umożliwia ona wczytywanie i zapisywanie danych do różnych formatów danych takich jak \emph{XCES}, jego format rozszerzeny zwany \emph{CCL} czy formatów tekstowych takich jak przykładowo lekki format \emph{IOB-Chan}.
+Opcjonalnie biblioteka wspiera także pracę, wczytywanie danych, z binarnym i zindeksowanym formatem \emph{Poliqarp} autorstwa pracowników instytutu \emph{Podstaw Informatyki Polskiej Akademii Nauk}, a opracowanym do przechowywania korpusów tekstowych.
+Warto nadmienić, że biblioteka \emph{Corpus2} wspiera także wiele innych formatów plików.
+
+
+ 
+Biblioteka została zaimplementowana w \emph{Instytucie Informatyki Politechniki Wrocławskiej} w języku \emph{C++}, ale powstały także skrypty w języku Python, opakowania, umożliwiające pracę z tą biblioteką z wykorzystaniem tego właśnie języka skryptowego.
+Dodatkowo narzędzie jest dostępne nieodpłatnie na licencji \emph{GNU LGPL 3.0} lub w przypadku wykorzystania formatu \emph{Poliqarp} na licencji GNU GPL 3.0.
+
+
+
+\emph{Corpus2} został wykorzystany w badaniach w ramach niniejszego projektu do wczytywania oznaczonych korpusów tekstowych z formatów \emph{IOB-Chan}, \emph{CCL} i \emph{Poliqarp}, a także do konwersji pomiędzy nimi.
+Ponadto inne narzędzia wykorzystane w ramach zadania $A14$ także wykorzystują funkcjonalność tej biblioteki.
+
+
+\subsection{Tagery WCRFT i WCRFT2}
+
+Nazwa \emph{WCRFT} jest akronimem powstałym od słów \emph{Wrocław Conditional Random Fields Tagger} - wrocławskie narzędzie tagujące oparte o model matematyczny \emph{Conditional Random Field}.
+\emph{WCRFT} został zaimplementowany z myślą o oznaczaniu tekstów języków fleksyjnych, zwłaszcza słowiańskich, a szczególnie języka polskiego.
+
+
+Tager napisano w języku Python, z wykorzystaniem gotowej implementacji \emph{CRF} o nazwie \emph{CRF++}, która to napisana została w języku \emph{C++} \cite{wcrft}.
+Narzędzie \emph{WCRFT} było implementowane głównie przez Adama Radziszewskiego.
+
+
+
+\emph{WCRFT2} natomiast jest następcą tagera \emph{WCRFT}.
+Został on napisany całkowicie w języku \emph{C++} -- zostało dokonane portowanie kodu z języka Python do języka \emph{C++}.
+Taki zabieg pozwolił na usunięcie zależności związanych z językiem skryptowym, znaczne przyspiesznie tagera -- trzykrotne, a także usprawniło i ułatwiło proces budowy narzędzia.
+Zaznaczyć trzeba, że po wykonaniu konwersji pomiędzy językami zachowano kompatybilność modeli z poprzednią wersją tagera, a wyniki dla obu wersji są takie same.
+Ta wersja jest teraz zalecaną do użycia, a poprzednia nie jest już wspierana.
+
+
+
+Narzędzie to, w celach badawczych na potrzeby projektu, zostało wykorzystane do oznaczenia morfo-syntaktycznego i ujednoznaczniania semantycznego słów z zebranych tekstów języka polskiego, które następnie zostały wykorzystane w procesie badania sposobów ekstrakcji kolokacji w tej pracy.
+Do wykonania tych prac wykorzystany został nowy, gotowy model dla tagera udostępniony przez grupę G4.19.
+
+
+\subsection{Formalizm WCCL}
+
+
+\subsubsection{Wyjaśnienie terminu}
+\emph{WCCL (Wrocław Corpus Constraint Language)} jest nowym formalizmem, językiem ograniczeń i narzędziem pozwalającym tworzyć wyrażenia funkcyjne, które można wykorzystać jako cechy, kluczowe informacje, dla wielu algorytmów przetwarzania języka naturalnego i maszynowego uczenia. 
+Wyrażenia \emph{WCCL} działają na tekście uprzednio oznakowanego morfo-syntaktycznie na przykład za pomocą narzędzia wspomnianego we wcześniejszej części tej pracy -- tagera \emph{WCRFT2}. 
+Chociaż formalizm ten był konstruowany z myślą o pracy z językiem polskim to według autorów powinien on także móc być użyty do pracy z innymi językami fleksyjnymi. 
+Ograniczeniami mogą być jednak przyjęta tekstowa reprezentacja tagów oraz formaty oznakowanych korpusów, na których miałyby pracować wyrażenia \emph{WCCL} \cite[str. 1]{wccl}.
+
+
+
+Omawiany język ograniczeń został zaimplementowany w języku \emph{C++} w postaci bibliotek wykorzystujących \emph{Corpus2} oraz system \emph{MACA (Morphological Analysis Converter and Aggregator)}. 
+Dodatkowo napisane zostały także skrypty w języku Python opakowujące funkcjonalność \emph{WCCL} i umożliwiające prace z poziomu języka skryptowego, bez konieczności zaznajomienia się z językiem natywnym, w jakim formalizm ten został zaimplementowany. 
+Dzięki temu tworzenie narzędzi i praca z \emph{WCCL} może być szybsza i prostsza. \cite[str. 3]{wccl}
+
+
+
+Formalizm \emph{WCCL} został wykorzystany w badaniach z poziomu języka \emph{C++}, bez użycia opakowań, i posłuży głównie do filtrowania kandydatów na jednostki wielowyrazowe na podstawie części mowy składowych wyrażenia wielowyrazowego oraz innych cech takich jak przykładowo uzgodnienie rzeczownika z przymiotnikiem.
+W ramach projektu zajmowano się badaniami nad kolokacjami w języku polskim, co rozwiązało ewentualne problemy mogące się pojawić przy pracy z innymi językami fleksyjnymi.
+
+
+\subsubsection{Przykładowe wyrażenie}
+Poniżej zaprezentowano przykładowy, prosty operator \emph{WCCL} zbliżony swoją składnią do operatorów stosowanych w niniejszych badaniach. 
+
+\begin{lstlisting}[frame=single, tabsize=2, language=Python, caption=Przykładowe wyrażenie w języku \emph{WCCL}, captionpos=b, breaklines=true, basicstyle=\scriptsize]
+@b:"SubstAdjOrSubstSubst"
+(
+	or
+	(
+		and
+		(
+			inter(class[0], {subst}),
+			inter(class[1], {adj, subst}),
+		
+			setvar($Case, 0)
+		),
+		and
+		(
+			inter(class[1], {subst}),
+			inter(class[0], {adj, subst}),
+		
+			setvar($Case, 1)
+		)
+	)
+)
+\end{lstlisting}
+
+Powyższy listing prezentuje kod wyrażenia w języku \emph{WCCL}.
+Składa się on z dwóch części - nagłówka i ciała.
+Istotną informacją jest fakt, że operator \emph{WCCL} jest kontekstowy, wywoływany jest dla konkretnego miejsca w korpusie, jakiegoś wyrazu w nim zawartego.
+Wyraz ten nazwijmy \emph{początkiem kontekstu operatora}.
+
+
+
+Nagłówek zawiera dwie informacje o wyrażeniu, pierwsza z nich, \emph{@b}, to typ zwracany przez ten operator na podstawie wykonania instrukcji zawartych w jego ciele. 
+Druga informacja to nazwa wyrażenia znajdująca się po dwukropku, tutaj będzie to \emph{SubstAdjOrSubstSubst}.
+Powyższy kod zwróci jedną z dwóch wartości logicznych - \emph{True} lub \emph{False}.
+Inne typy, które mogą zwracać operatory \emph{WCCL} to \emph{Position}, \emph{Set of strings} oraz \emph{Tagset symbol set}.
+Pierwszy z nich to wartość całkowita - odpowiednik typu \emph{int} w języku \emph{C++}, drugi typ jest rozumiany jako zbiór ciągów znaków tekstowych, a trzeci to zestaw symboli używanego tagsetu.
+
+
+
+Przed opisem ciała powyższego, przykładowego operatora należy wyjaśnić funkcje w nim użyte.
+Pierwsze dwie z nich są intuicyjne - funkcja \emph{or} i \emph{and}.
+Obie z nich zachowują się jak funkcje logiczne o tych samych nazwach anglojęzycznych, a argumenty dla nich są oddzielone przecinkiem tak samo jak w każdej funkcji języka \emph{WCCL}.
+Funkcja \emph{setvar} ustawia wartość zmiennej o nazwie podanej w pierwszym argumencie na wartość zadaną parametrem drugim.
+Natomiast funkcja \emph{inter} sprawdza przecięcie zbiorów zadanych jej argumentami i zwraca \emph{True} jeśli moc przecięcia jest niezerowa.
+Kluczowa w tym wyrażeniu jest także funkcja \emph{class} przyjmująca tylko jeden argument typu całkowitego.
+Funkcja ta zwróci klasę gramatyczną słowa oddalonego o zadaną argumentem liczbę wyrazów od \emph{początku kontekstu} tego wyrażenia.
+Przykładowo przyjmijmy, że jakiś operator wywołuje kolejno funkcje \emph{class[-1]}, \emph{class[0]} i \emph{class[1]} na poniższym zdaniu, gdzie słowo będące \emph{początkiem kontekstu operatora} zostało oznaczone pogrubioną czcionką:
+\begin{center}
+Długie, ciężkie \textbf{spodnie} jeszcze się suszą.
+\end{center}
+Pierwsza funkcja z argumentem równym minus jeden zwróci klasę gramatyczną słowa \emph{ciężkie} czyli przymiotnik, druga klasę wyrazu będącego początkiem kontekstu operatora - \emph{spodnie}, czyli rzeczownik, natomiast wynikiem działania trzeciej dla wyrazu \emph{jeszcze} będzie partykuła.
+
+
+
+Ciało powyższego wyrażenia \emph{WCCL} składa się z pojedynczego bloku - funkcji \emph{or}, sprawdzającej czy którykolwiek z dwóch bloków wewnętrznych \emph{and} zwróci wartość \emph{True} i jeśli tak to \emph{or} także zwróci \emph{True} jako wartość testu wykonanego przez ten operator.
+Oba wewnętrzne bloki \emph{and} wykonują podobny test na dwóch kolejnych wyrazach z korpusu poczynając od \emph{początku kontekstu} wywołania wyrażenia.
+Pierwszy blok \emph{and} sprawdza czy klasa gramatyczna słowa, dla którego operator został wywołany jest rzeczownikiem (\emph{subst}), a wyraz kolejny odpowiednio przymiotnikiem (\emph{adj}) lub też rzeczownikiem.
+Jeśli obie funkcje \emph{inter} zwrócą \emph{True} to ustawiana jest zmienna, która potem może zostać odczytana w kodzie programu, który ten operator wywołał.
+W przypadku omawianego operatora zmienna \emph{Case} będzie równa zero lub jeden w zależności od tego, która z funkcji \emph{and} zwróci wartość \emph{prawda} lub też może być niezdefiniowana jeśli obie funkcje \emph{and} zwrócą wartość \emph{fałsz}.
+Zabieg taki pozwala przykładowo na określenie kolejności wyrazów, w jakiej wystąpiły w korpusie w celu odczytania tej informacji w programie.
+Drugi blok \emph{and} zachowuje się analogicznie do pierwszego - sprawdza ten sam warunek, ale dla wyrazów ułożonych w odwrotnej kolejności.
+
+
+
+Więcej informacji o wyrażeniach języka \emph{WCCL} można pozyskać zapoznając się z pracą \cite{wccl}.
+
+
+\subsection{Słowosieć}
+
+\emph{Słowosieć} jest polskim, podczas opisywania tego narzędzia drugim co wielkości na świecie \emph{Wordnetem} utworzonym i nieustannie rozwijanym przez \emph{Grupę Technologii Językowych Politechniki Wrocławskiej G4.19} w ramach projektów \emph{Clarin}, \emph{Synat} oraz \emph{Nekst} przy wsparciu uczelni oraz Ministerstwa Nauki i Szkolnictwa Wyższego.
+
+
+
+Aktualna wersja \emph{Słowosieci} jest dostępna na darmowej licencji i zawiera 140 tysięcy słów, 200 tysięcy znaczeń oraz pół miliona relacji, jednak jest także szybko rozwijana przez jej pracowników i powyższe wartości mogą ulec znacznej zmianie w najbliższym wydaniu nowej wersji tego polskiego \emph{Wordnetu}.
+Zawiera ona także 110 tysięcy haseł polsko-angielskich pozyskanych z \emph{Princeton Wordnet 3.1}.
+Dostępnych jest także wiele publikacji traktujących o \emph{Słowosieci}, których spis dostępny jest na stronie internetowej \cite{slowosiec}.
+Znaleźć tam można także dokładne statystyki, interfejs webowy oraz inne informacji tym o projekcie.
+
+
+
+Baza danych polskiego \emph{Wordnetu} wykorzystywana była w celu pozyskania danych niezbędnych do oceny wyników badań przeprowadzonych w ramach niniejszego zadania.
+% TODO a także w procesie filtorwania słów.
+
+
+\subsection{SuperMatrix}
+
+\emph{SuperMatrix} to pakiet wielu narzędzi zaimplementowanych w języku \emph{C++}, z założenia przystosowany do wykonywania różnych operacji na dwuelementowych obiektach takich jak przykładowo bi-gramy. 
+Narzędzie to oferuje szereg funkcji, programów i gotowych algorytmów takich jak obliczanie wartości asocjacji z wykorzystaniem wielu miar - ponad osiemdziesięciu, wyliczanie wartości funkcji podobieństwa wierszy względem siebie, filtrowanie danych, transformacje, dzielenie macierzy, ich łącznie i inne.
+Zawiera programy oraz skrypty umożliwiające budowanie krotek dwuelementowych i macierzy na kilka sposobów z korpusów tekstowych oznaczonych morfo-syntaktycznie.
+Dla wygody i przyspieszenia pracy napisane zostały także opakowania w języku Python umożliwiające używanie bibliotek i narzędzi z pakietu \emph{SuperMatrix} z poziomu tego języka skryptowego.
+
+
+
+Dużą zaletą omawianego narzędzia jest fakt, że było ono z powodzeniem wielokrotnie wykorzystywane, oraz że mimo dużej funkcjonalności jest ono dostępne na darmowej licencji.
+
+
+
+Istotne jest, że dane składowane są w postaci macierzy dwuwymiarowej (podstawowego formatu danych dla narzędzi w tym pakiecie), co jest ograniczeniem i problemem w przypadku chęci pracy z kolokacjami dłuższymi niż dwuelementowe. 
+Jednak zarówno to ograniczenie jak i fakt, że \emph{SuperMatrix} nie był projektowany do pracy z kolokacjami, nie jest problemem dla prowadzenia badań nad wyrażeniami dwuelementowymi. 
+Wystarczy jedynie przygotować dane w odpowiedni sposób i wedle potrzeby, a następnie wykorzystać możliwości zawartych w pakiecie narzędzi.
+
+
+
+Pierwsze badania na potrzeby tej pracy wykonywane były z wykorzystaniem właśnie tego pakietu narzędzi ze względu na liczność zaimplementowanych miar asocjacji, które można było zbadać bez konieczności przystosowywania narzędzia, implementacji nowych modułów pakietu, kolejnych programów czy całej aplikacji specjalnie do tego celu.
+Badania te pozwoliły przetestować dziesiątki miar i ocenić, którymi z nich warto zająć się przy dalszej pracy z jednostkami wielowyrazowymi dłuższymi niż dwuelementowe.
+Pierwsze wyniki nadały pewien kierunek dla prowadzania dalszych prac w temacie wyrażeń wielowyrazowych.
+
+
+\subsection{MWeXtractor}
+
+Pakiet narzędzi \emph{SuperMatrix} z założenia miał być wykorzystywany do pracy z parami elementów, z których jeden jest reprezentowany danymi zawartymi w wierszu, a drugi w kolumnie macierzy.
+Cecha ta jest swoistego rodzaju ograniczeniem i problemem uniemożliwiającym, a przynajmniej bardzo utrudniającym prowadzenie badań obiektów składających się z trzech lub większej liczby elementów.
+Sposób przechowywania danych i ich wykorzystania musiałby zostać przygotowany do składowania w formacie pakietu \emph{SuperMatrix} czyli dwuwymiarowej macierzy, co znacząco utrudniałoby wykonanie zadania.
+Dodatkowo zabieg ten wydaje się zły koncepcyjnie -- to format danych powinien być dopasowany do składowania określonych danych, a nie dane upakowane na siłę w taki sposób, aby zmieściły się w narzuconym formacie niebędącym przygotowanym do przechowywania informacji tego rodzaju.
+Sam sposób przechowywania danych był jednak tylko wierzchołkiem góry lodowej.
+Praktycznie wszystkie narzędzia pakietu \emph{SuperMatrix} zostały przygotowane do pracy z obiektami dwuelementowymi.
+Fakt ten oznacza, że wykorzystanie omawianego narzędzia byłoby niewielką wartością dodaną w prowadzeniu badań, ponieważ dużą część funkcjonalności trzeba byłoby zaimplementować od nowa mając na uwadze ograniczenia i koncepcje wprowadzone na potrzeby realizacji projektu \emph{Supermatrix}.
+Reimplementacja metod wymagana byłaby także ze względu na wspomnianą wcześniej konieczność upakowania danych $N$-elementowych do postaci dwuelementowej.
+Mogłoby to doprowadzić do poświęcenia dużej ilości czasu i uwagi na zaplanowanie, dostosowanie, implementację i integrację nowych fragmentów oprogramowania \emph{SuperMatrix} zamiast wykorzystania tych zasobów do realizacji faktycznego zadania projektu.
+
+
+
+Omówione problemy były jednymi z głównych przyczyn opracowania nowego narzędzia, niezależnego od pakietu \emph{SuperMatrix}, specjalizowanego pod kątem prowadzania badań dotyczących wyrażeń wielowyrazowych, między innymi na potrzeby niniejszej pracy.
+Narzędzie \emph{MWeXtractor} utworzone przez autora tej pracy jest biblioteką progrmaistyczną oraz pakietem struktur danych, programów, skryptów i niewielkiej ilości danych.
+Posłużyło ono do prowadzenia badań nad kolokacjami, których wyniki zostały zamieszczone w dalszej części niniejszej pracy.
+
+
+
+Większość oprogramowania, a w szczególności jego główne funkcjonalności zostały zaimplementowane w języku \emph{C++} w celu osiągnięcia jak największej wydajności pamięciowej odnośnie składowania danych oraz obliczeniowej narzędzi i algorytmów.
+Wykorzystany standard tego języka to \emph{C++11}.
+Język skryptowy \emph{Python} został wykorzystany do utworzenia części oprogramowania pomocniczego -- skryptów.
+Oprogramowanie związane z algorytmem genetycznym pochodzi z kodów zaimplementowanych przez Łukasza Kłyka \cite{klyk}, które zostało dostosowane do współpracy z pakietem narzędzi \emph{MWeXtractor}.
+
+
+\section{Przykładowe schematy użytkowania narzędzia}\label{s3}
+Dwie typowe ścieżki przetwarzania umożliwione przez oprogramowanie \emph{MWeXtractor} zostały opisane w dalszej części niniejszej pracy.
+Pierwsza z nich jest związana z badaniem jakości funkcji asocjacyjnych i klasyfikatorów, a druga służy do ekstrakcji kolokacji z korpusów tekstowych.
+
+\subsection{Schemat procesu badania metod ekstrakcji kolokacji}
+Schemat \ref{user_processing_scheme_research} prezentuje pierwszą z dwóch typowych ścieżek przetwarzania, odpowiedzialną za badania metod ekstrakcji wyrażeń wielowyrazowych.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{charts/user_processing_scheme_research.jpg}
+\caption [Przykładowy schemat procesu badania jakości rankerów]{Powyższy schemat prezentuje jeden z typowych procesów użytkowania oprogramowania \emph{MWeXtractor} -- badania jakości generowanych przez rankery kolokacji}
+\label{user_processing_scheme_research}
+\end{figure}
+
+
+\noindent\textbf{Krok numer 1: generacja krotek}
+
+
+Najpierw należy przygotować listę korpusów, z których mają zostać wydobyte dane do przeprowadzenia badań nad metodami ekstrakcji wyrażeń wielowyrazowych.
+Należy podać typ czytnika korpusów oraz tagset jakim dane tekstowe zostały opisane.
+Następnie zdefiniować zestaw relacji -- operatorów zapisanych w języku \emph{WCCL}, które specyfikują jakich kandydatów na wyrażenia wielowyrazowe należy wyszukiwać w badanych korpusach tekstowych.
+Dzięki nim można ograniczyć zestaw kandydatów, nad którymi chce się prowadzić badania.
+Jeśli użytkownik jest zainteresowany wszystkimi możliwymi do utworzenia n-gramami może przykładowo wykorzystać do tego celu operator \emph{WCCL} generujący wszystkie możliwe kombinacje n-elementowe.
+Zaznaczyć trzeba, że wydobywani kandydaci na kolokacje nie muszą być ciągli, a ich szyk może być zmienny, wszystko zależy od tego jak zostaną przygotowane relacje.
+Tak przygotowany zestaw danych i parametrów należy następnie podać jako argumenty dla programu \emph{TuplesBuilder}, który na ich podstawie przygotuje skład krotek -- podstawową strukturę danych dla oprogramowania \emph{MWeXtractor} składującą krotki.
+
+
+\noindent\textbf{Krok numer 2: dyspersja krotek}
+
+
+Drugi krok tego schematu przetwarzania jest opcjonalny i dotyczy modyfikacji informacji o zebranych krotkach -- ich częstości będących kluczowym elementem związanym z późniejszą oceną kandydatów na kolokacje.
+Do tego celu wykorzystana może zostać jedna z funkcji dyspersji zaimplementowana w tym celu, zostaną one opisane w dalszej części tej pracy.
+Zależnie od wybranej metody dyspersji pod uwagę są brane różne statystyki związane z krotkami, przykładowo będą to częstości danych krotek, liczba krotek w danym korpusie czy informacja o tym w ile korpusach dana krotka została odnaleziona.
+W skrócie, miara dyspersji ma za zadanie zmienić rozkład częstości krotek w składzie promując instancje ciekawe -- mniej typowe.
+\par
+Jednak z zaimplementowanych funkcji dyspersji -- \emph{Lynes D3}, bazuje na mierze $ Hi^{2} $, a tym samym potrzebne są jej pewne dane statystyczne.
+Jeśli ta miara ma zostać wykorzystana do dyspersji krotek to trzeba jej te dane statystyczne przygotować.
+Sposób generacji tych informacji został opisany w trzecim kroku omawiania kolejnego z przykładowych schematów przetwarzania.
+Zaznaczyć jednak trzeba, że ta miara to wyjątek.
+
+
+\noindent\textbf{Krok numer 3: badania}
+
+
+Niniejszy krok jest krokiem finalnym tej ścieżki przetwarzania.
+Polega on na wykonaniu r-rundowej, f-foldowej walidacji krzyżowej dla danego zbioru danych, z wykorzystaniem określonych miar asocjacyjnych i klasyfikatorów.
+Oprogramowanie przeznaczone do tego celu zostało nazwane \emph{Miner}.
+Wyniki wygenerowane przez ten program zostają poddane ocenie przez użytkownika narzędzi \emph{MWeXtractor}. 
+Do łączenia dużych zestawów wyników przygotowany został skrypt w języku \emph{Python} uśredniający wyniki dla wszystkich z foldów z każdej z rund, dla poszczególnych funkcji rankingowych z osobna.
+Pozwala to na szybkie wygenerowanie zbiorczych wyników i przykładowo utworzenie wykresów prezentujących jakości rezultatów zastosowanych metod wydobycia według określonych miar.
+\par
+Parametry programu \emph{Miner} zostały wymienione i opisane w poniższej tabeli \ref{miner_parameters}:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | l | p{0.6\linewidth}}
+	\toprule 
+	Nazwa & Typ & Opis \\
+	\midrule 
+	Skład krotek & nazwa folderu & ścieżka do folderu ze składem krotek \\ 
+	\hline
+	Wyjście programu & nazwa folderu & ścieżka do folderu, w którym zostaną zamieszczone wyniki\\ 
+	\hline
+	Miary asocjacji & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcje asocjacyjną, którą program ma wykorzystać\\ 
+	\hline
+	Miary wektorowe & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący wektorową miarę asocjacyjną, którą program ma wykorzystać\\ 
+	\hline
+	Agregatory & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcję agregującą wyniki miar wektorowych, po jednej funkcji dla każdej z nich\\
+	\hline
+	Klasyfikatory & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący klasyfikator, który program ma wykorzystać\\ 
+	\hline
+	Generator cech & ciąg tekstowy & wektorowa miara asocjacyjna, która zostanie wykorzystana jako generator cech dla klasyfikatorów\\ 
+	\hline
+	Preprocesor cech & ciąg tekstowy & parametr opcjonalny, tekst reprezentujący funkcję, która ma zostać wykorzystana do normalizacji cech\\ 
+	\hline
+	Zestaw JW & nazwa pliku & plik zawierający w każdej linii ciąg wyrazów oddzielonych spacjami, reprezentujący wyrażenie wielowyrazowe\\ 
+	\hline
+	Funkcje oceny & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcję oceny, którą program ma wykorzystać\\ 
+	\hline
+	Filtr krotek & ciąg tekstowy & tekst reprezentujący filtr, który program ma wykorzystać do wyznaczenia zestawu krotek, z których ma korzystać i, dla których wygenerować dane\\ 
+	\hline
+	Liczba wątków & liczba całkowita & maksymalna liczba wątków do wykorzystania przez program\\ 
+	\hline
+	Liczba rund & liczba całkowita & liczba rund walidacji krzyżowej\\ 
+	\hline
+	Liczba foldów & liczba całkowita & liczba foldów dla każdej walidacji krzyżowej\\
+	\bottomrule
+\end{tabular}
+\caption[Parametry programu \emph{Miner}]{Tabela zawiera nazwy, typy oraz opisy parametrów wykorzystywanych przez program \emph{Miner}}
+\label{miner_parameters}
+\end{table}
+
+\par
+Wspomniany zbiór wyników jest obszerny, podzielony na pliki, których są dwa rodzaje - pliki z listami k-najlepszych kandydatów na wyrażenia wielowyrazowe, oraz pliki z ocenami tych list.
+Liczba wygenerowanych plików rankingowych jest równa \( ((A + V + C) * R * F) \), gdzie \emph{A}, \emph{V} oraz \emph{C} oznaczają kolejno liczbę wykorzystanych funkcji asocjacyjnych, wektorowych miar asocjacyjnych oraz klasyfikatorów, natomiast \emph{R} i \emph{F} to kolejno liczba rund i foldów walidacji krzyżowej.
+Dodatkowo dla każdego pliku z rankingiem wygenerowanych zostaje \emph{Q} plików oceny tego rankingu, gdzie \emph{Q} jest liczbą wykorzystanych funkcji oceny list k-najlepszych.
+Wzorzec nazwy pliku z rankingiem jest generowany w sposób następujący: \emph{kbest.nr\_rankera.nr\_rundy.nr\_foldu.csv}, natomiast wzorzec dla plików z wynikami funkcji oceny list k-najlepszych to: \emph{kbest.nr\_rankera.nr\_rundy.nr\_foldu.nr\_funkcji\_oceny.csv}.
+Numer rankera jest z przedziału:
+\begin{enumerate}
+  \item \texttt{[0     : A         - 1]} - dla funkcji asocjacyjnych;
+  \item \texttt{[A     : A + V     - 1]} - dla wektorowych miar asocjacyjnych;
+  \item \texttt{[A + V : A + V + C - 1]} - dla klasyfikatorów.
+\end{enumerate}
+
+Ze względu na dużą liczbę plików wynikowych zaimplementowany został skrypt wspomniany wcześniej, łączący wyniki poprzez uśrednienie wyników dla każdego foldu z każdej rundy dla poszczególnych funkcji rankingujących z osobna i generuje pojedynczy plik z jedną kolumną dla każdego rankera.
+Skrypt nazwany został \emph{cv\_quality\_merger.py}, został napisany w języku \emph{Python} i jest częścią pakietu \emph{MWeXtractor}.
+
+
+\subsection{Schemat procesu ekstrakcji wyrażeń wielowyrazowych}
+Schemat \ref{user_processing_scheme_extraction} prezentuje pierwszą z dwóch typowych ścieżek przetwarzania, odpowiedzialną za badanianie metod ekstrakcji wyrażeń wielowyrazowych.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{charts/user_processing_scheme_extraction.jpg}
+\caption [Przykładowy schemat procesu wydobywania wyrażeń wielowyrazowych]{Powyższy schemat prezentuje jeden z typowych procesów wydobywania wyrażeń wielowyrazowych za pomocą oprogramowania \emph{MWeXtractor}}
+\label{user_processing_scheme_extraction}
+\end{figure}
+
+
+\noindent\textbf{Kroki numer 1 i 2}
+
+
+Oba krotki są takie same jak w przypadku poprzedniego przykładowego schematu przetwarzania -- badania miar asocjacyjnych i klasyfikatorów.
+
+
+\noindent\textbf{Krok numer 3: budowa źródła tablic wielodzielnych}
+
+
+Prawie wszystkie zaimplementowane miary i klasyfikatory korzystają z informacji zawartych w tablicach wielodzielnych dla krotek. 
+Miary korzystają z tych informacji bezpośrednio do obliczania wartości dla kolokacji, a w przypadku klasyfikatorów miary te wykorzystywane są do generowania cech instancji.
+Wyjątkiem są miary oparte na szyku, ponieważ nie korzystają takich informacji.
+Krok trzeci polega na utworzeniu jednego z dwóch dostępnych źródeł tablic -- ich generatora lub składu. 
+Programy przygotowane do wykonania tego zadania to odpowiednio \emph{Indexer} oraz \emph{Continger}.
+Zazwyczaj generator tablic zajmuje znacznie mniej pamięci operacyjnej -- kilkakrotnie mniej, ale odwołanie do tablic wielodzielnych jest znacznie wolniejsze niż w przypadku składu tablic, ponieważ generator tworzy je na bieżąco, a skład przechowuje już gotowe tablice.
+Zestaw krotek, na podstawie których źródło tablic ma zostać wygenerowane można ograniczyć za pomocą filtrów.
+Zabieg taki pozwala na używanie określonego składu krotek do różnych celów, bez konieczności wydobywania kandydatów z korpusów wielokrotnie.
+Dodatkowo umożliwia to zbudowanie informacji statystycznych na podstawie innego zestawu krotek niż ten, z którego wyrażenia wielowyrazowe mają być wydobywane.
+Jako praktyczny przykład takiego zadania można podać ten, w którym informacja statystyczna budowana jest na podstawie krotek zebranych za pomocą relacji okna, a wydobywanie wyrażeń wielowyrazowych jedynie na podstawie innych relacji, przykładowo o określonych wzorcach strukturalnych.
+
+
+\noindent\textbf{Krok numer 4: budowanie zestawu cech}
+
+
+Niniejszy krok jest opcjonalny i może zostać pominięty jeśli użytkownik nie ma zamiaru korzystać z klasyfikatorów.
+Jeśli jednak użytkownik będzie chciał skorzystać z klasyfikatorów lub wygenerować zestaw cech, z który będzie można wykorzystać w oprogramowaniu \emph{WEKA} to może do tego celu użyć programu o nazwie \emph{FeatureMaker}.
+Zadaniem tego modułu jest wygenerowanie cech dla kandydatów na kolokacje, spośród których mają być w przyszłości wydobyte wyrażenia wielowyrazowe.
+Do wykonania tego zadania generator cech wykorzystuje miary asocjacyjne, których wyniki traktowane są jako cechy.
+Dopuszczalne jest także wykorzystanie uprzednio wyuczonych klasyfikatorów, przykładowo sieci neuronowych, do generowania cech opisujących kandydatów.
+Zestaw kandydatów można ograniczyć za pomocą filtru jeśli nie ma potrzeby wyznaczenia cech dla wszystkich krotek.
+\par
+Aktualnie jedynym wspieranym formatem pliku wykorzystywanym do zapisu zestawu cech w pamięci nieulotnej jest \emph{ARFF}.
+\par
+Zamieszczona poniżej tabela \ref{feature_maker_parameters} zawiera opisy parametrów programu \emph{FeatureMaker}:
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | l | p{0.6\linewidth}}
+	\toprule 
+	Nazwa & Typ & Opis \\
+	\midrule 
+	Skład krotek & nazwa folderu & ścieżka do folderu ze składem krotek \\ 
+	\hline
+	Wyjście programu & nazwa pliku & ścieżka do pliku, w którym zostaną zapisane wyniki\\ 
+	\hline
+	Zestaw JW & nazwa pliku & plik zawierający w każdej linii ciąg wyrazów oddzielonych spacjami, reprezentujący wyrażenie wielowyrazowe, wykorzystany w przypisywaniu klas krotkom\\ 
+	\hline
+	Generator cech & ciągi tekstowe & tekst reprezentujący wektorową miarę asocjacyjną, którą program ma wykorzystać do generowania cech dla krotek\\ 
+	\hline
+	Filtr krotek & ciąg tekstowy & tekst reprezentujący filtr, który program ma wykorzystać do wyznaczenia zestawu krotek, dla których wygenerować cechy\\ 
+	\hline
+	Liczba wątków & liczba całkowita & maksymalna liczba wątków do wykorzystania przez program\\ 
+	\bottomrule
+\end{tabular}
+\caption[Parametry programu \emph{FeatureMaker}]{Tabela zawiera nazwy, typy oraz opisy parametrów wykorzystywanych przez program \emph{FeatureMaker}}
+\label{feature_maker_parameters}
+\end{table}
+
+
+\noindent\textbf{Krok numer 5: ekstrakcja}
+
+
+% TODO: Digger modifications: classifiers + features + output
+Ostatnim krokiem tej ścieżki przetwarzania jest wykorzystanie wcześniej utworzonych danych do ekstrakcji wyrażeń wielowyrazowych z korpusów tekstowych.
+Zadanie to może zostać wykonane za pomocą programu \emph{Digger}.
+Zestaw parametrów programu jest zbliżony do tych dla narzędzie \emph{Miner}, w poniższej tabeli \ref{digger_parameters} opisane zostały argumenty dla oprogramowania \emph{Digger}:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | l | p{0.6\linewidth}}
+	\toprule 
+	Nazwa & Typ & Opis \\
+	\midrule 
+	Skład krotek & nazwa folderu & ścieżka do folderu ze składem krotek \\ 
+	\hline
+	Źródło tablic & nazwa pliku & ścieżka do pliku ze składem lub generatorem krotek\\
+	\hline
+	Wyjście programu & nazwa folderu & ścieżka do folderu, w którym zostaną zamieszczone wyniki\\ 
+	\hline
+	Miary asocjacji & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcje asocjacyjną, którą program ma wykorzystać\\ 
+	\hline
+	Miary wektorowe & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący wektorową miarę asocjacyjną, którą program ma wykorzystać\\ 
+	\hline
+	Agregatory & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcję agregującą wyniki miar wektorowych, po jednej funkcji dla każdej z nich\\
+	\hline
+	Klasyfikatory & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący klasyfikator, który program ma wykorzystać\\ 
+	\hline
+	Źródło cech & nazwa pliku & Źródło zestawu cech dla krotek\\ 
+	\hline 
+	Zestaw JW & nazwa pliku & plik zawierający w każdej linii ciąg wyrazów oddzielonych spacjami, reprezentujący wyrażenie wielowyrazowe\\ 
+	\hline
+	Funkcje oceny & ciągi tekstowe & parametr wielokrotny, tekst reprezentujący funkcję oceny, którą program ma wykorzystać\\ 
+	\hline
+	Filtr krotek & ciąg tekstowy & tekst reprezentujący filtr, który program ma wykorzystać do wyznaczenia zestawu krotek, z których ma korzystać i, dla których wygenerować dane\\ 
+	\hline
+	Liczba wątków & liczba całkowita & maksymalna liczba wątków do wykorzystania przez program\\ 
+	\bottomrule
+\end{tabular}
+\caption[Parametry programu \emph{Digger}]{Tabela zawiera nazwy, typy oraz opisy parametrów wykorzystywanych przez program \emph{Digger}}
+\label{digger_parameters}
+\end{table}
+
+Zestaw generowanych wyników jest podobny do tego generowanego przez narzędzie \emph{Miner}, ale jest mniejszy, ponieważ nie ma podziału na rundy i foldy ze względu na brak walidacji krzyżowej.
+Wzorce nazw dla plików k-najlepszych krotek i plików z ocenami dla tych list prezentują się teraz następująco: \emph{kbest.nr\_rankera.csv} oraz \emph{quality.nr\_rankera.nr\_funkcji\_oceny.csv}.
+Zasada generowania numeru rankera jest taka sama jak w przypadku programu \emph{Miner}.
+
+
+\subsection{Narzędzie sieciowe do ekstrakcji kolokacji}
+Narzędzie sieciowe ma za zadanie umożliwić użytkownikowi przetworzenie wybranego i załadowanego przez niego korpusu. 
+Dane muszą zostać uprzednio przesłane na repozytorium DSpace.
+Interfejs webowy umożliwia podanie linku do korpusu z DSpace, wybranie jednej z miar ekstrakcji kolokacji oraz zestawu typów strukturalnych, wśród których wyrażenia wielowyrazowe mają być wyszukiwane.
+Narzędzie pozwala śledzić status zadania oraz zobaczyć z jakimi parametrami dane zadanie ekstrakcji zostało zlecone.
+Po wykonaniu pracy wyniki odsyłane są na to samo repozytorium DSpace, z którego pobrany został korpus tekstowy.
+Dodatkowo narzędzie pozwala przeglądać górną część rankingu poprzez swój interfejs webowy.
+Użytkownik może zdefiniować do trzech zadań jednocześnie (parametr oprogramowania), ale ma prawo usunąć je w dowolnym momencie.
+Narzędzie potrafi przetwarzać korpusy nieotagowane, składowane w prostym formacie tekstowym -- surowym, a także obsługuje kilka innych formatów takich jak CCL, XCES czy IOB-Chan.
+Oprogramowanie wykorzystuje tagset NKJP.
+
+\subsubsection{Instrukcja dla użytkownika}
+Użytkownik powinien załadować otagowany korpus w jednym ze wspieranych formatów (ccl, xces, iob-chan) lub tekst w postaci surowej, nieotagowanej. 
+Każdy format, który nie zostanie rozpoznany jako składujący w sobie tekst otagowany zostanie uznany za plik z tekstem nieotagowanym oraz otagowany przez tager.
+Kiedy plik zostanie załadowany użytkownik powinien skopiować jego link.
+Następnym krokiem jest zalogowanie się do narzędzia wydobywającego kolokacje (wielowyr) i wybranie zakładki zbadaj korpus.
+Widok pozwala użytkownikowi na podanie linku do korpusu, opcjonalny opis zadania oraz wybranie parametrów przetwarzania -- sposobu tworzenia rankingu i typów strukturalnych.
+Kiedy zadanie będzie gotowe do uruchomienia należy kliknąć przycisk rozpoczynający je.
+Użytkownik otrzyma w odpowiedzi link, pod którym może śledzić zadanie.
+Wszystkie zadania mogą być śledzone w panelu ``kolokacje'', tam też użytkownik może przeglądać część wyników każdego z zakończonych powodzeniem zadań.
+Jeśli udało się wykonać dane zadanie to pełne wyniki ekstrakcji są także dostępne na repozytorium DSpace, z którego pobrany został korpus tekstowy.
+
+%Poniższy schemat \ref{web_tool} przedstawia koncepcję działania narzędzia sieciowego.
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[width=\textwidth]{charts/web_tool.jpg}
+%\caption [Schemat działania narzędzia sieciowego]{Schemat działania narzędzia sieciowego}
+%\label{web_tool}
+%\end{figure}
+
+
+\subsection{Funkcjonalności dodatkowe}
+Pakiet narzędzi \emph{MWeXtractor} posiada też dodatkowe funkcjonalności, z których część została opisana w tej części niniejszej pracy.
+
+
+\noindent\textbf{Program \textit{Cover}}
+
+
+Program nazwany \emph{Cover} służy do weryfikacji relacji oraz badania przecięcia zbioru wydobytych krotek pomiędzy relacjami -- sprawdzenie jak dużo z nich zostało przyporządkowanych do więcej niż jednej relacji.
+Praktyczne wykorzystanie tego oprogramowania to sprawdzenie pokrycia wzajemnego operatorów \emph{WCCL} zastosowanych do wydobywania krotek z tekstów.
+Wynikiem jego działania jest macierz kwadratowa o wymiarze równym liczbie relacji wykorzystanych w procesie tworzenia \emph{składu krotek}, gdzie każdy z wierszy i każda z kolumn mają przypisaną do siebie określoną nazwę operatora \emph{WCCL}.
+Liczby całkowite zapisane na przecięciu wierszy z kolumnami informują ile różnych krotek zostało przypisanych zarówno do relacji będącej etykietą wiersza jak i kolumny.
+Interpretacją liczby na przecięciu wiersza i kolumny -- diagonali, odpowiadającym tej samej relacji jest informacja ile krotek zostało zakwalifikowanych do tej relacji.
+Jeśli w danym wierszu lub kolumnie wystąpi więcej niż jedna wartość większa od zera poza polem na diagonali macierzy oznacza to, że relacje są nierozłączne -- część krotek przyporządkowano do więcej niż jednej relacji.
+Należy jednak pamiętać, że narzędzie to nie jest wyrocznią, ponieważ jeśli dla danego zbioru danych okaże się, że relacje są rozłączne to nie oznacza to, że dla innego zbioru, większego czy lepiej oddającego rzeczywistość, sytuacja się powtórzy.
+Zbudowana w ten sposób macierz jest symetryczna.
+\par
+Opisywany tutaj program \emph{Cover} ma także drugie zastosowanie wspomniane we wcześniejszej części tego fragmentu niniejszej pracy -- badanie przecięcia zbioru krotek ze składu i tego zadanego parametrem programu.
+Na podstawie zadanego pliku z ciągami wyrazów program bada ile z nich, oraz które konkretnie ciągi zostały odnalezione w \emph{składzie krotek}.
+Funkcjonalność ta może posłużyć przykładowo do wyznaczania zbioru krotek pozytywnych, czyli wyrażeń wielowyrazowych, które zostały w tym tekście odnalezione podczas wydobywania kandydatów na kolokacje.
+Dodatkowo zakres poszukiwań wśród krotek w składzie można zawęzić za pomocą filtru.
+Zabieg taki pozwala na lepsze poznanie zbioru danych.
+
+
+\noindent\textbf{Wydobywanie form napotkanych}
+
+
+Program \emph{Digger} umożliwia dodatkowo wydobycie form napotkanych dla krotek z wygenerowanych list k-najlepszych kandydatów na kolokacje.
+Jeśli użytkownik jest zainteresowany ekstrakcją form napotkanych to powinien podać cztery dodatkowe parametry dla tego programu, które zostały opisane w poniższej tabeli \ref{digger_parameters_orths}:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | l | p{0.5\linewidth}}
+	\toprule 
+	Nazwa & Typ & Opis \\
+	\midrule 
+	Zestaw korpusów & nazwa pliku & ścieżka do pliku zawierającego listę ścieżek do korpusów, po jednej ścieżce w każdej linii pliku \\ 
+	\hline
+	Operatory WCCL & nazwa pliku & ścieżka do pliku z operatorami języka \emph{WCCL}, które były użyte przy wydobywaniu kandydatów na kolokacje w kroku numer jeden\\ 
+	\hline
+	Tagset & ciąg znaków & nazwa wykorzystanego tagsetu w korpusach \\
+	\hline
+	Czytnik & ciąg znaków & nazwa czytnika korpusów\\
+	\bottomrule
+\end{tabular}
+\caption[Parametery dodatkowe programu \emph{Digger}]{Tabela zawiera nazwy, typy oraz opisy parametrów dodatkowych wykorzystywanych przez program \emph{Digger}}
+\label{digger_parameters_orths}
+\end{table}
+
+Wyekstrahowany zestaw form napotkanych dla krotek zostanie zapisany w pojedynczym pliku w formacie \emph{csv}.
+Format pliku jest następujący: najpierw zapisana zostaje reprezentacja krotki z jednej z list k-najlepszych, a część kolejnych linii rozpoczyna się tabulacją i zawiera ciąg wyrazów napotkanych dla tej krotki, wraz z jego częstością.
+Następnie zapis taki się powtarza dla wszystkich wydobytych krotek jeśli jest ich więcej, ale bez powtórzeń jeśli krotki wystąpiły na różnych listach k-najlepszych.
+Dodatkowo napisany został skrypt łączący listy k-najlepszych z zestawem wydobytych dla nich form napotkanych i tworzy nowe listy k-najlepszych zachowując kolejność rankingu i przypisując do każdej pozycji zestaw forma napotkanych tej krotki wraz częstościami tych forma napotkanych.
+Kolejność form napotkanych po łączeniu będzie posortowana malejąco po ich częstościach.
+Skrypt ten napisany w języku \emph{Python} został nazwany \emph{kbest\_orth\_merger.py} i jest częścią pakietu \emph{MWeXtractor}.
+
+
+\subsection{Format składowania danych zebranych z korpusów}
+Jako format przechowywania danych wykorzystano krotki o różnych długościach\footnote{Długość krotki rozumiana jest jako liczba jej elementów składowych, przykładowo wyrazów.}, co umożliwia składowanie informacji o wyrażeniach wielowyrazowych dowolnej długości w intuicyjny sposób.
+Krotki są dość powszechnym, elastycznym i prostym formatem stosowanym do przechowywania danych, a dodatkowo zapisywane są w postaci tekstu czytelnego dla człowieka, co czyni format przejrzystym, łatwym do ewentualnej edycji i ułatwia analizę zapisanych informacji.
+
+
+Krotka reprezentująca wyrażenie wielowyrazowe zawiera w sobie słowa w ustalonej kolejności wraz z ich częściami mowy, które wchodzą w skład tego wyrażenia.
+Każda z krotek zawiera także informację w jakiej relacji wystąpiły zawarte w tej krotce wyrazy.
+Relacja jest jednym z operatorów \emph{WCCL} wykorzystanym w procesie tworzenia krotek na podstawie korpusów - proces ten został opisany w dalszej części tej sekcji.
+Jeśli dane zestawienie wyrazów w tekście spełnia wymagania dla kilku różnych wyrażeń języka ograniczeń to dla każdego z nich powstanie osobna krotka zawierająca te same elementy, ale różniąca się relacją.
+Dodatkowo w krotce zawarte są także metadane o niej, takie jak jej częstość\footnote{Częstość krotki określa liczbę wystąpień konkretnego zestawienia słów w danej relacji.} w przetworzonych korpusach danych.
+Relacja nie jest uwzględniana w rozmiarze krotki.
+Format składowania krotek w pliku tekstowym wraz z przykładem został zamieszczony w tabeli \ref{tuple_format}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|c|c|c|c|c}
+\toprule
+	\textbf{nazwa relacji} & 
+		\textbf{arność relacji} & 
+		\textbf{częstość krotki} & 
+		\textbf{cz.m.:s1} & 
+		\textbf{cz.m.:s2} & 
+		\ldots \\
+	\midrule
+	AdjSubst & 2 & 17 & adj:nowy & subst:but & \\
+\bottomrule
+\end{tabular}
+\caption[Format składowania krotek w pliku tekstowym]{Format składowania krotek w pliku tekstowym wraz z przykładem. Elementy (ciągi znakowe) składowane w pliku tekstowym oddzielone są od siebie tabulatorami. Arność relacji jest tożsama z rozmiarem krotki. Skrótowiec \emph{cz.m:sN} pochodzi od: część mowy, dwukropek, \emph{N}-te słowo krotki.}
+\label{tuple_format}
+\end{table}
+
+
+Istotnym elementem przetwarzania tak dużych zbiorów danych jest wydajny sposób składowania ich w pamięci operacyjnej maszyny przetwarzającej.
+Do tego celu opracowana, zaimplementowana i wykorzystana została struktura starająca się minimalizować zużycie pamięci przy zachowaniu szybkiego dostępu do danych poprzez wykorzystanie implementacji zbiorów opartych o drzewa czerwono-czarne i funkcje skrótu\footnote{Popularna nazwa anglojęzyczna to \emph{hash function} -- funkcja haszująca.}.
+Struktura składa się z pięciu modułów odpowiedzialnych za przechowywanie innych informacji.
+
+
+Pierwszy moduł zawiera w sobie informacje o wykorzystanych korpusach.
+Zapisana jest nazwa korpusu, ścieżka do pliku z tym korpusem, a także częstości słów w każdym z korpusów z osobna oraz suma wystąpień tych wyrazów.
+
+
+Drugi  moduł zawiera w sobie podzbiór części mowy występujących w tagsecie wykorzystanym do opisu morfo-syntaktycznego korpusów danych użytych do ekstrakcji kandydatów na wyrażenia wielowyrazowe.
+Podzbiór ten zawiera tylko te części mowy, które wystąpiły przynajmniej raz w przetwarzanych tekstach, ale nic nie stoi na przeszkodzie, by dodać także części mowy niewchodzące w skład wykorzystanego tagsetu.
+
+
+Trzeci moduł wykorzystuje informacje z modułu związanego z częściami mowy wyrazów. 
+Jego zadaniem jest składowanie wszystkich słów wraz z przyporządkowanymi im częściami mowy oraz częstością tych właśnie wyrazów wygenerowaną na podstawie korpusów tekstowych.
+Moduł musi przechowywać wszystkie słowa, które będą składowymi krotek, ale może przechowywać także wyrazy nadmiarowe.
+
+
+Moduł czwarty gromadzi dane o relacjach, jakie zostały użyte do tworzenia krotek na podstawie korpusów tekstowych.
+Przechowywane są w nim informacje takie jak nazwy relacji, ich arności określające długość generowanych krotek oraz liczba krotek, które zostały utworzone z wykorzystaniem tej właśnie relacji.
+Relacje, które nie wykreowały żadnego kandydata na kolokacje także są w tym składzie uwzględnione wraz z informacjami o sobie.
+Ważną informacją jest także ta, że w tej strukturze nie są przechowywane ciała wyrażeń \emph{WCCL} definiujących daną relację.
+
+Piaty z modułów jest odpowiedzialny za składowanie krotek oraz metadanych ich opisujących.
+Struktura składowania tych danych może być postrzegana jako \emph{N-hipermacierz} \cite[rozdział 15]{hypermat}, której liczba wymiarów \emph{N} jest równa długości najdłuższej z krotek, powiększonej o jeden, formalnie:
+$$N=1+\max_{k \in K} \: (rozmiar(k))$$
+%$$ N = 1 + max(rozmiar(k) \: \forall k \in K : K = \{zestaw \: wszystkich \: krotek\}) $$
+gdzie $K$ jest zbiorem wszystkich krotek.
+
+Każdy wymiar odpowiada jednemu ze słów krotki lub jej relacji.
+Pierwsze $N-1$ wymiarów odpowiada kolejno wyrazom kolokacji wraz z ich częściami mowy, a wymiar $N$-ty jest interpretowany jako opisujacy relację tej krotki.
+%Prostymi wnioskami są $ (K + 1) \leq N $ oraz to, że nie wszystkie wymiary w macierzy dla danej krotki są zawsze wykorzystane.
+Przykładowo rozważmy skład zawierający w sobie tylko dwie poniższe krotki:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c c c c c c}
+\toprule
+\textbf{relacja} & \textbf{arność} & \textbf{cz.m:s1} & \textbf{cz.m:s2} & \textbf{cz.m:s3} & \textbf{częstości...} \\ 
+\midrule
+  AdjSubstAdj & 3 & adj:czerwony & subst:samochód & adj:sportowy & ... \\
+  AdjSubst & 2 & adj:czerwony & subst:kartka & [brak] & ... \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dla podanego zestawu krotek wymiar hipermacierzy będzie równy cztery - trzy wyrazy najdłuższej z krotek plus jeden.
+Pierwszy wymiar tej hipermacierzy dla obu krotek opisuje pierwszą składową krotki - dla obu z nich będzie to \emph{adj:czerwony}.
+Drugi wymiar zawiera informacje o drugiej składowej kandydatów na kolokacje i są to odpowiednio słowa \emph{subst:samochód} oraz \emph{subst:kartka}.
+Trzeci wymiar w przypadku pierwszej krotki odpowiada jej trzeciej składowej, a w przypadku krotki numer dwa -- jej relacji.
+Ostatni z wymiarów, czwarty, jest zdefiniowany tylko dla dłuższej z obu krotek i odnosi sie do jej relacji. Podane przykłady zostały wpisane do hipermacierzy w tabeli \ref{hypermatrix_indices}.
+\emph{Hipermacierz} krotek jest indeksowana słowami wraz z ich częściami mowy i opcjonalnie za pomocą relacji.
+Podczas odnoszenia się do tej macierzy nie jest wymagane podanie wszystkich składowych indeksu\footnote{Pojęcie indeksu odnosi się do struktury wykorzystywanej do odwoływania się do danych w \emph{hipermacierzy} krotek.} -- wszystkich słów i relacji, ale wymagane jest określanie wartości po kolei - nie mogą powstać dziury pomiędzy zdefiniowanymi wartościami dla wymiarów, zachowana musi zostać ciągłość w procesie tworzenia indeksu.
+Zapis formalny ciągłości indeksu:
+%$$ \forall D_{i} : D_{i} \in D = \{wymiary \: hipermacierzy \}, i \geq 1 : \exists D_{i-1} : wartość(D_{i-1}) : \neg niezdefiniowany $$
+$$ \forall _{D_{i} \in D, i \geq 1}  \exists _{D_{i-1}} : d_{i-1} \neq \emptyset $$
+gdzie $D_i$ jest rozmiarem $i$-tego wymiaru hipermacierzy, a $d_{i}$ oznacza wartość zapisaną w hipermacierzy na pozycji $D_{i}$.
+
+Poniższa tabela \ref{hypermatrix_indices} korzysta z przytoczonego wcześniej przykładu i zawiera przykłady poprawnych oraz błędnych -- nieciągłych, indeksów dla \emph{4-hipermacierzy} krotek.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c c c c c}
+\toprule
+\textbf{cz.m:s1} & \textbf{cz.m:s2} & \textbf{cz.m:s3} & \textbf{relacja}  & \textbf{poprawny} \\
+\midrule
+adj:ładny, 	& subst:samochód, 	& adj:sportowy		& AdjSubstAdj	& tak \\
+adj:ładny, 	& subst:samochód, 	& - ,			& -		& tak \\
+adj:ładny,	& - ,			& - ,			& -		& tak \\
+- ,		& subst:samochód, 	& adj:sportowy 		& -		& nie \\
+- ,		& adj:ładny,		& subst:samochód	& AdjSubstAdj	& nie \\
+adj:ładny,	& adj:ładny,		& - ,			& AdjSubstAdj	& nie \\
+\bottomrule
+\end{tabular}
+\caption
+	[Przykładowe indeksy dla \emph{4-hipermacierzy} krotek]
+	{Przykładowe indeksy dla \emph{4-hipermacierzy} krotek. Wszystkie przykłady niepoprawnych indeksów złamały tę samą zasadę dotyczącą ciągłości indeksu -- nie można definiować wartości dla wymiaru \emph{D}, jeśli nie została ona zdefiniowana dla \emph{D - 1} (\emph{D = 0} jest wyjątkiem).}
+\label{hypermatrix_indices}
+\end{table}
+
+
+Niech pojęcie \emph{I-indeks} odnosi się do indeksu \emph{I}-elementowego, czyli struktury ze zdefiniowanymi \emph{I} elementami odpowiedzialnymi za indeksowanie danych w \emph{hipermacierzy} krotek.
+Efektem wykorzystania \emph{I-indeksu} do odwołania się do danych w \emph{N-hipermacierzy} krotek jest \emph{K-hipermacierz} danych\footnote{W przypadku indeksu o rozmiarze zero tej samej \emph{hipermacierzy}.}, gdzie spełniona jest nierówność $ K \leq N $, a liczba wymiarów \emph{K} jest zależna od \emph{N} oraz \emph{I} i równa:
+
+$$ K = N - I $$
+
+Wartość $K = 0$ jest całkowicie poprawna i oznacza skalar, konkretną krotkę, $K = 1$ oznacza wektor, dla $K = 2$ jest macierzą dwuwymiarową, $K = 3$ to \emph{3-hipermacierz} i tak dalej.
+Dla wyjaśnienia i lepszego zrozumienia indeksowania rozważmy poniższą \emph{hipermacierz} z przyporządkowaniem wierszom, kolumną itd., liczb zamiast słów i relacji.
+
+\begin{center}
+\[
+M = 
+\left[
+\begin{array}{c c c | c c c}
+1 	& 2 	& 3 	& 4 	& 5 	& 6 	\\
+11 	& 12 	& 13 	& 14 	& 15 	& 16 	\\
+21 	& 22 	& 23 	& 24 	& 25 	& 26 	\\
+31 	& 32 	& 33 	& 34 	& 35	& 36 	\\
+\end{array}
+\right]
+\]
+\end{center}
+
+Powyższy zapis symbolizuje \emph{3-hipermacierz} liczb naturalnych o wymiarach \emph{4 x 3 x 2} - cztery wiersze, trzy kolumny oraz dwie warstwy, indeksowane od zera. 
+Liczby 1, 11, 21, 31 oraz 4, 14, 24, 34 są etykietami wierszy, 1, 2, 3 oraz 4, 5, 6 etykietami kolumn, a liczby 1 oraz 4 są także etykietami warst tej macierzy.
+Część po lewej stronie pionowej linii odzwierciedla pierwszą warstwę \emph{hipermacierzy}, a po prawej drugą.
+Utworzenie i wykorzystanie 1-indeksu postaci \( [4, -, -] \) zwróci zredukowaną do dwóch wymiarów macierz będącą po prostu drugą warstwą \emph{3-hipermacierzy} wyjściowej, postaci:
+
+\[
+M[4] = 
+\left[
+\begin{array}{c c c}
+4 	& 5 	& 6 	\\
+14 	& 15 	& 16 	\\
+24 	& 25 	& 26 	\\
+34 	& 35	& 36 	\\
+\end{array}
+\right]
+\]
+
+Dodanie wartości 5 do 1-indeksu spowoduje tym razem utworzenie 2-indeksu postaci \( [4, 5, -] \), którego wykorzystanie zaowocuje odwołaniem się do konkretnego wektora - kolumny, zawierającego się w macierzy i równego:
+
+\[
+M[4, 5] = 
+\left[
+\begin{array}{c}
+5 \\
+15 \\
+25 \\
+35 \\
+\end{array}
+\right]
+\]
+
+Zatem rozwinięcie 2-indeksu o jeszcze jedną wartość, przykładowo 25, i utworzenie 3-indeksu $[4, 5, 25]$, a następnie odwołanie się za jego pomocą do rozważanej \emph{3-hipermacierzy} liczb spowoduje zwrócenie konkretnej krotki zawierającej kolejne słowa oznaczone numerami 4 i 5 oraz przyporządkowanej do relacji oznaczonej liczbą 25.
+Dodać należy, że kolejność interpretacji wymiarów jest jednak dowolna i nie musi przebiegać w tej kolejności.
+
+
+Wykorzystanie indeksów dłuższych niż \emph{N} dla \emph{N-hipermacierzy} nie jest też błędem, ale spowoduje niezwrócenie żadnej wartości.
+Podanie indeksu niepełnego, tak jak było napisane we wcześniejszej części tego fragmentu raportu, zwróci w ogólności pewną \emph{hipermacierz}, a tym samym zestaw krotek.
+Innymi słowy można się odwoływać do konkretnego zestawu krotek spośród całego ich zbioru. 
+Każda z krotek zwróconych poprzez wykorzystanie \emph{I}-indeksu będzie miała \emph{I} pierwszych elementów takich jak w indeksie, a reszta będzie dowolnymi elementami.
+Także relacja może być konkretna, jeśli zostanie podana jako składowa indeksu.
+Możliwe jest utworzenie indeksu nieposiadającego zdefiniowanego żadnego z elementów, a jego wykorzystanie zaowocuje zwróceniem pełnej hipermacierzy.
+
+
+\subsection{Przedstawienie sposobu wydobywania i przechowywania informacji statystycznych wykorzystywanych w obliczeniach}
+Przed omówieniem szczegółów dotyczących składowania i pozyskiwania danych wprowadzone zostaną następujące oznaczenia, które będą także wykorzystywane w dalszej części tej pracy.
+Oznaczenia zostały zamieszczone na poniższym spisie:
+
+\begin{enumerate}
+	\item \emph{x} lub \( {x_{i}} \) -- element krotki \emph{x} lub $i$-ty element krotki;
+	\item \( \bar{x} \) -- element inny niż \emph{x};
+	\item $ x_{1}, x_{2}, ..., x_{n} $ -- zestaw $n$-elementów krotki;
+	\item $n$ -- długość krotki;
+	\item \( N \) -- liczba wszystkich krotek w zbiorze danych;
+	\item \( f(x) \) -- częstość \emph{x}, wartość zaobserwowana;
+	\item \( p(x) \) -- prawdopodobieństwo \emph{x};
+	\item \( \hat{f}(x) \) -- wartość oczekiwana \emph{x};
+	\item \( FA(x, y) \) -- wartość funkcji asocjacyjnej dla elementów \emph{x} oraz \emph{y}.
+\end{enumerate}
+
+Podstawowymi danymi stosowanymi w procesie wydobywania wyrażeń wielowyrazowych z grona kandydatów są tablice wielodzielne dla krotek skonstruowane przy wykorzystaniu częstości kolokacji zebranych z korpusów tekstowych.
+Tablica wielodzielna jest terminem stosowanym w niniejszej pracy rozumianym jako $n$-wymiarowa tablica, której rozmiar każdego z wymiarów jest równy dwa.
+Liczba wymiarów tej tablicy jest równy $ 2^{n} $.
+Omówiony tutaj zostanie sposób generowania tablicy dla wartości zaobserwowanych z danych, natomiast dla drugiej z tablic w dalszej części tego rozdziału.
+Pierwszy indeks tablicy zawiera informacje o częstości konkretnej krotki, gdzie każdy z elementów jest znany, a kolejne pola tej  \emph{hiperkości} zawierają informacje o liczbie wystąpień innych krotkek, które mają tylko część składowych (wyrazów) i relację, takich samych.
+Ostatnie pole w tej tablicy mówi o tym, ile jest krotek takich, że wszystkie ich elementy składowe są inne niż te, dla której tablica została utworzona.
+Kolejne pola tablicy zawiera informacje o częstościach kolejnych krotek: $ x_{1}, x_{2}, x_{3}, ..., x_{n} $, $ x_{1}, \bar{x}_{2}, x_{3}, ..., x_{n} $, $ \bar{x}_{1}, x_{2}, x_{3}, ..., x_{n} $, $ \bar{x}_{1}, \bar{x}_{2}, x_{3}, ..., x_{n} $, a pełna tablica zawiera informacje o częstościach dla wszystkich możliwych kombinacji.
+Przykładowa tablica dla 3-elementowej krotki została zaprezentowana w tabeli \ref{observed_contingency_table} zamieszczonej poniżej:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c | c}
+	\toprule
+	Indeks	& częstość krotki zawierającej elementy									\\
+	\midrule
+	1. 		& \( x_{1}, 		x_{2}, 			x_{3} \)		\\
+	2. 		& \( x_{1}, 		\bar{x}_{2}, 	x_{3} \)		\\
+	3. 		& \( \bar{x}_{1}, 	x_{2}, 			x_{3} \)		\\
+	4. 		& \( \bar{x}_{1}, 	\bar{x}_{2}, 	x_{3} \)		\\
+	5. 		& \( x_{1}, 		x_{2}, 			\bar{x}_{3} \)	\\
+	6. 		& \( x_{1}, 		\bar{x}_{2}, 	\bar{x}_{3} \)	\\
+	7. 		& \( \bar{x}_{1}, 	x_{2}, 			\bar{x}_{3} \)	\\
+	8. 		& \( \bar{x}_{1}, 	\bar{x}_{2}, 	\bar{x}_{3} \)	\\
+	\bottomrule
+\end{tabular}
+\caption[Tablica wielodzielna dla krotki 3-elementowej]{Przykładowa tablica wielodzielna obrazująca informacje o częstościach w niej składowanych}
+\label{observed_contingency_table}
+\end{table}
+
+Indeksowanie tablicy dla innej liczby argumentów przebiega analogicznie.
+Wzory zamieszczone w dalszej części tego rozdziału mogą wykorzystywać informacje z takiej tablicy poprzez zapis $ t(i) $, co oznacza odwołanie do $i$-tego elementu tablicy utworzonej dla konkretnego kandydata na kolokacje.
+
+
+Oprogramowanie \emph{MWeXtractor} umożliwia tworzenie omówionych tablic wielodzielnych na dwa sposoby tak jak wspomniano wcześniej przy okazji opisu schematu przetwarzania -- utworzenie gotowego składu tablic wielodzielnych dla każdego kandydata na wyrażenie wielowyrazowe lub poprzez przygotowanie generatora, który tworząc odpowiedni indeks będzie w stanie generować tablice wielodzielne dla kolokacji w trakcie działania programu.
+Obie przedstawione tutaj metody w efekcie generują takie same wyniki i tego samego typu -- tablice wielodzielne.
+Bez względu na wykorzystaną metodę tworzenia takich tablic, ich efektem będzie struktura nazywana \emph{Źródłem tablic wielodzielnych}.
+Proces tworzenia tablic z wartościami zaobserwowanymi składa się z kilku kroków.
+Pierwszym z nich jest wyselekcjonowanie zestawu krotek, które mają zostać wykorzystane do budowy tablic wielodzielnych, za pomocą zaimplementowanego mechanizmu filtrów.
+Kolejnym zadaniem jest już właściwy proces budowania tablic i polega on na utworzeniu generatora poprzez zbudowanie indeksu zawierającego informacje o częstościach danych krotek, a także sumy częstości krotek utworzonych poprzez kombinacje elementów składowych tych kolokacji -- kombinacje te są rozumiane tak jak te przedstawione w opisie tablic wielodzielnych z tym, że zamiast elementu innego niż stosowany jest zapis mówiący o tym, że element jest dowolny.
+Następnie gotowy generator może być już wykorzystany do tworzenia tablic wielodzielnych lub można na jego podstawie wygenerować pełny skład tablic dla konkretnych krotek.
+\par
+Generowanie tablic z wartościami oczekiwanymi jest procesem szybszym od zbierania danych o wartościach zaobserwowanych i polegającym na obliczeniu iloczynu prawdopodobieństw odpowiadających konkretnym elementom krotki, a następnie wynik ten jest przemnożony przez liczbę wszystkich krotek o zadanej długości, przykładowo dwuelementowych.
+Dane do tych obliczeń pozyskiwane są z tablicy wielodzielnej wartości zaobserwowanych.
+Jeśli element krotki jest określony i konkretny to jego prawdopodobieństwo jest równe $ \frac{f(element)}{E} $, gdzie $ E $ jest sumą częstości wszystkich krotek dwuelementowych w generatorze (uwzględnionych w obliczeniach po zastosowaniu filtru).
+Natomiast jeśli element krotki jest zanegowany, czyli \emph{inny niż}, to jego prawdopodobieństwo wykorzystane we wzorze jest równe $ 1 - p(element) $.
+Dla lepszego zrozumienia tego zagadnienia rozważmy przykład obliczenia wartości oczekiwanej dla krotki 3-elementowej $ (A \bar{B} C) $, gdzie $ E = 10 $, $ A = 1 $, $ B = 3 $ i $ C = 2 $:
+
+$$ \bar{f}((A \bar{B} C)) = \frac{A}{E} * (1 - \frac{B}{E}) * \frac{C}{E} * E = \frac{1}{10} * (1 - \frac{3}{10}) * \frac{2}{10} * 10 = 0,14 $$
+
+Otrzymany w ten sposób wynik jest wartością oczekiwaną dla krotki $ (A \bar{B} C) $.
+
+
+Obie omówione metody generowania tablic mają wady i zalety, porównanie efektów działania obu metod zostało zamieszczone w tabeli \ref{storage_vs_generator}.
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | p{0.75\linewidth}}
+	\toprule
+	Cecha	& Porównanie							\\
+	\midrule
+	Wymagana pamięć & generator zajmuje kilkukrotnie mniej pamięci operacyjnej niż skład;	\\
+	Szybkość generacji źródła & stworzenie generatora jest szybsze od utworzenia składu;	\\
+	Szybkość generacji tablic & skład działa znacznie szybciej od generatora, ponieważ musi jedynie znaleźć gotową tablice, a generator musi ją konstruować na bieżąco za każdym razem;	\\
+	Generalizacja & skład nie posiada żadnych możliwości generalizacji, ponieważ każda z tablic jest utworzona dla konkretnej krotki, generator natomiast na podstawie zebranych danych jest w stanie utworzyć tablice dla krotki, z którą wcześniej nie miał styczności. \\	
+	\bottomrule
+\end{tabular}
+\caption[Tablica wielodzielna dla krotki 3-elementowej]{Przykładowa tablica wielodzielna obrazująca informacje o częstościach w niej składowanych}
+\label{storage_vs_generator}
+\end{table}
+
+
+Odwoływanie się do \emph{Źródła tablic wielodzielnych} jest możliwe poprzez podanie poprawnego identyfikatora krotki w składzie krotek lub podanie konkretnej krotki, dla której tablica ma zostać utworzona.
+Jeśli odwołanie następuje przez krotkę, a nie identyfikator, to musi ona istnieć w składzie krotek tylko w przypadku korzystania ze składu tablic. Generator nie ma tego ograniczenia.
+
+
+\subsection{Mechanizm filtrów i zaimplementowane metody filtracji}
+Mechanizm filtrów w oprogramowaniu \emph{MWeXtractor} został zaimplementowany jako ciągi funkcji filtrujących wspierane przez logikę dwuwartościową.
+Dodatkowo napisana została funkcjonalność tworzenia złożonych filtrów z ciągów tekstowych, co pozwala na ich łatwą reprezentację, składowanie na dysku twardym w postaci czytelnej formy i proste, intuicyjne modyfikacje.
+Ze względu na zastosowane poziomy abstrakcji możliwe jest tworzenie nowych filtrów i łączenie ich z już istniejącymi. 
+Przykładowy filtr w reprezentacji tekstowej został zamieszczony poniżej:
+
+$$ or(relation(\wedge,file=relacje.csv,SubstAdj),and(frequency(>,5),corpora_frequency(<,17)),not(tuple(\wedge,file=zestaw_krotek.csv))) $$
+
+Wykorzystanie powyższszego ciągu tekstowego spowoduje utworzenie filtru, który zwróci identyfikatory wszystkich krotek znajdujących się w zadanym składzie krotek, dla których spełniony zostanie przynajmniej jeden z następujących warunków:
+\begin{enumerate}
+ \item $ relation(\wedge,file=relacje.csv,SubstAdj) $ - relacja krotki musi być zawarta w zbiorze zamieszczonym w pliku lub będzie dokładnie relacją o nazwie \emph{SubstAdj};
+ \item $ and(frequency(>,5),corpora_frequency(<,17)) $ - częstość globalna krotki musi być większa od 5, ale jednocześnie suma częstości tej krotki w korpusach musi być mniejsza niż 17;
+ \item $ not(tuple(\wedge,file=zestaw_krotek.csv)) $ - wyrazy krotki nie tworzą żadnego z ciągów słów zdefiniowanych w pliku \emph{zestaw\_krotek}.
+\end{enumerate}
+
+
+Filtry dzielą się na dwa typy: filtry logiczne i filtry cech.
+Zadaniem filtrów logicznych jest budowanie ciągów złożonych filtrów.
+Nie wykonują one same w sobie żadnych konkretnych operacji filtrujących, a jedynie łączą działania innych filtrów, w tym filtrów cech.
+Argumentami dla tego typu filtru mogą być inne filtry logiczne lub filtry cech.
+Wspierane przez oprogramowanie są następujące operatory logiczne, które można w sobie zagnieżdżać i budować ciągi filtrów:
+\begin{enumerate}
+ \item $ or $ -- $n$-elementowa suma logiczna;
+ \item $ and $ -- iloczyn logiczny n-elementów;
+ \item $ xor $ -- $n$-elementowa suma wykluczająca;
+ \item $ not $ -- negacja tylko pojedynczego argumentu.
+\end{enumerate}
+
+Postać ogólna funkcji logicznej wykorzystywanej w filtracji jest następująca:
+
+$$ nazwa\_funkcji\_logicznej([,arg1][,arg2]...[,argN]) $$
+
+Opisane w dalszej tej pracy filtry są tak zwanymi \emph{filtrami cech}, z których każdy wspierać może wszystkie lub tylko część z wybrancyh operatorów filtrujących przedstawionych poniżej:
+\begin{enumerate}
+ \item $ = $ -- jest równy;
+ \item $ >= $ -- jest większy równy;
+ \item $ <= $ -- jest mniejszy równy;
+ \item $ > $ -- jest większy równy;
+ \item $ < $ -- jest mniejszy równy;
+ \item $ \wedge $ -- argumenty zawarte są w zbiorze.
+\end{enumerate}
+
+Filtry cech są filtrami końcowymi co oznacza, że w ogólności nie można w nich zagnieżdżać kolejnych metod filtrujących, chyba że określona funkcja filtrująca zostanie w odpowiedni sposób zaimplementowana.
+Postać ogólna filtru cech jest następująca:
+
+$$ nazwa\_filtru(typ\_operatora[,file=sciezka\_do\_pliku.ext][,arg1][,arg2]...[,argN]) $$
+
+W dalszej części tego rozdziału zamieszczono opisy filtrów cech aktualnie zaimplementowancyh w oprogramowaniu \emph{MWeXtractor}.
+
+\subsubsection{Częstość kolokacji.}
+Zaimplementowane operatory tego filtru to: $ =, >=, <=, >, < $.
+Filtr sprawdza, czy częstość danej krotki spełnia odpowiedni warunek.
+Argumentem dla tego filtru jest pojedyncza wartość będąca drugim argumentem dla operatora.
+Podanie większej liczby argumentów spowoduje zignorowanie parameterów nadmiarowych.
+Parameter $ file $ jest dla tego filtru ignorowany.
+Przykładowy filtr częstości:
+
+$$ frequency(>=,1337) $$
+
+\subsubsection{Częstość kolokacji w korpusach}
+Różnica pomiędzy tym filtrem a poprzednim jest taka, że ten bierze pod uwagę częstość krotki z korpusów tekstowych, a nie jej globalną częstość.
+Praktyczna różnica pomiędzy nimi jest tylko w sytuacji kiedy skład krotek poddano dyspersji kolokacji, jeśli tego nie zrobiono to wynik będzie taki sam dla obu filtrów.
+Ta wersja filtru bierze pod uwagę częstość krotki sprzed wykonania dyspersji.
+Nic nie stoi na przeszkodzie, aby wykorzystywać oba filtry naraz jeśli pracuje się ze składem poddanym uprzednio dyspersji krotek.
+Przykład tego filtru zamieszczono poniżej:
+
+$$ corpora\_frequency(>,1337) $$
+
+\subsubsection{Zawieranie się krotki w podzbiorze ciągów słów.}
+Zaimplementowane operatory tego filtru to: $ \wedge $.
+Filtr zwórci wartość $ prawda $ tylko w sytuacji, gdy ciąg utworzony z wyrazów w krotce, bez relacji, zostanie odnaleziony w zadanym zbiorze.
+Argumentami dla tego filtru są wartość parameteru $ file $ będąca ścieżką do pliku z ciągami słów oraz informacja o tym, czy ciągi słów powinny być rozważane jako o szyku wolnym czy ustalonym.
+Przykład filtru:
+
+$$ tuple(\wedge,file=ciagi\_wyrazow.csv) $$
+
+\subsubsection{Zawartość słów w zadanym podzbiorze.}
+Zaimplementowane operatory tego filtru to: $\wedge$.
+Zadaniem tego filtru cech jest sprawdzenie czy wszystkie słowa zawarte w krotce z pominięciem ich części mowy zawierają się w zbiorze słów.
+Filtr przyjmuje na wejście dowolną liczbę parameterów będących słowami oraz parametr $ file $ -- ścieżkę do pliku z zestawem wyrazów.
+Kolejność podawania argumentów nie ma znaczenia.
+Końcy zbiór słów jest połączeniem wyrazów wczytanych z pliku z tymi zadanymi argumentami.
+Przykład filtru:
+
+$$ every\_word(\wedge,wyraz2,file=wyrazy.csv,slowo1,magister) $$
+
+\subsubsection{Relacja kolokacji należąca do zbioru.}
+Zaimplementowane operatory tego filtru to: $\wedge$.
+Celem tego filtru jest odnalezienie wszystkich krotek, których nazwa relacji znajduje się w zadanym zbiorze.
+Można o nim myśleć jak o uproszczonym filtrze badającym zawartość słów w krotce i biorącym pod uwagę relacje, a nie wyrazy.
+Kolejność definiowania argumentów dla tego filtru nie ma znaczenia, a sposób budowania zbioru i parametery są takie same jak w filtrze badającym zawartość słów w określonym zbiorze.
+Jedyna różnia jest taka, że argumenty to nazwy relacji.
+Przykład filtru:
+
+$$ relation(\wedge,file=relacje.csv,relacja1,friendzone) $$
+
+
+\subsection{Dostępne funkcje dyspersji}
+Zadaniem zaimplementowanych funkcji dyspersji jest zmiana częstości krotek na podstawie danych zawartych w krotkach i informacji o zbiorach dancyh -- korpusach.
+Zmiana ta ma za zadanie wyróżnić z zestawu krotek te, które wydają się być bardziej nietypowe ze względu na swoją częstość i swój rozkład w dokumentach (przykładowo rozumiany jako liczba dokumentów, w których krotka wystąpiła).
+Im dana kolokacja jest częstsza w obrębie jak najmniejszej liczby dokumentów, tym bardziej funkcja ta powinna ją wyróżnić, aby funkcje asocjacji przywiązywały do niej większą wagę podczas jej oceny.
+Natomiast jeśli krotka jest pospolita w rozumieniu jej występowania w prawie każdym korpusie, to funkcja prawdopodobnie zmniejszy jej wagę dla funkcji asocjacyjnych -- zależy to także od częstości samej krotki, ponieważ krotka pospolita, ale o dużej częstości także może być interesująca z punktu widzenia tej funkcji dyspersji, a w efekcie także dla miary asocjacji.
+
+Na potrzeby wzorów opisujących te funkcje wprowadzono następujące oznaczenia:
+\begin{enumerate}
+ \item korpus $ c $;
+ \item $ C $ -- liczba korpusów;
+ \item krotka $ t $;
+ \item $ f(t_{c}) $ -- częstość krotki $ t $ w korpusie $ c $.
+\end{enumerate}
+
+Dalsza część tego fragmentu raportu opisuje funkcje dyspersji zaimplementowane w oprogramowaniu \emph{MWeXtractor}:
+
+\subsubsection{Distributional consistency}(\cite[str. 7]{dispersions})
+
+$$ dc = \frac{ \sum_{c=1}^{C} \sqrt{f(t_{c})} }{C} $$
+
+\subsubsection{Odchylenie standardowe}(\cite[str. 6]{dispersions})
+
+$$ \sigma = \sqrt{\frac{\sum_{c=1}^{C}(f(t_{c}) - \frac{ \sum_{c=1}^{C} f(t_{c}) }{C} )^2}{C}} $$
+
+\subsubsection{Variation coefficient -- współczynnik wariancji}(\cite[str. 6]{dispersions})
+
+$$ vc = \frac{\sigma C}{\sum_{c=1}^{C} f(t_{c})} $$
+
+\subsubsection{Julliand D}(\cite[str. 6]{dispersions})
+
+$$ jd = 1 - \frac{vc}{\sqrt{C-1}} $$
+
+\subsubsection{Lynes D3}
+
+$$ ld3 = \frac{ 1 - X^{2} }{ 0.25 \cdot \sum_{c=1}^{C} f(t_{c}) } $$
+
+\subsubsection{Term frequency - Inverse document frequency}
+Opisywana tutaj funkcja dyspersji jest połączeniem dwóch elementów, jednego badającego unikalność na przestrzeni dokumentów -- \emph{IDF}, oraz drugiego mówiącego o tym, jak bardzo dany obiekt (krotka) jest częsta w badanych danych.
+Definicje dla \emph{Term frequency} oraz \emph{Inverse document frequency} mogą przybierać różne formy i badać inne cechy.
+TF-IDF służy do zbadania, jak bardzo określona krotka jest unikalna dla zadanego dokumentu, a wzór tej funkcji jest następujący:
+
+$$ tfidf_{t, c} = tf_{t, c} \cdot idf_{c} $$
+
+Składowa \emph{Term frequency} badająca częstość termu, zaimplementowana w niniejszym oprogramowaniu ma prostą postać i jest równa częstości krotki w zbadanym dokumencie:
+
+$$ tf_{t,c} = f(t_{c}) $$
+
+Składowa \emph{Inverse document frequency} określa, jak bardzo unikalna jest badana krotka na przestrzeni danego zestawu korpusów.
+Wzór \emph{IDF} przyjęty w implementacji jest popularny i opisany następującym wzorem wykorzystującym indykator:
+
+$$ idf_{t} = log_{10} \frac{C}{\sum_{c=1}^{C} (f(t_{c}) > 0 ? 1 : 0) } $$
+
+Ze względu na fakt, że \emph{TF-IDF} sprawdza jak bardzo krotka jest interesująca w danym korpusie, a nie całym ich zestawie, należało dokonać połączenia wyników tej miary dla każdego z korpusów z osobna w jedną wartość.
+Zadanie to zostało wykonane z wykorzystaniem następującego wzoru:
+
+$$ TF-IDF_{t} = \sum_{c=1}^{C} tfidf_{t, c} $$
+
+
+\subsection{Zaimplementowane miary asocjacji}
+Zestaw zaimplementowanych w oprogramowaniu \emph{MWeXtractor} miar asocjacyjnych został opisany w tym rozdziale. Generalizacje poszczególnych miar są nowatorskimi propozycjami.
+
+
+\begin{itemize}
+\setlength{\itemsep}{1pt}
+  \setlength{\parskip}{1pt}
+  \setlength{\parsep}{1pt}
+	
+	\item \emph{Największa częstość}
+
+%\begin{center}
+$$y = f(x, y)$$
+%\end{center}
+
+
+Jedna z pierwszych i najprostszych funkcji wykorzystanych do wydobywania kolokacji.
+Generalizacja tej funkcja jest trywialna, jej wzór zamieszczono poniżej:
+$$ y = f(x_{1}, x_{2}, ..., x_{n}) $$
+
+
+\item \emph{Wartość oczekiwana}
+
+$$ y = \hat{f}(x, y) $$
+
+
+Generalizacja wzoru jest analogiczna do \emph{Największej częstości}.
+
+
+\item \emph{Odwrotna wartość oczekiwana}
+
+$$ y = \frac{1}{\hat{f}(x, y)} $$
+
+
+Generalizacja wzoru jest analogiczna do \emph{Największej częstości}.
+
+
+\item \emph{Jaccard} (\cite[str. 18]{pecina_measures})
+
+$$ y = \frac{f(x, y)}{f(x, y) + f(x, \hat{y}) + f(\hat{x}, y)} $$
+
+
+Zaproponowana generalizacja funkcji opisana jest poniższym wzorem:
+$$ y = \frac{f(x_{1}, x_{2}, ..., x_{n})}{N - f(\hat{x}_{1}, \hat{x}_{2}, ..., \hat{x}_{n})} $$
+
+
+\item \emph{Dice} (\cite[str. 18]{pecina_measures})
+
+$$ y = \frac{2f(x, y)}{f(x) + f(y)} $$
+
+Generalizacja funkcji została zaczerpnięta z pracy \cite[str. 2]{generalization_patterns} i reprezentowana jest wzorem:
+\begin{center}
+$$ y = \frac{nf(x_{1}, x_{2}, ..., x_{n})}{\sum_{i = 1}^{n} f(x_{i})} $$
+\end{center}
+
+
+\item \emph{Sorgenfrei} (\cite[str. 4]{paradowski_beta})
+
+\begin{center}
+$$ y = \frac{f(x, y)^2}{(f(x, y) + f(x, \hat{y}))(f(x, y) + f(\hat{x}, y))} $$
+\end{center}
+
+
+Zaproponowana generalizacja funkcji wyrażona jest wzorem:
+\begin{center}
+$$ y = \frac{f(x_{1}, x_{2}, ..., x_{n})^n}{\prod_{i=2}^{n - 1} (f(x_{1}, x_{2}, ..., x_{n}) + t(i))} $$
+\end{center}
+
+
+\item \emph{Odds ratio} (\cite[str. 18]{pecina_measures})
+
+$$ y = \frac{f(x, y)f(\hat{x}, \hat{y})}{f(x, \hat{y})f(\hat{x}, y)} $$
+
+
+Zaproponowana generalizacja tej funkcji została zapisana w postaci poniższego wzoru, zmiana dotyczy także sposobu obliczania mianownika -- dodawana jest jedynka ze względu na problem częstości zerowych:
+$$ y = \frac{f(x_{1}, x_{2}, ..., x_{n})f(\hat{x}_{1}, \hat{x}_{2}, ..., \hat{x}_{n})}{\prod_{i = 2}^{n - 1}(t(i) + 1)} $$
+
+
+\item \emph{Unigram subtuples} (\cite[str. 3]{coling}, \cite[str. 19]{pecina_measures})
+
+$$ y = log (\frac{f(x, y)f(\hat{x}, \hat{y})}{f(x, \hat{y})f(\hat{x}, y)}) - 3.29 \sqrt{ \frac{1}{f(x, y)} + \frac{1}{f(x, \hat{y})} + \frac{1}{f(\hat{x}, y)} + \frac{1}{f(\hat{x}, \hat{y})} } $$
+
+Jest to miara, która w badaniach Pavla Peciny opisanych w \cite[str. 5]{coling} okazała się jedną z dwóch najlepszych spośród zestawu 82 funkcji.
+Zaproponowana w tej pracy generalizacja i implementacja miary \emph{Unigram subtuples} została dodatkowo zmodyfikowana przez wygładzenie części wartości - dodanie wartości jeden do częstości wystąpień wszystkich obserwacji w celu rozwiązania problemu częstości zerowych.
+Wzór po generalizacji i modyfikacji został zapisany poniżej:
+$$ y = log (OddsRatio) - 3.29 \sqrt{\sum_{i=1}^{n} \frac{1}{t(i) + 1} } $$
+
+
+
+\item \emph{Consonni T1} (\cite[str. 4]{paradowski_beta})
+
+$$ y = \frac{log(1 + f(x, y) + f(\hat{x}, \hat{y}))}{log(1 + N)} $$
+
+
+Zaproponowana prosta generalizacja tej funkcji opisana została wzorem zamieszczonym poniżej:
+$$ y = \frac{log(1 + f(x_{1}, x_{2}, ..., x_{n}) + f(\hat{x}_{1}, \hat{x}_{2}, ..., \hat{x}_{n}))}{log(1 + N)} $$
+
+
+\item \emph{Consonni T2} (\cite[str. 4]{paradowski_beta})
+
+$$ y = \frac{ log(1 + N) - log(1 + f(x, \hat{y}) + f(\hat{x}, y)) }{log(1 + N)} $$
+
+
+Wprowadzona na potrzeby programu prosta generalizacja zapisana została za pomocą poniższego wzoru:
+$$ y = \frac{ log(1 + N) - log(1 + \sum_{i = 2}^{n - 1} t(i) }{log(1 + N)} $$
+
+
+\item \emph{Mutual Expectation} (\cite[str. 18]{pecina_measures}, \cite{mutual_expectation})
+
+$$ y = p(x, y) \frac{2f(x, y)}{f(x) + f(y)}$$
+
+Zastosowana generalizacja miary \emph{Mutual Expectation} została zapisana za pomocą poniższego wzoru:
+$$ y = p(x_{1}, x_{2}, ..., x_{n})\frac{nf(x_{1}, x_{2}, ..., x_{n})}{\sum_{i = 1}^{n} f(x_{i})} $$
+
+
+\item \emph{Pointwise Mutual Information} (\cite[str. 18]{pecina_measures}, \cite[str. 2]{mmi_w11})
+
+$$ y = log_{2}\frac{p(x, y)}{p(x)p(y)} $$
+
+Autor artykułu \cite{mmi_w11} prezentuje dwie generalizacje miary \emph{MI} oraz wyprowadza z nich dwie generalizacje funkcji \emph{PMI}.
+Nazwy generalizacji \emph{Mutual Information} to \emph{Total Correlation} i \emph{Interaction Information}, a \emph{Pointwise Mutual Information} to odpowiednio \emph{Specific Correlation} oraz \emph{Specific Information}. Wzory i opis obu miar został został zamieszczony we wcześniejszej części tej pracy.
+W raporcie przedstawiono generalizację dowolnego poziomu dla miary \emph{Specific Correlation} oraz generalizację dla rozmiaru trzy dla miary \emph{Specific Information} z komentarzem, że można ją analogicznie rozwinąć dla obserwacji z większą liczbą elementów \cite[str. 3]{mmi_w11}.
+
+
+Funkcja \emph{Pointwise Mutual Information} w opisywanym tutaj programie została zastąpiona dwoma generalizacjami opisanymi we wspomnianym artykule \cite{mmi_w11} i noszą nazwy \emph{Specific Correlation} oraz \emph{Specific Information}. 
+
+
+\item \emph{W Specific Correlation}
+
+$$ y = p(x, y) log_{2}\frac{p(x, y)}{p(x)p(y)} $$
+
+
+Pomysł na tę funkcję został zaczerpnięty z funkcji \emph{Specific Correlation} omówionej we wcześniejszej części tej pracy.
+Generalizacja omawianej miary opisana została poniższym wzorem:
+$$ y = p(x_{1}, x_{2}, ..., x_{n}) log_{2}\frac{p(x_{1}, x_{2}, ..., x_{n})}{\prod_{i = 1}^{n} p(x_{i})} $$
+
+
+\item \emph{Mutual Dependency} (\cite[str. 2]{fbmd})
+
+$$ y = log_{2}\frac{p(x, y)^{2}}{p(x)p(y)} $$
+
+
+Miara jest rozwinięciem funkcji \emph{PMI} i według autorów pracy \cite{fbmd} sprawdza się lepiej niż pierwowzór.
+Zastosowana w omawianym tutaj programie generalizacja tej miary opisana została wzorem:
+$$ y = log_{2}\frac{p(x_{1}, x_{2}, ..., x_{n})^{2}}{\prod_{i = 1}^{n}p(x_{i})} $$
+Funkcja w omawianym programie nosi nazwę \emph{Specific Mutual Dependency}, ponieważ jest zaimplementowana w wersji uogólnionej, a sam pomysł na jej generalizację został zaczerpnięty z artykułu \cite{mmi_w11}.
+
+
+\item \emph{Frequency biased Mutual Dependency} (\cite[str. 2]{fbmd})
+
+$$ y = log_{2}\frac{p(x, y)^{3}}{p(x)p(y)} $$
+
+
+Omawiana miara także jest rozwinięciem funkcji \emph{PMI} lub \emph{MD} i według autorów pracy \cite{fbmd} sprawdza się lepiej niż obie z nich.
+Zaproponowana generalizacja tej miary została opisana za pomocą poniższego wzoru:
+$$ y = log_{2}\frac{p(x_{1}, x_{2}, ..., x_{n})^{3}}{\prod_{i = 1}^{n} p(x_{i})} $$
+Funkcja w omawianym programie nosi nazwę \emph{Specific Frequency biased Mutual Dependency}, ponieważ jest zaimplementowana w wersji uogólnionej, a pomysł na jej generalizację został zaczerpnięty z pracy \cite{mmi_w11}.
+
+
+\item \emph{Specific Exponential Correlation}
+
+$$ y = log_{2}\frac{p(x, y)^{e}}{p(x)p(y)} $$
+
+
+Pomysł na funkcje wziął się z obserwacji trzech uprzednio opisanych funkcji - \emph{PMI}, \emph{MD} oraz \emph{FbMD} i jest ich parametryczną generalizacją, gdzie parametrem jest wykładnik \emph{e}.
+Funkcja jest swoim wzorem zbliżona do metody opisanej przez autora pracy \cite{buczynski}, który zastosował miarę opisaną poniższym wzorem:
+$$ y = log_{2}\frac{p(x, y)^{2 + e}}{p(x)p(y)} $$
+Widać, że różnica polega tylko na wykładniku, dodaniu do niego stałej o wartości dwa.
+Generalizacja miary jest analogiczna do generalizacji \emph{Frequency biased Mutual Dependency} i opisana wzorem:
+$$ y = log_{2}\frac{p(x_{1}, x_{2}, ..., x_{n})^{e}}{\prod_{i = 1}^{n} p(x_{i}))} $$
+
+
+\item \emph{W Specific Exponential Correlation}
+
+$$ y = p(x, y) log_{2}\frac{p(x, y)^{e}}{p(x)p(y)} $$
+
+
+Pomysł na funkcję wziął się z obserwacji kilku poprzednich i jest ich połączeniem.
+Generalizacja jest zbliżona do poprzednich generalizacji miar podobnych do tej funkcji i przedstawiona jest za pomocą wzoru:
+$$ y = p(x_{1}, x_{2}, ..., x_{n}) log_{2}\frac{p(x_{1}, x_{2}, ..., x_{n})^{e}}{\prod_{i = 1}^{n} p(x_{i})} $$
+	
+
+\item \emph{T-score} (\cite[str. 18]{pecina_measures})
+
+$$ y = \frac{ f(x, y) - \hat{f}(x, y) }{ \sqrt{ f(x, y)(1 - \frac{f(x, y)}{N}) } } $$
+
+Miara opiera się o test statystyczny \emph{T-test} zakładający rozkład normalny prawdopodobieństwa w zbiorze danych, za co też jest krytykowany, ponieważ ten rozkład w praktyce często nie opisuje rzeczywistych danych \cite[str. 169]{mit}.
+Ze względu omówionego w poprzedniej części pracy, dotyczącego faktu, że miara ta jest jedynie częścią \emph{T-testu}, została ona nazwana \emph{T-score}, a nie tak jak w źródle \emph{T-test} \cite[str. 18]{pecina_measures}.
+Miara została opisana także we wcześniejszej części tej pracy.
+Generalizacja jest w zasadzie taka sama jak wersja dwuelementowa i opisana poniższym wzorem:
+$$ y = \frac{ f(x_{1}, x_{2}, ..., x_{n}) - \hat{f}(x_{1}, x_{2}, ..., x_{n}) }{ \sqrt{ f(x_{1}, x_{2}, ..., x_{n})(1 - \frac{f(x_{1}, x_{2}, ..., x_{n})}{N})} } $$
+
+
+\item \emph{Z-score} (\cite[str. 18]{pecina_measures})
+
+$$ y = \frac{ f(x, y) - \hat{f}(x, y) }{ \sqrt{ \hat{f}(x, y)(1 - \frac{\hat{f}(x, y)}{N}) } } $$
+
+
+Miara jest podobnie do \emph{T-score} i podobnie jak ona, została opisana we wcześniejszej części tej pracy.
+Generalizacja \emph{Z-score} zapisana została za pomocą poniższego wzoru:
+$$ y = \frac{ f(x, y) - \hat{f}(x_{1}, x_{2}, ..., x_{n}) }{ \sqrt{ \hat{f}(x_{1}, x_{2}, ..., x_{n})(1 - \frac{\hat{f}(x_{1}, x_{2}, ..., x_{n})}{N}) } } $$
+
+
+
+\item \emph{Pearson's \(\chi^{2}\)} (\cite[str. 18]{pecina_measures})
+
+$$ X^2 = \sum_{i}\frac{(f_{i} - \hat{f}_{i})^2}{\hat{f}_{i}} $$
+
+
+Ta miara będąca częścią statystyczną jak dwie poprzednie, także została omówiona we wcześniejszej części tej pracy.
+Jej przewagą w stosunku do \emph{Z-score} i \emph{T-score} ma być niezakładanie rozkładu normalnego prawdopodobieństwa.
+Funkcja nie wymaga generalizacji.
+
+
+\item \emph{Loglikelihood} (\cite[str. 18]{pecina_measures})
+
+$$ G^{2} = -2\sum_{i}f_{i}log\frac{f_{i}}{\hat{f}_{i}} $$
+
+Funkcja nie wymaga generalizacji.
+	
+
+\item \emph{Fair dispersion point normalization} (\cite{fdpn}, \cite[str. 5]{generalization_patterns})
+
+$$ y = \frac{1}{n-1} \sum^{n-1}_{i=1}AF(w_{1} ... w_{i}, w_{i+1} ... w_{n}) $$
+
+ 
+Funkcja nie wymaga generalizacji, ponieważ została zaprojektowana jako wieloelementowa.
+Wykorzystuje wewnętrznie jedną z miar dwuelementowych do obliczania poziomów asocjacji bi-gramów, z których każdy został utworzony poprzez podział $n$-gramu w jednym z punktów dyspersji -- miejscu między wyrazami.
+Przykładowo 4-elementowa krotka \( x_{1}x_{2}x_{3}x_{4} \) posiada trzy punkty dyspersji: pomiędzy \( x_{1} \) i \( x_{2} \), \( x_{2} \) i \( x_{3} \) oraz \( x_{3} \) i \( x_{4} \).
+Funkcja oblicza średni poziom asocjacji każdego z trzech utworzonych bi-gramów, gdzie każdy z nich składa się z pewnej liczby elementów, a jego częstość to liczba wystąpień danego zestawu słów w zbiorze danych.
+Dla przykładowej krotki utworzone zostać mogą następujące bi-gramy: \( (x_{1}, x_{2}x_{3}x_{4}) \), \( (x_{1}x_{2}, x_{3}x_{4}) \) i \( (x_{1}x_{2}, x_{3}x_{4}) \).
+Znacznie szerszy opis metody został zaprezentowany w artykule źródłowym \cite{fdpn}.
+
+
+\item \emph{Average bigram} (\cite[str. 5]{generalization_patterns})
+
+$$ y = \frac{1}{n-1} \sum^{n-1}_{i=1}FA(w_{i}, w_{i+1}) $$
+ 
+Podobnie jak metoda poprzednia ta także jest uogólniona do obliczeń wieloelementowych.
+Funkcja została opisana we wcześniejszej części tej pracy i zakłada podział $n$-elementowej krotki na \( n - 1 \) kolejnych, ciągłych i zachodzących na siebie bi-gramów, następnie obliczenia wartości asocjacji za pomocą jednej z dwuelementowych funkcji asocjacji i uśrednienia wyniku, który zostanie zwrócony jako rezultat obliczeń tej funkcji.
+
+
+\item \emph{Smoothed bigram} (\cite[str. 5]{generalization_patterns})
+
+
+$$ y = FA(x_{1}x_{2}, x_{2}x_{3}, ..., x_{n - 1}x_{n}) $$
+
+
+Miara dzieli $n$-elementową krotkę na bi-gramy tak jak \emph{Average bigram}, a następnie traktuje każdy z nich jako pojedynczą składową krotki o liczbie elementów \( n -1 \), gdzie częstość tego elementu to liczba wystąpień danego bi-gramu w zbiorze danych.
+Natomiast częstość krotki pozostaje taka sama.
+Następnie poziom asocjacji tak zmodyfikowanej krotki \(n-1\)-elementowej jest obliczany za pomocą jednej z wieloelementowych funkcji asocjacyjnych.
+
+
+\item \emph{Minimal bigram} (\cite{paradowski_beta})
+
+$$ y = \min^{n-1}_{i=1}FA(w_{i}, w_{i+1}) $$
+
+
+Funkcja działa analogicznie do \emph{Average bigram}, ale zamiast obliczać średnią zwraca najmniejszą z wartości.
+
+\item \emph{W order}
+$$ y = \frac{1}{\prod_{i=1}^{n} (1 + \frac{f(S(t)_{i}))}{maks(f(S(t))) + 1}} $$
+
+\par
+Motywacją do utworzenia tej funkcji jest założenie, że im kandydat na kolokacje częściej występuje w mniejszej liczbie różnych szyków, tym jest on ciekawszy, pewniejszy.
+Iloczyn został wybrany jako składowa tej miary ze względu, że jego wartość przy zachowaniu tej samej sumy składowych jest największa, gdy te składowe są sobie równe, a najmniejsza, gdy jedna z nich jest równa tej sumie lub wystąpią zera.
+Jest to cecha, która idealnie wypełnia założone zapotrzebowanie pod warunkiem, że odwróci się wynik takiego iloczynu.
+Funkcja abstrahuje od interpretacji kolejności szyku, badając jedynie liczbę szyków i rozkład częstości w nich.
+Miara nie korzysta też bezpośrednio nie korzysta z częstości krotek dla danego kandydata, a jedynie bada ich stosunek -- normalizacja w obrębie krotek dla pojedynczego kandydata.
+Dodanie jedynki do każdej częstości ma za zadanie spełniać kilka funkcji.
+Pierwsza z nich to rozwiązanie problemu częstości zerowych, dodanie jedynki umożliwia otrzymywanie wartości innych niż nieskończoność w przypadku wystąpienia nawet pojedynczego zera w którejkolwiek krotce dla danego kandydata.
+Drugi cel dodania jedynki jest związany z pierwszym i umożliwia utworzenie rankingu, w którym krotki kandydata w danym szyku mają częstość równą zero.
+Konkretnie umożliwia przypisanie większej punktacji kandydatowi, którego większa liczba krotek w danych szykach ma zerową częstość.
+Trzecią funkcją dodania jedynki jest sprawienie, że miara zacznie brać pod uwagę ilość informacji statystycznych o danym kandydacie, ponieważ jeśli iloczyn częstości krotek w obrębie pojedynczego kandydata dla różnych jego wersji (przykładowo szyków) będzie taki sam, wtedy promowany będzie ten, o którym udało się zdobyć więcej informacji statystycznych -- wystąpił więcej razy i przez to jest częstszy.
+Dodatkowo jedynka zmienia zakres możliwych do osiągnięcia wartości, eliminując możliwość wystąpienia nieskończoności.
+Ponadto funkcja nie wymaga generalizacji.
+
+
+\item \emph{W term frequency order}
+$$ y = f(t) WOrder(t) $$
+
+\par
+Motywacją tej funkcji był fakt, że wiele różnych miar asocjacyjnych ocenianych jako generujące dobre wyniki korzysta bezpośrednio z częstości kandydata.
+Funkcja nie wymaga generalizacji.
+
+\end{itemize}
+
+
+\subsubsection{Inne metody ekstrakcji.}
+
+Oprócz miar asocjacyjnych w oprogramowaniu zaimplementowane zostały także inne metody ekstrakcji jednostek wielowyrazowych.
+
+
+\paragraph{Kombinacja liniowa.}
+
+Metoda wykorzystuje zestaw funkcji asocjacyjnych, z których każda generuje osobny ranking kolokacji.
+Następnie opcjonalnie każdy z tych rankingów jest normalizowany w określony sposób, dokonywane jest ich przepunktowanie za pomocą odpowiedniej funkcji.
+Każdemu z rankingów przypisywana jest waga, która określa jak bardzo dany ranking jest istotny w stosunku do pozostałych.
+Kolejnym krokiem jest agregacja rankingów, ich kombinacja liniowa, za pomocą pewnej funkcji agregującej.
+Zadaniem tej funkcji jest wykonanie agregacji zbioru ocen dla każdej krotki z osobna, gdzie ocenami są wartości asocjacji wygenerowane przez miary asocjacji dla tej kolokacji.
+Przykładem takiej funkcji agregującej może być suma:
+$$ ocena(t) = \sum_{i=1}^{m} w \cdot r_{i}(t) $$
+gdzie $t$ oznacza kolokację, $m$ -- liczbę miar asocjacji (rankingów), a $r_{i}(t)$ jest oceną krotki $t$ w rankingu $i$.
+
+Po wykonaniu agregacji posortowanie otrzymanych wartości spowoduje utworzenie nowego, pojedynczego rankingu będącego wynikiem kombinacji liniowej.
+
+
+Wagi rankingów to parametry algorytmu kombinacji, które powinny zostać zoptymalizowane.
+Prezentowane oprogramowanie umożliwia wykorzystanie do tego celu pięciu różnych algorytmów heurystycznych i metaheurystycznych implementacji Łukasza Kłyka \cite{klyk}.
+Utworzony przez wspomnianego autora moduł \emph{Optimizer} został przystosowany na potrzeby działania z opisywanym w tym rozdziale \emph{MWeXtractorem}.
+Łukasz Kłyk zaimplementował następujące algorytmy w swoim oprogramowaniu:
+
+\begin{enumerate}
+	\item Algorytm ewolucyjny;
+	\item Hill climbing;
+	\item Random Search;
+	\item Tabu Search; 
+	\item Symulowane wyżarzanie.
+\end{enumerate}
+
+
+
+Nazwy wspomnianych algorytmów heurystycznych i metaheurystycznych dokładnie określają jakie są to algorytmy, jednak poza dwoma wyjątkami - symulowanym wyżarzaniem i algorytmem ewolucyjnym.
+Pierwszy z nich nie jest ścisły co do schematu chłodzenia, ale domyślnie w oprogramowaniu zaimplementowanym przez Łukasz Kłyka stosowana jest funkcja \( T(k) = 0.3^{k} \) \cite[str. 36]{klyk}.
+Przypadek algorytmu ewolucyjnego wymaga dłuższego opisu, ponieważ pojęcie to jest znacznie szersze od nazw pozostałych metod.
+
+
+
+Opisanie wykorzystanego algorytmu ewolucyjnego wymaga wyjaśnienia schematu przetwarzania w algorytmie, operatora selekcji, mutacji oraz krzyżowania, a także sposobu kodowania danych w genotypie osobników.
+
+
+
+Zaimplementowany algorytm ewolucyjny jest algorytmem genetycznym o standardowym schemacie przetwarzania.
+Pierwszy krok to inicjalizacja populacji początkowej i ocena jej osobników.
+Po tym kroku następuje rozpoczęcie algorytmu, którego kolejne krotki przetwarzania to selekcja osobników, krzyżowanie wybranych przedstawicieli populacji oraz mutacja ich informacji genetycznych zapisanych w genotypie.
+Po tych krokach ustalona zostaje nowa populacja, która także podlega ocenie, a następnie algorytm wykonuje kolejną iterację zaczynając od operatora selekcji.
+Cykl jest powtarzany przez określoną liczbę iteracji lub do przerwania obliczeń.
+
+
+
+Funkcja przystosowania osobników \( F' \) to przeskalowana funkcja liniowa oceny \( F \), wyrażona za pomocą wzoru \cite[str. 28]{klyk}:
+$$ F' = aF + b $$
+Natomiast współczynniki a i b to odpowiednio:
+\( a = - \frac{F_{av}}{F_{w} - F_{av}} \)
+\( b = \frac{F_{av}F_{w}}{F_{w} - F_{av}} \)
+gdzie:
+\begin{itemize}
+	\item \( F \) -- funkcja oceny;
+	\item \( F_{av} \) -- średnia wartość przystosowania osobników w populacji;
+	\item \( F_{w} \) -- wartość przystosowania najgorszego z osobników populacji.
+\end{itemize}
+
+
+
+Algorytm dopuszcza kodowanie trzech typów wartości: liczby całkowite, zmiennoprzecinkowe oraz logiczne.
+Implementacja genotypu dopuszcza możliwość mieszania typów genów, mogą także występować zależności pomiędzy kodowanymi wartościami.
+Genotyp każdego osobnika składa się z pojedynczego chromosomu zawierającego zestaw genów, z których każdy przechowuje pojedynczą wartość jednego z optymalizowanych parametrów \cite[str. 30]{klyk}.
+
+
+
+Operator selekcji to połączenie metody turniejowej z ruletkową.
+Pierwszym krokiem jest obliczenie przystosowania osobników w populacji.
+Następnie metodą ruletki losowanych jest \emph{k} osobników do turnieju, gdzie \emph{k} jest rozmiarem turnieju.
+Metoda ruletki polega na zwiększaniu szans na wylosowanie osobników lepiej przystosowanych, zwiększaniem prawdopodobieństwa na wybranie ich do drugiego etapu selekcji -- turnieju.
+Drugi krok selekcji to już wspomniany wcześniej turniej, który rozgrywany jest pomiędzy \emph{k} wylosowanymi osobnikami z populacji.
+Turniej wyłania jednego zwycięzcę, który trafi do populacji w kolejnej iteracji, a gdy wyłonionych zostanie odpowiednia liczba zwycięzców ze wszystkich turniejów następuje krzyżowanie ich genotypów i wymiana informacji \cite[str. 29]{klyk}.
+
+
+
+Autor pracy \cite{klyk} zbadał dwa operatory krzyżowania osobników - jednopunktowy i równomierny.
+Pierwszy polega na wybraniu punktu podziału genotypu rodziców i utworzeniu nowego na podstawie ich dwóch ciągłych fragmentów genotypów - lewego i prawego, po jednym od każdego rodzica.
+Przykładowo dla dwóch rodziców i ich przykładowych genotypów: \( [x_{1}, x_{2}, x_{3}, x_{4}] \) i \( [y_{1}, y_{2}, y_{3}, y_{4}] \), oraz punktu podziału pomiędzy genem pierwszym i drugim utworzone mogą zostać dwa genotypy:  \( [y_{1}, x_{2}, x_{3}, x_{4}] \) oraz \( [x_{1}, y_{2}, y_{3}, y_{4}] \).
+Drugi typ krzyżowania, równomierny, polega na utworzeniu maski krzyżowania, mówiącej o tym, który gen pochodzi, od którego rodzica.
+Sposób ten jest bardziej elastyczny, ponieważ kolejność genów w genotypie nie ma znaczenia co było ograniczeniem pierwszego typu krzyżowania.
+Wynik zastosowania operatora równomiernego dla dwóch powyższych genotypów rodziców i przykładowej maski \( 0101 \) byłoby dwuwartościowy i następujący: \( [x_{1}, y_{2}, x_{3}, y_{4}] \) oraz \( [y_{1}, x_{2}, y_{3}, x_{4}] \) \cite[str. 32]{klyk}.
+
+
+ 
+Operator mutacji składa się z dwóch różnych funkcji ze względu na zastosowanie różnych typów wartości kodowanych w genach osobnika.
+Pierwszy z nich dotyczy wartości logicznych i polega na zmianie wartości na przeciwną.
+Drugi z nich dotyczy wartości całkowitych oraz rzeczywistych i polega na losowym odjęciu lub dodaniu pewnej wartości do tej składowanej w danym genie.
+Minimalna i maksymalna wartość mutowanego genu jest ograniczona za pomocą parametrów.
+Proces mutacji polega na wylosowaniu prawdopodobieństwa i sprawdzeniu, czy jest ono mniejsze od szansy na mutację i jeśli tak to wykonanie mutacji osobnika.
+Sama mutacja polega na obliczeniu prawdopodobieństwa mutacji poszczególnych genów i w zależności od wyniku wykonanie samej modyfikacji wartości w odpowiednim genie \cite[str. 31]{klyk}.
+
+
+\paragraph{Perceptron wielowarstwowy.}
+Motywacją do zaimplementowania i zbadania perceptronu wielowarstwowego były dobre wyniki sztucznej sieci neuronowej z jedną warstwą ukrytą w pracy Pavla Peciny \cite{coling}.
+Według rezultatów przedstawionych w jego pracy okazały się one lepsze nawet od \emph{Support Vector Machine}, który uważany jest za bardzo dobry klasyfikator dwuklasowy, chociaż relatywnie trudny do nauczenia ze względu na wrażliwość na część parametrów.
+Zaznaczyć trzeba także, że autorzy tej pracy skorzystali z jądra liniowego.
+
+\par
+Zaimplementowany perceptron jest wielowarstwowy, umożliwia zdefiniowanie dowolnej liczby warstw poczynając od trzech, a każda z dwóch sąsiednich warstw jest ze sobą w pełni połączona.
+Do każdej z tych warstw dodany został neuron typu \emph{bias}. 
+Zaimplementowano także \emph{momentum}, którego wartość można ustalić argumentem klasyfikatora, tak samo jak wartość parametru określającego szybkość uczenia sieci.
+\par
+Umożliwiony został także zapis struktury perceptronu wielowarstwowego w celu umożliwienia przechowywania go w pamięci nieulotnej i jego późniejszego odtworzenia.
+Zapisywane są zarówno parametry klasyfikujące -- wagi oraz struktura, jak i dane związane z uczeniem, co pozwala na kontynuację uczenia sieci lub jej naukę z przerwami.
+
+\par
+Funkcja klasyfikująca została pominięta, przez co wartość zwracana przez ten klasyfikator jest liczbą rzeczywistą, co z kolei umożliwia wykorzystanie jej jako mechanizmu generującego wartości rankingowe dla kolokacji, a nie jako klasyfikatora.
+Pomysł na funkcję aktywacji \( \phi \) został zaczerpnięty z pracy Pavla Peciny \cite{coling}, a wzór tej funkcji został zapisany w następujący sposób:
+$$ \phi(z) = \frac{exp(z)}{1 + exp(z)} $$
+
+Jednak ze względu na pewne problemy związane z licznością danych i wartościami cech, ta funkcja aktywacji była problematyczna, ponieważ zdarzało się, że zwracała wartość określającą \emph{nieliczbę}.
+Autor pracy postanowił zmienić wzór funkcji na równoważny, ale z wyłączeniem dzielenia przez siebie wyników funkcji \emph{exp}, co eliminuje potencjalny problem dzielenia przez siebie nieskończoności.
+Dodatkowo funkcja została przeskalowana w taki sposób, żeby zwracała wartości z przedziału od -1 do 1, a jej nowa forma to:
+\begin{center}
+\( \phi(z) = \frac{2}{1 + exp(-z)} - 1 \)
+\end{center}
+
+Natomiast wzór zastosowanej pochodnej \emph{d} funkcji \( \phi \) został zapisany poniżej:
+\begin{center}
+\( d(z) = \frac{2exp(z)}{(1 + exp(z))^{2}} \)
+\end{center}
+
+Alternatywny wzór pochodnej pozwalający pozbyć się problemu związanego z dzieleniem przez siebie nieskończoności to:
+\begin{center}
+\( d(z) = \frac{2}{(1 + exp(z))} - \frac{2}{(1 + exp(z))^{2}} \)
+\end{center}
+
+Zastosowane zostało dodatkowo ograniczenie na wielkość argumentu funkcji aktywacji i jej pochodnej.
+Jeśli argument na wejściu funkcji aktywacji jest większy lub równy 40, funkcja arbitralnie zwraca 1, a jeśli mniejszy od 40, zwracany zostaje wynik -1.
+Wartość argumentu została ustalona na 40, ponieważ funkcja aktywacji dla takiego argumentu zwraca liczbę bliską jedynki, gdzie 17 cyfr po przecinku to dziewiątki
+Dokładność jest zatem większa o jedną cyfrę po przecinku niż w przypadku zmiennej rzeczywistej podwójnej precyzji według standardu IEEE 754 -- tym samym błąd zaokrąglenia jest w zasadzie żaden.
+Maksymalna liczba cyfr, dokładność, w danym systemie liczbowym, która może zostać zapisana w liczbie zmiennoprzecinkowej może zostać obliczona za pomocą wzoru $ log_{podstawa\_systemu}(2^{liczba\_bitow\_mantysy}) $, a tym samym dla systemu dziesiętnego oraz liczby zmiennoprzecinkowej podwójnej precyzji według standardu IEEE 754 będzie to $ log_{10}(2^{53}) $, czyli $ 15,95 $ cyfr po przecinku.
+Analogicznie ma się sytuacja z pochodną funkcji aktywacji, ale w tym przypadku dla argumentu równego 40 funkcja osiąga wartość bliską zera -- 17 cyfr zera po przecinku.
+Taki manewr powoduje zabezpieczenie przed ewentualnymi problemami z nieskończonościami i w przypadku dużej liczby ich wystąpień może przyspieszyć obliczanie wartości funkcji.
+
+\par
+Motywacją do przeskalowania funkcji aktywacji były też słabe wyniki w przypadku zastosowania pierwotnej funkcji zwracającej wyniki z przedziału od 0 do 1.
+
+\par
+Parametry optymalizowalne sieci to liczba neuronów w warstwie ukrytej \cite{coling}, a także liczba warstw ukrytych, \emph{momentum} oraz wartość określająca szybkość uczenia sieci.
+
+
+\section{Badania eksperymentalne}\label{s4}
+
+Badnia na potrzeby niniejszego zadania obejmują sprawdzenie jakości miar asocjacyjnych w procesie wydobywania wyrażeń wielowyrazowych z dużych korpusów języka polskiego.
+Do badanych miar zaliczają się wszystkie funkcje asocjacyjne zaimplementowane w oprogramowaniu \emph{MWeXtractor}, kombinacja liniowa rankingów wygenerowanych za pomocą tych funkcji, a także klasyfikator będący perceptronem wielowarstwowym.
+Metodologia, proces badań, wyniki ich omówienie oraz wnioski zostały zawarte w dalszej części tego rozdziału.
+
+\subsection{Opis wykorzystanych zbiorów danych}
+Podczas badań wykorzystanych zostało kilka zbiorów danych, które zostały dokładniej omówione w dalszej części tego rozdziału.
+Pozyskanie wszystkich z nich przebiegło bardzo szybko ze względu na współpracę z Grupą Naukową $G4.19$, która udostępniła te zbiory danych na potrzeby badań prowadzonych w ramach niniejszego zadania projektowego.
+
+\subsubsection{Korpus KIPI.}
+
+Właściwa nazwa korpusu to \emph{Korpus IPI PAN}, a został on stworzony przez Zespół Inżynierii Lingwistycznej w Instytucie Podstaw Informatyki Polskiej Akademii Nauk.
+Według autorów korpus posiada 250 milionów segmentów anotowanych morfo-syntaktycznie.
+Korpus jest dostępny publicznie i składowany w formacie \emph{Poliqarp}.
+
+Składowe korpusu, według informacji zamieszczonych na stronie internetowej autorów, zostały opisane w tabeli \ref{kipi_stats}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ c | l }
+	\toprule
+	procent zawartości & typy dokumentów \\
+	\midrule
+	50\% & prasa \\
+	15\% & stenogramy sejmowe, senackie i z komisji śledczej \\
+	10\% & teksty książkowe niebeletrystyczne, głównie teksty naukowe \\
+	ponad 10\% & proza współczesna \\
+	prawie 10\%  & proza dawna \\
+	5\% & ustawy \\
+	\bottomrule
+\end{tabular}
+\caption[Składowe korpus \emph{KIPI}]{Stosunki typów dokumentów składowych korpusu \emph{KIPI}}
+\label{kipi_stats}
+\end{table}
+
+Te i więcej informacji można pozyskać ze strony internetowej autorów korpusu \cite{kipi}.
+
+\subsubsection{Korpus KGR7.}
+
+Korpus $KGR7$ został utworzony przez Grupę Naukową $G4.19$ składowany także w plikach o formacie \emph{Poliqarp}, otagowane tagsetem \emph{KIPI}.
+Jedną z jego części jest korpus \emph{KIPI}.
+Korpus \emph{KGR7} jest około siedmiokrotnie większy niż opisany we wcześniejszej części tej pracy \emph{Korpus IPI PAN}.
+
+Poniższa tabela \ref{kgr7_stats} zawiera statystyki podkorpusów składowych korpusu \emph{KGR7}.
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | r}
+	\toprule
+	nazwa korpusu & liczba tokenów \\
+	\midrule
+	1002 & 19 512 317 \\
+	1003 & 10 006 539 \\
+	blogi & 9 613 618 \\
+	interia & 611 402 \\
+	kipi & 255 516 328 \\
+	knigi\_joined & 1 010 676 150 \\
+	naukawe & 2 594 225 \\
+	ornitologia & 544 937 \\
+	plwiki20120428 & 275 578 635 \\
+	pogoda & 593 538 \\
+	poig\_biznes\_data\_sub\_0 & 35 439 099 \\
+	poig\_biznes\_data\_sub\_1 & 30 676 362 \\
+	polityka & 82 480 654 \\
+	prace & 12 665 419 \\
+	pryzmat & 2 183 403 \\
+	rzepa & 116 317 357 \\
+	sjp & 2 177 299 \\
+	wordpress & 439 304 \\
+	zwiazki & 820 991 \\
+	\hline
+	suma & 1 868 447 577 \\
+	\bottomrule
+\end{tabular}
+\caption[Podkorpusy i statystyki korpusu \emph{KGR7}]{Podkorpusy i statystyki dotyczące korpusu \emph{KGR7}}
+\label{kgr7_stats}
+\end{table}
+
+\subsubsection{Słowosieć i praca lingwistów}
+Wspomniany wcześniej \emph{polski Wordnet} -- \emph{Słowosieć}, został w procesie badań wykorzystany jako baza wiedzy, z której pozyskano wyrażenia wielowyrazowe uznane za poprawne.
+Dodatkowo w trakcie prac opisanych w niniejszym dokumencie grupa lingwistów na bieżąco oceniała kolejne zestawy kandydatów na jednostki wielowyrazowe.
+Oba zbiory kolokacji zostały ze sobą połączone w jeden, który następnie wykorzystywany był jako dane niezbędne do oceny wyników generowanych przez rankery, a także do generacji cech dla sprawdzonych klasyfikatorów.
+
+\subsection{Przygotowanie danych}
+
+Tak jak wspomniano wcześniej, wszystkie dane zostały udostępnione przez Grupę Naukową $G4.19$.
+Otrzymane korpusy były składowane w formacie \emph{Poliqarp} i opisane za pomocą tagsetu \emph{KIPI}.
+Korpusy \emph{KGR7} oraz \emph{KIPI} zostały przygotowane do badań w taki sam sposób, którego opis znajduje się w dalszej części tej sekcji.
+Dodać jednak trzeba, że z korpusu \emph{KGR7} wyłączony został podkorpus \emph{sjp}.
+Motywacją do tego były problemy związane z błędami w pliku z danymi oraz tym, że jest to zestaw definicji słownikowych, a nie spójny tekst traktujący na jakieś konkretne tematy.
+
+\subsubsection{Tagowanie.}
+
+Przed rozpoczęciem proac niezbędne było rozłożenie danych otagowanych do nieotagowanego tekstu ciągłego, a następnie ponownego otagowania tych danych.
+Do wykonania tego zadania użyte zostało narzędzi omówione we wcześniejszej części tej pracy, tager \emph{WCRFT2}.
+Tekst został otagowany tagsetem \emph{NKJP}, a tekst już przetworzony jest składowany w formacie \emph{IOB-chan}.
+Motywacje do tego działa były dwie: pierwsza to chęć otagowania danych za pomocą znanego tagera i modelu wyuczonego przez grupę $G4.19$. 
+Drugą motywacją były pewne problemy związane z czytaniem korpusów w formacie \emph{Poliqarp}.
+Jako format zapisu dla nowo otagowanego tekstu wybrano wspomniany \emph{IOB-chan} ze względu na małą objętość pamięciową i szybkość jego wczytywania, a także ze względu na jego przejrzystość.
+
+\subsubsection{Miary dwuelementowe, korpus KIPI.}
+Celem tego badania było zdobycie informacji o jakości miar dwuelementowych wykorzystanych do ekstrakcji kolokacji z korpusu \emph{KIPI}.
+Na podstawie wyników ocenić można było, które funkcje dwuelementowe generują najlepsze wyniki, co jest jednocześnie wstępem do dalszych badań opisanych w tym rozdziale -- informacja ta jest pomocna w doborze miary dla specjalnych funkcji N-elementowych, bazujących na rozbijaniu krotek N-elementowych na 2-elementowe.
+Dodatkowo wiedza ta posłuży do doboru miar będących generatorami cech dla badanych klasyfikatorów -- sieci neuronowych.
+
+\paragraph{Przygotowanie i zbadanie podkorpusów KIPI.}
+Pierwszym etapem tego badania było sprawdzenie podzbiorów danych korpusu \emph{KIPI}, czyli zebranie i zestawienie statystyk o nich w celu ich lepszego poznania oraz oceny zastosowanych relacji.
+Dane zostały pozyskane na sześć różnych sposobów -- sposoby różniły się zestawem wykorzystanych operatorów \emph{WCCL}.
+Możliwym było wydobycie ich tylko w jeden sposób ze względu na możliwość wykorzystania funkcjonalności pakietu \emph{MWeXtractor}, takich jak między innymi filtrowanie.
+Jednak podejście z wieloma osobnymi zbiorami danych może przyspieszyć kolejne etapy badań ze względu na szybkość wczytywania plików, a także zmniejszyć ilość pamięci RAM potrzebnej do obliczeń.
+Wydobyte informacje zostały zapisane w strukturach współpracujących ze wspomnianym oprogramowaniem -- składach krotek.
+Gotowe składy krotek poddano analizie z wykorzystaniem programu \emph{Cover}, który generuje dwa zestawy informacji opisane we wcześniejszej części tej pracy\footnote{Opisany w rozdziale 4.6.4.}.
+Dla przypomnienia, pierwsza z nich to macierz liczb z etykietami na wierszach i kolumnach zawierająca dane o tym, w jakim stopniu relacje zachodzą na siebie -- ile krotek zostało przyporządkowanych do konkretnych relacji.
+Drugi wynik to liczba wyrażeń wielowyrazowych odnalezionych w każdej z relacji z osobna.
+Dane te posłużyły do oceny wykorzystanych operatorów i wyboru wzorców \emph{częstych}, czyli takich wyrażeń \emph{WCCL}, które miałyby odnajdować w tekście zbiory kandydatów, wśród których byłoby stosunkowo dużo poprawnych wyrażeń wielowyrazowych.
+Do oceny wyrażeń pod kątem tego, czy są \emph{częste}, wykorzystano informacje o liczbie jednostek wielowyrazowych należących do danego wzorca, jak i o stosunku tej liczby do liczby wszystkich krotek należących do rozpatrywanej relacji.
+Wzorzec został uznany za \emph{częsty} jeśli stosunek liczby jednostek wielowyrazowych w nim zawartych do wszystkich krotek należących do tego wzorca był większy od jednego procenta.
+W dalszej części tej pracy podane zostaną szczegóły dotyczące przygotowanych i sprawdzonych zbiorów danych.
+
+
+\paragraph{Podzbiór \protect\textit{2W}.}
+Statystki dotyczące podzbioru \emph{2W} zostały zamieszczone w tabeli \ref{KIPI_2W_stats}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	Window2P0	&	19752289	&	41221	&	0,20869	&	nie	\\
+	Window2P1	&	19752289	&	25560	&	0,12940	&	nie	\\
+	\midrule									
+	Suma:	&	39504578	&	66781	&	0,16904	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 2W]{Statystyki dotyczące podzbioru danych 2W pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_2W_stats}
+\end{table}
+
+Ważną obserwacją jest udział procentowy jednostek wielowyrazowych wśród wszystkich kandydatów na kolokacje -- tylko niecałe 0,17\%\footnote{Zaznaczyć trzeba jednak, że zbiór wzorcowy był bardzo niepełny.}.
+Tak niska ich zawartość może obrazować poziom trudności zadania ekstrakcji kolokacji z korpusów tekstowych.
+
+
+\paragraph{Podzbiór \protect\textit{2R}.}
+Statystki dotyczące podzbioru \emph{2R} zostały zamieszczone w tabeli \ref{KIPI_2R_stats}.
+
+\begin{table}[h!]
+\centering
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	AdjGenCosP0	&	128	&	0	&	0,00000	&	nie	\\
+	AdjGenCosP1	&	840	&	0	&	0,00000	&	nie	\\
+	AgrAdjSubstP0	&	1336463	&	1230	&	0,09203	&	nie	\\
+	AgrAdjSubstP1	&	706331	&	645	&	0,09132	&	nie	\\
+	AgrSubstAdjP0	&	706331	&	18162	&	2,57132	&	$ TAK $	\\
+	AgrSubstAdjP1	&	1336463	&	11774	&	0,88098	&	$ TAK $	\\
+	AllAdvPartP0	&	122560	&	6	&	0,00490	&	nie	\\
+	AllAdvPartP1	&	74187	&	1	&	0,00135	&	nie	\\
+	AllBurkSubstP0	&	2544	&	30	&	1,17925	&	$ TAK $	\\
+	AllBurkSubstP1	&	7126	&	2	&	0,02807	&	nie	\\
+	AllGerQubP0	&	11518	&	2012	&	17,46831	&	$ TAK $	\\
+	AllGerQubP1	&	20772	&	1016	&	4,89120	&	$ TAK $	\\
+	AllNumSubstP0	&	69889	&	8	&	0,01145	&	nie	\\
+	AllNumSubstP1	&	50929	&	4	&	0,00785	&	nie	\\
+	AllPartAdvP0	&	74187	&	1171	&	1,57844	&	$ TAK $	\\
+	AllPartAdvP1	&	122560	&	1064	&	0,86815	&	$ TAK $	\\
+	AllQubGerP0	&	20772	&	1	&	0,00481	&	nie	\\
+	AllQubGerP1	&	11518	&	1	&	0,00868	&	nie	\\
+	AllSiebieSubstP0	&	8149	&	0	&	0,00000	&	nie	\\
+	AllSiebieSubstP1	&	2017	&	0	&	0,00000	&	nie	\\
+	AllSubstBurkP0	&	7126	&	9	&	0,12630	&	nie	\\
+	AllSubstBurkP1	&	2544	&	0	&	0,00000	&	nie	\\
+	AllSubstNumP0	&	50929	&	3	&	0,00589	&	nie	\\
+	AllSubstNumP1	&	69889	&	1	&	0,00143	&	nie	\\
+	AllSubstSiebieP0	&	2017	&	12	&	0,59494	&	nie	\\
+	AllSubstSiebieP1	&	8149	&	3	&	0,03681	&	nie	\\
+	AllSubstSubstP0	&	4124657	&	3847	&	0,09327	&	nie	\\
+	AllSubstSubstP1	&	4124657	&	730	&	0,01770	&	nie	\\
+	CosAdjGenP0	&	840	&	47	&	5,59524	&	$ TAK $	\\
+	CosAdjGenP1	&	128	&	5	&	3,90625	&	$ TAK $	\\
+	GndAdjSubstP0	&	42964	&	67	&	0,15594	&	nie	\\
+	GndAdjSubstP1	&	82688	&	63	&	0,07619	&	nie	\\
+	GndSubstAdjP0	&	82676	&	3234	&	3,91166	&	$ TAK $	\\
+	GndSubstAdjP1	&	42920	&	779	&	1,81500	&	$ TAK $	\\
+	Ppron3GenSubstP0	&	18323	&	6	&	0,03275	&	nie	\\
+	Ppron3GenSubstP1	&	10350	&	5	&	0,04831	&	nie	\\
+	SubstPpron3GenP0	&	10350	&	5	&	0,04831	&	nie	\\
+	SubstPpron3GenP1	&	18323	&	10	&	0,05458	&	nie	\\
+	\midrule									
+	Suma	&	13384814	&	45953	&	0,34332	&		\\
+	Suma częstych	&	2400939	&	39294	&	1,63661	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 2R]{Statystyki dotyczące podzbioru danych 2R pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_2R_stats}
+\end{table}
+
+Autor pracy postanowił wykluczyć relacje \emph{AllSubstSubstP0} i \emph{AllSubstSubstP1} z grona \emph{częstych} ze względu na niski procent jednostek wielowyrazowych w gronie kandydatów przez nie wybranych.
+Wprawdzie relacje odnalazły w sumie $ 4577 $ poprawnych wyrażeń wielowyrazowych, co stanowi znaczącą liczbę (niemal $ 10 \% $ wszystkich poprawnych kolokacji), ale zauważyć trzeba, że relacje te, będąc dwiema z 38, wysunęły prawie $ 62\% $ wszystkich kandydatów na kolokacje.
+Podsumowując, dwa wspomniane operatory wygenerowały znaczącą liczbę jednostek wielowyrazowych, ale jednocześnie także nieporównywalnie większą ilość szumu w postaci błędnych kandydatów.
+Możliwe jest, że metodom wydobywającym udałoby się odnaleźć część z poprawnych wyrażeń wielowyrazowych należących do omawianych relacji, ale jednak procent jednostek wielowyrazowych w niej wydaje się na tyle mały, że ich wydobywanie mogłoby znacząco pogorszyć ogólny wynik pod kątem precyzji.
+
+\par
+Wśród wszystkich krotek pozyskanych za pomocą przedstawionych w \emph{2R} operatorów \emph{WCCL} znajduje się około $ 68,8\% $ wszystkich jednostek wielowyrazowych wykrytych w tekście za pomocą operatora okna.
+Wynik ten otrzymano przy zmniejszeniu grona kandydatów na kolokacje do $ 33,9\% $.
+Natomiast procent wyrażający stosunek jednostek wielowyrazowych do wszystkich kandydatów wzrósł z niecałych $ 0,17\% $ do ponad $ 0,34\% $.
+Ponadto w przypadku wzięcia pod uwagę tylko relacji częstych, wartości te będą wynosić odpowiednio ponad $ 58,8\% $, prawie $ 6,1\% $ oraz niecałe $ 1,64 $.
+
+\par
+Podsumowując powyższe obserwacje zauważyć można, że poprzez zastosowanie filtrów opartych o części mowy dla korpusu \emph{KIPI} i zestawu jednostek wielowyrazowych pozyskanych ze Słowosieci, da się zachować około $ 58,8\% $ jednostek wielowyrazowych przy zmniejszeniu liczby kandydatów do jedynie niecałych $ 6,1\% $.
+Skutkuje to także około dziesięciokrotnym zwiększeniem procentu jednostek wielowyrazowych wśród kandydatów -- efektem tego może być znaczny wzrost dokładności systemu wykrywającego kolokacje.
+
+\par
+Zauważyć można także kilkukrotne różnice w procencie jednostek wielowyrazowych w całym zestawie kandydatów z danej relacji w zależności od wybranego szyku; przykładowo w przypadku relacji \emph{AllSubstSubstP0} i \emph{AllSubstSubstP1} różnica ta jest około czterokrotna, a w przypadku \emph{CosAdjGenP0} i \emph{CosAdjGenP1} ponad dziewięciokrotna.
+
+
+\paragraph{Podzbiór \protect\textit{2RW}.}
+Omawiany tutaj zbiór powstał poprzez połączenie dwóch zestawów relacji, jednego wykorzystanego do utworzenia podzbioru \emph{2W} oraz drugiego przygotowanego na potrzeby generacji podzbioru \emph{2R}.
+Statystyki niniejszego podkorpusu są takie same jak korpusów \emph{2R} i \emph{2W}.
+Zmianie uległa jedynie statystyka dotycząca sumy.
+
+
+\paragraph{Podzbiór \protect\textit{2W1H}.}
+Zbiór został rozszerzony o operatory akceptujące wszystkie pary wyrazów oddzielone dowolnym słowem znajdującym się pomiędzy nimi.
+Operatory te generują wszystkie możliwe do utworzenia pary wyrazów, tworząc zestaw kandydatów na kolokacje nieciągłe.
+Nazwy nowych operatorów zostały zmodyfikowane poprzez dodanie do ich nazw fragmentu \emph{H1} reprezentującego nieciągłość wielkości pojedynczego wyrazu.
+Tabela \ref{KIPI_2R1H_stats} prezentuje statystyki wygenerowane przy wykorzystaniu operatorów oknowych -- zarówno ciągłych jak i nieciągłych.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	Window2P0	&	19752289	&	41221	&	0,20869	&	nie	\\
+	Window2P1	&	19752289	&	25560	&	0,12940	&	nie	\\
+	Window2H1P0	&	29740688	&	20176	&	0,06784	&	nie	\\
+	Window2H1P1	&	29740688	&	24998	&	0,08405	&	nie	\\
+	\midrule									
+	Suma nieciągłych&	59481376	&	45174	&	0,0759465	&	\\
+	Suma wszystkich	&	98985954	&	111955	&	0,11310	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 2W1H]{Statystyki dotyczące podzbioru danych 2W1H, pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_2W1H_stats}
+\end{table}
+
+\par
+Zastanawiające wydaje się to, że kolokacji nieciągłych jest więcej niż ciągłych, mimo że dla zdania N-elementowego zawsze można wygenerować $ N - 1 $ bi-gramów oraz $ N - 2 $ tri-gramów.
+Zadać sobie można pytanie dlaczego zatem tri-gramów jest więcej?
+Odpowiedź jest następująca: jest ich w rzeczywistości mniej.
+Statystyki pokazują, ilu różnych kandydatów udało się utworzyć za pomocą danych relacji, ale trzeba pamiętać, że każdy z kandydatów mógł wystąpić wielokrotnie.
+Omawiany tutaj zbiór zawiera w sumie $ 98 985 954 $ różnych krotek, których suma częstości jest równa $ 942 472 698 $, gdzie tylko $ 457 972 144 $ par zostało wygenerowanych przez relacje wyszukujące kolokacje nieciągłe, a tym samym $ 484 500 554 $ przez relacje wyszukujące kandydatów ciągłych.
+Kandydaci wyszukiwani przez relacje ciągłe byli mniej zróżnicowani, ale było ich więcej niż w zestawie kandydatów pozyskanych dzięki operatorom ciągłym.
+Sytuacja może pojawiać się także przy innych relacjach niż oknowe, ale powód takiego stanu rzeczy może być analogiczny, a dodatkowo pojawia się także inne wyjaśnienie -- po prostu wyrazy tak się ułożyły, że konkretne pary częściej występowały oddzielone jakimś słowem niż bezpośrednio obok siebie.
+
+\par
+Wyniki z tabeli \ref{KIPI_2R1H_stats} obrazują duży potencjał operatorów nieciągłych w zwiększeniu liczby możliwych do wykrycia wyrażeń wielowyrazowych, a ponadto wpływają na dane statystyczne wykorzystywane przez miary powiązania i klasyfikatory podczas ich pracy.
+
+
+\paragraph{Podzbiór \protect\textit{2R1H}.}
+Niniejszy podzbiór jest nadzbiorem \emph{2R}.
+Zawarte w nim są te same relacje co w zbiorze \emph{2R}, ale rozszerzone o akceptowanie także nieciągłych kandydatów na kolokacje, w których odległość pomiędzy wyrazami składowymi krotki była równa dwa (jeden dowolny wyraz pomiędzy składowymi).
+Liczba relacji zwiększyła się dwukrotnie (do 76), a dodatkowo, dzięki zastosowaniu omawianego mechanizmu, informacja statystyczna uległa zmianie.
+Szczegółowe informacje na temat tego podzbioru zawarte zostały w tabeli \ref{KIPI_2R1H_stats}.
+Zauważyć jednak należy, że podano w niej tylko informacje, które pozyskano poprzez zastosowanie nowych relacji -- nieciągłych, ponieważ dane wydobyte za pomocą relacji ciągłych są takie same jak w przypadku podzbioru \emph{2R}.
+
+\begin{table}[h!]
+\centering
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	AdjGenCosH1P0	&	405	&	0	&	0	&	nie	\\
+	AdjGenCosH1P1	&	564	&	0	&	0	&	nie	\\
+	AgrAdjSubstH1P0	&	441381	&	470	&	0,1064839674	&	nie	\\
+	AgrAdjSubstH1P1	&	435442	&	410	&	0,0941572012	&	nie	\\
+	AgrSubstAdjH1P0	&	435442	&	5097	&	1,170534767	&	$ TAK $	\\
+	AgrSubstAdjH1P1	&	441381	&	6691	&	1,5159238844	&	$ TAK $	\\
+	AllAdvPartH1P0	&	92077	&	3	&	0,0032581426	&	nie	\\
+	AllAdvPartH1P1	&	70914	&	3	&	0,0042304764	&	nie	\\
+	AllBurkSubstH1P0	&	7411	&	6	&	0,080960734	&	nie	\\
+	AllBurkSubstH1P1	&	8195	&	6	&	0,0732153752	&	nie	\\
+	AllGerQubH1P0	&	14164	&	614	&	4,3349336346	&	$ TAK $	\\
+	AllGerQubH1P1	&	30860	&	1491	&	4,8314970836	&	$ TAK $	\\
+	AllNumSubstH1P0	&	79359	&	6	&	0,0075605791	&	nie	\\
+	AllNumSubstH1P1	&	105045	&	5	&	0,0047598648	&	nie	\\
+	AllPartAdvH1P0	&	70914	&	604	&	0,8517359055	&	$ TAK $	\\
+	AllPartAdvH1P1	&	92077	&	1555	&	1,6888039358	&	$ TAK $	\\
+	AllQubGerH1P0	&	30860	&	1	&	0,0032404407	&	nie	\\
+	AllQubGerH1P1	&	14164	&	1	&	0,0070601525	&	nie	\\
+	AllSiebieSubstH1P0	&	10628	&	0	&	0	&	nie	\\
+	AllSiebieSubstH1P1	&	7743	&	0	&	0	&	nie	\\
+	AllSubstBurkH1P0	&	8195	&	2	&	0,0244051251	&	nie	\\
+	AllSubstBurkH1P1	&	7411	&	2	&	0,0269869113	&	nie	\\
+	AllSubstNumH1P0	&	105045	&	2	&	0,0019039459	&	nie	\\
+	AllSubstNumH1P1	&	79359	&	3	&	0,0037802896	&	nie	\\
+	AllSubstSiebieH1P0	&	7743	&	6	&	0,0774893452	&	nie	\\
+	AllSubstSiebieH1P1	&	10628	&	7	&	0,0658637561	&	nie	\\
+	AllSubstSubstH1P0	&	7888228	&	1790	&	0,0226920419	&	nie	\\
+	AllSubstSubstH1P1	&	7888228	&	1415	&	0,0179381225	&	nie	\\
+	CosAdjGenH1P0	&	564	&	46	&	8,1560283688	&	$ TAK $	\\
+	CosAdjGenH1P1	&	405	&	25	&	6,1728395062	&	$ TAK $	\\
+	GndAdjSubstH1P0	&	149805	&	95	&	0,0634157738	&	nie	\\
+	GndAdjSubstH1P1	&	156749	&	99	&	0,0631582977	&	nie	\\
+	GndSubstAdjH1P0	&	156749	&	1780	&	1,1355734327	&	$ TAK $	\\
+	GndSubstAdjH1P1	&	149805	&	1931	&	1,2890090451	&	$ TAK $	\\
+	Ppron3GenSubstH1P0	&	17518	&	9	&	0,0513757278	&	nie	\\
+	Ppron3GenSubstH1P1	&	19023	&	6	&	0,0315407664	&	nie	\\
+	SubstPpron3GenH1P0	&	19023	&	4	&	0,0210271776	&	nie	\\
+	SubstPpron3GenH1P1	&	17518	&	12	&	0,0685009704	&	nie	\\
+	\midrule									
+	Suma ciągłych	&	13384814	&	45953	&	0,34332	&		\\
+	Suma nieciągłych	&	19071022	&	24197	&	0,1268783603	&		\\
+	Suma wszystkich	&	32455836	&	70150	&	0,2161398646	&		\\
+	Suma ciągłych częstych	&	2400939	&	39294	&	1,63661	&		\\
+	Suma nieciągłych częstych	&	1392361	&	19834	&	1,4244868967	&		\\
+	Suma wszystkich częstych	&	3793300	&	59128	&	1,5587483194	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 2R1H]{Statystyki dotyczące podzbioru danych 2R1H, pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_2R1H_stats}
+\end{table}
+
+\par
+Ciekawą obserwacją jest, że relacje \emph{AgrAdjSubstH1P0} i \emph{AgrAdjSubstH1P1} generują prawie $ 48,7\% $ wszystkich nieciągłych wyrażeń wielowyrazowych na podstawie badanego tekstu, spośród wszystkich przedstawionych relacji.
+Warto dodać, że zbiór relacji oznaczonych jako częste prawie nie uległ zmianie, z wyjątkiem \emph{AllBurkSubstP0}.
+Nie uległ zmianie w takim rozumieniu, że jeśli relacje ciągłe A i B weszły w skład relacji częstych, to ich wersje wykrywające relacje nieciągłe (z dodatkiem \emph{H1} w nazwie) także znalazły się w tym zbiorze.
+
+\par
+Przedstawione statystyki obrazują, że ogólna jakość rozwiązań na podstawie tak zebranych danych teoretycznie powinna spaść w przypadku zastosowania wyboru wyrażeń wielowyrazowych w procesie losowania
+Wniosek taki wysunąć można na podstawie kolumny \emph{procent JW} tabeli \ref{KIPI_2R1H_stats}, która obrazuje spadek udziału procentowego jednostek wielowyrazowych w stosunku do podzbioru \emph{2R}.
+Zaznaczyć jednak trzeba, że także tutaj usunięcie relacji \emph{AllSubstSubstH1P0} i \emph{AllSubstSubstH1P1} powinno zaowocować znaczną poprawą wyniku, ponieważ według obliczeń zaledwie niespełna $ 0,041\% $ jednostek w niej zawartych stanowią jednostki wielowyrazowe, a do tych relacji należy ponad $ 82,7\% $ wszystkich kandydatów na kolokacje.
+Nie poprawia to jednak jakości rozwiązań losowych generowanych na podstawie danych zebranych przez inne relacje w swoim obrębie.
+Trzeba jednak mieć na uwadze to o czym autor niniejszej pracy napisał przy okazji omawiania zbioru \emph{2W1H} -- zebranie informacji statystycznych w ten sposób może zmienić w znacznym stopniu wyniki generowane przez funkcje asocjacyjne i klasyfikatory dzięki pozyskaniu nowych danych statystycznych z korpusu tekstowego.
+Wyniki mogą zostać poprawione dlatego, że sieci neuronowe i miary powiązania są bardziej skomplikowane niż wybór losowy jednostek wielowyrazowych z grona kandydatów.
+
+\par
+Statystyki z tabeli pozwalają na wywnioskowanie, że zastosowanie filtrów opartych o dane lingwistyczne -- części mowy i inne, może jeszcze bardziej zmniejszyć grono kandydatów na wyrażenia wielowyrazowe w przypadku wyszukiwania zarówno kandydatów ciągłych jak i nieciągłych.
+W przypadku wszystkich relacji zbiór kandydatów na kolokacje został zmniejszony do niecałych $ 32,8\% $, a maksymalna możliwa do osiągnięcia kompletność to niecałe $ 62,7\% $.
+Jeśli natomiast rozważymy tylko relacje uznane za częste, zbiór kandydatów zostanie zmniejszony do zaledwie nieco ponad $ 3,83\% $, a maksymalna kompletność wyniesie ponad $ 52,8\% $.
+Tak duże ograniczenie kandydatów na kolokacje skutkować może także kilkudziesięciokrotnym przyspieszeniem wydobywania wyrażeń wielowyrazowych.
+
+\par
+Tak duże zmiany w tych wartościach mogą być godne uwagi i dowodzą, że filtry części mowy są w stanie znacznie zmniejszyć grono kandydatów na kolokacje, a w konsekwencji tego zmienić wyniki pracy metod wykrywających wyrażenia wielowyrazowe poprzez zwiększenie ich szans na osiągnięcie większych poziomów precyzji.
+Trzeba pamiętać jednak, że nie jest to idealne rozwiązanie, ponieważ kosztem jego zastosowania może być spadek kompletności wyniku końcowego.
+
+
+\paragraph{Podzbiór \protect\textit{2RW1H}.}
+Omawiany tutaj zbiór powstał w sposób analogiczny do \emph{2W} i \emph{2R}, ale poprzez połączenie dwóch innych zestawów relacji: jednego wykorzystanego do utworzenia podzbioru \emph{2W1H} oraz drugiego przygotowanego na potrzeby generacji podzbioru \emph{2R1H}.
+Statystyki niniejszego podkorpusu są takie same jak korpusów \emph{2R1H} i \emph{2W1H}.
+Zmianie uległy jedynie statystyki dotyczące sum.
+
+
+\paragraph{Podzbiór \protect\textit{3W}}
+Tabela \ref{KIPI_3W_stats} prezentuje wyniki przebadania miar na podkorpusie zawierającym wszystkich kandydatów utworzonych z wykorzystaniem relacji oknowych.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	relacje 	& liczba krotek & liczba JW & procent JW & częsta? 	\\
+	\midrule
+	Window3P0	&	78426220	&	2044	&	0,0026	&	nie	\\
+	Window3P1	&	78426220	&	80	&	0,0001 &	nie	\\
+	\midrule									
+	Suma		&	156852440	&	2124	&	0,00135	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 3W]{Statystyki dotyczące podzbioru danych 3W pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_3W_stats}
+\end{table}
+
+Obserwacją z niniejszego badania jest to, że wyrażeń wielowyrazowych 3-elementowych jest około 250-krotnie mniej niż w analogicznym zbiorze w badaniach nad kolokacjami dwuelementowymi, co stanowi o poziomie trudności niniejszego problemu.
+
+
+\paragraph{Podzbiór \protect\textit{3R}}
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	AdjAdjSubst	&	541277	&	9	&	0,0017	&	nie	\\
+	AdjPrepSubst	&	716945	&	120	&	0,0167	&	$ TAK $	\\
+	AdjSubstAdj	&	967750	&	83	&	0,0086	&	$ TAK $	\\
+	AdjSubstSubst	&	1260577	&	67	&	0,0053	&	nie	\\
+	SubstAdjAdj	&	312186	&	24	&	0,0077	&	nie	\\
+	SubstAdjSubst	&	1526866	&	83	&	0,0054	&	nie	\\
+	SubstAdvAdj	&	113720	&	4	&	0,0035	&	nie	\\
+	SubstConjSubst	&	601678	&	22	&	0,0037	&	nie	\\
+	SubstPrepSubst	&	1604498	&	204	&	0,0127	&	$ TAK $	\\
+	SubstSubstAdj	&	941736	&	84	&	0,0089	&	$ TAK $	\\
+	SubstSubstSubst	&	1192601	&	100	&	0,0084	&	$ TAK $	\\
+	\midrule									
+	Suma wszystkich	&	9779834	&	800	&	0,0082	&		\\
+	Suma częstych	&	5423530	&	591	&	0,0109	&		\\
+	\bottomrule
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 3R]{Statystyki dotyczące podzbioru danych 3R pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_3R_stats}
+\end{table}
+
+
+\paragraph{Podzbiór \protect\textit{3RW}}
+Podzbiór \emph{3RW} powstał poprzez połączenie \emph{3R} oraz \emph{3W}, czyli analogicznie do sposobu powstania podzbioru \emph{2RW}.
+
+
+\paragraph{Podzbiór \protect\textit{3R1H}}
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | r | r | r | l }
+	\toprule
+	\textbf{relacje} 	& \textbf{liczba krotek} & \textbf{liczba JW} & \textbf{procent JW} & \textbf{częsta?} 	\\
+	\midrule
+	AdjAdjSubst	&	541277	&	9	&	0,0017	&	nie	\\
+	AdjAdjSubstH1P0	&	245555	&	2	&	0,0008	&	nie	\\
+	AdjAdjSubstH1P1	&	1151945	&	5	&	0,0004	&	nie	\\
+	AdjPrepSubst	&	716945	&	120	&	0,0167	&	$ TAK $	\\
+	AdjPrepSubstH1P0	&	647731	&	32	&	0,0049	&	$ TAK $	\\
+	AdjPrepSubstH1P1	&	827820	&	46	&	0,0056	&	$ TAK $	\\
+	AdjSubstAdj	&	967750	&	83	&	0,0086	&	$ TAK $	\\
+	AdjSubstAdjH1P0	&	1127086	&	3	&	0,0003	&	nie	\\
+	AdjSubstAdjH1P1	&	859167	&	18	&	0,0021	&	nie	\\
+	AdjSubstSubst	&	1260577	&	67	&	0,0053	&	$ TAK $	\\
+	AdjSubstSubstH1P0	&	2113142	&	8	&	0,0004	&	nie	\\
+	AdjSubstSubstH1P1	&	1062241	&	14	&	0,0013	&	nie	\\
+	SubstAdjAdj	&	312186	&	24	&	0,0077	&	$ TAK $	\\
+	SubstAdjAdjH1P0	&	984252	&	10	&	0,001	&	nie	\\
+	SubstAdjAdjH1P1	&	256799	&	1	&	0,0004	&	nie	\\
+	SubstAdjSubst	&	1526866	&	83	&	0,0054	&	$ TAK $	\\
+	SubstAdjSubstH1P0	&	1684299	&	10	&	0,0006	&	nie	\\
+	SubstAdjSubstH1P1	&	2143032	&	30	&	0,0014	&	nie	\\
+	SubstAdvAdj	&	113720	&	4	&	0,0035	&	nie	\\
+	SubstAdvAdjH1P0	&	70397	&	0	&	0	&	nie	\\
+	SubstAdvAdjH1P1	&	231161	&	2	&	0,0009	&	nie	\\
+	SubstConjSubst	&	601678	&	22	&	0,0037	&	$ TAK $	\\
+	SubstConjSubstH1P0	&	528323	&	11	&	0,0021	&	nie	\\
+	SubstConjSubstH1P1	&	575422	&	8	&	0,0014	&	nie	\\
+	SubstPrepSubst	&	1604498	&	204	&	0,0127	&	$ TAK $	\\
+	SubstPrepSubstH1P0	&	1274522	&	58	&	0,0046	&	$ TAK $	\\
+	SubstPrepSubstH1P1	&	1679465	&	74	&	0,0044	&	$ TAK $	\\
+	SubstSubstAdj	&	941736	&	84	&	0,0089	&	$ TAK $	\\
+	SubstSubstAdjH1P0	&	977246	&	8	&	0,0008	&	nie	\\
+	SubstSubstAdjH1P1	&	1631955	&	39	&	0,0024	&	nie	\\
+	SubstSubstSubst	&	1192601	&	100	&	0,0084	&	$ TAK $	\\
+	SubstSubstSubstH1P0	&	2227830	&	10	&	0,0004	&	nie	\\
+	SubstSubstSubstH1P1	&	2267238	&	17	&	0,0007	&	nie	\\
+	\midrule									
+	Suma ciągłych	&	9779834	&	800	&	0,0082	&		\\
+	Suma nieciągłych	&	24566628	&	406	&	0,0017	&		\\
+	Suma wszystkich	&	34346462	&	1206	&	0,0035	&		\\
+	Suma ciągłych częstych	&	5423530	&	591	&	0,0109	&		\\
+	Suma nieciągłych częstych	&	8130845	&	406	&	0,0050	&		\\
+	Suma wszystkich częstych	&	13554375	&	997	&	0,0074	&		\\
+\bottomrule									
+\end{tabular}
+\caption[Statystyki podzbioru danych \emph{KIPI} 3R1H]{Statystyki dotyczące podzbioru danych 3R1H pozyskanego z korpusu \emph{KIPI}.}
+\label{KIPI_3R1H_stats}
+\end{table}
+
+Podobnie jak w przypadku kolokacji dwuelementowych, także i tutaj dodanie relacji nieciągłych zmniejsza znacznie stężenie wyrażeń wielowyrazowych wśród wszystkich kandydatów.
+Można spróbować wysunąć wniosek, że kolokacje 3-elementowe występują przeważnie w sposób ciągły, jednak liczba kolokacji nieciągłych nie może zostać pominięta, ponieważ stanowi znaczny procent wszystkich wyrażeń wielowyrazowych.
+
+
+\paragraph{Wersje podkorpusów poddane dyspersji.}
+Oprócz sześciu opisanych w poprzedniej części tej sekcji podkorpusów korpusu \emph{KIPI}, utworzone zostały też ich odpowiedniki powstałe po podzieleniu korpusu na pewną liczbę mniej więcej równych części.
+Sposób podziału korpusu \emph{KIPI} polegał na rozbiciu go na 10 ciągłych i podobnych rozmiarem części.
+Rozmiar był determinowany przez liczbę tokenów, a sam korpus był dzielony z dokładnością do zdania, żeby uniknąć cięcia w jego środku.
+
+\par
+Po wykonaniu podziału zostały przygotowane odpowiedniki podkorpusów \emph{2R}, \emph{2W}, \emph{2RW}, \emph{2R1H}, \emph{2W1H}, \emph{2RW1H} poprzez wykorzystanie tych samych relacji, których użyto podczas przygotowywania zbioru \emph{KIPI} niepoddanego dyspersji.
+Z racji, że żaden token czy zdanie nie zostało pominięte, a cięcia następowały z dokładnością do zdania, statystyki podkorpusów nie uległy zmianie.
+
+\par
+Przygotowane podkorpusy następnie poddano dyspersji z wykorzystaniem miary TF-IDF, ponieważ w literaturze uchodzi ona za dobrą miarę w zadaniach ekstrakcji informacji.
+Specyfiką tej miary dyspersji jest to, że części kandydatów przyporządkowuje ona częstość równą zero -- tym krotkom, które wystąpiły we wszystkich podkorpusach.
+Kandydaci, których częstość po wykonaniu dyspersji była równa zero, zostali usunięci z grona kandydatów.
+
+
+\paragraph{Wersje poddane podpróbkowaniu klasy negatywnej.}
+Ze względu na fakt, że klasa pozytywna reprezentująca wyrażenia wielowyrazowe jest słabo reprezentowana (poniżej 0,5\% wszystkich kandydatów) autor niniejszej pracy dokonał podpróbkowania klasy negatywnej w celu utworzenia zbioru zawierającego znacznie bardziej reprezentatywną liczbę instancji klasy pozytywnej\footnote{Podpróbkowanie klasy negatywnej w przypadku miar asocjacyjnych może wydawać się złym pomysłem, ponieważ nie zachodzi tutaj proces uczenia. Autor pracy postanowił jednak zbadać także jakość funkcji po wykonaniu tego zabiegu, ponieważ umożliwia to ewentualne odniesienie się i porównanie osiągniętych wyników z rezultatami prac Pavla Peciny i Pavla Schlesingera \cite{coling}.}.
+
+\par
+Podpróbkowanie polegało na wybraniu z zestawu kandydatów wszystkich wyrażeń wielowyrazowych, a następnie, z wykorzystaniem rozkładu jednorodnego, usuwaniu kolokacji z klasy negatywnej aż do momentu uzyskania zadanego udziału procentowego jednostek wielowyrazowych.
+Pożądany stosunek jednostek pozytywnych do negatywnych został ustalony na poziomie przynajmniej $ 20\% $.
+Motywacją do wyboru takiego progu był artykuł Pavla Peciny i Pavla Schlesingera \cite{coling}, gdzie badano zbiór kolokacji, w którym liczba instancji pozytywnych została ustalona na poziomie prawie $ 21\% $\footnote{Zaznaczyć także warto, że zbiór testowy we wspomnianej pracy został przygotowany przez grupę lingwistów oraz był zbiorem pełnym. Każdy kandydat został sklasyfikowany jako wyrażenie wielowyrazowe lub niebędący wyrażeniem wielowyrazowym. Nie występował zatem problem związany z kandydatami, którym nie została przypisana żadna z etykiet, tak jak miało to miejsce podczas prowadzenia badań opisanych w niniejszej pracy.}.
+
+
+\subsubsection{Zbiór testowy.}
+Wykorzystany w tych badaniach zbiór testowy został pozyskany głównie ze \emph{Słowosieci}, która jest obecnie na bieżąco rozwijana i rozszerzana przez lingwistów.
+Pozyskany zbiór testowy zawiera także jednostki oznaczone jako pozytywne przez lingwistów i zamieszczone w zewnętrznym źródle w stosunku do \emph{Słowosieci}\footnote{Plik ten został już zintegrowany ze \emph{Słowosiecią}, jednak w chwili tworzenia zbioru testowego był jeszcze źródłem zewnętrznym.}.
+Wykorzystany zbiór jednostek pochodzi 20.10.2014 roku.
+
+\par
+Wykorzystana miara oceny to uśredniona średnia precyzja, a jej sposób obliczania został opisany w sekcji zawierającej wyniki.
+
+\par
+Sposób porównywania kandydatów z zbiorem testowym polegał na sprawdzeniu, czy formy słownikowe wyrazów składowych kandydata są takie same, jak wyrazy składowe którejś z krotek ze zbioru testowego.
+Nie są sprawdzane części mowy wyrazów, jedynie same słowa.
+
+
+\subsection{Szczegółowy opis przebiegu badań.}
+
+\subsubsection{Sposoby kolekcjonowania danych z korpusów.}
+Tabela \ref{KIPI_2_research_types} przedstawia zestaw 30 różnych wariantów badań przeprowadzonych dla funkcji dwuelementowych na korpusie \emph{KIPI}.
+Filtr nazwany \emph{morfeusz} jest związany z analizatorem morfologicznym \emph{Morfeusz SGJP} \cite{morfeusz} i polega na sprawdzeniu czy każde ze słów kandydata na kolokacje jest zawarte w słowniku tego narzędzia (Morfeusza).
+
+\begin{table}[h!]
+\centering
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{ l || l | l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{źródło danych statystycznych}			& \textbf{źródło kandydatów}		& \textbf{filtry}					\\
+	\midrule
+	1	& okno ciągłe 							& okno ciągłe			&							\\
+	2	& okno ciągłe 							& okno ciągłe			& morfeusz					\\
+	3	& okno ciągłe 							& okno ciągłe			& morfeusz, częstość $>$ 5	\\
+	4	& okna ciągłe i nieciągłe 				& okno ciągłe i nieciągłe			&							\\
+	5	& okna ciągłe i nieciągłe 				& okno ciągłe i nieciągłe			& morfeusz					\\
+	6	& okna ciągłe i nieciągłe 				& okno ciągłe i nieciągłe			& morfeusz, częstość $>$ 5	\\
+	7	& relacje ciągłe						& relacje ciągłe		&							\\
+	8	& relacje ciągłe						& relacje ciągłe		& morfeusz					\\
+	9	& relacje ciągłe						& relacje ciągłe		& morfeusz, częstość $>$ 5	\\
+	10	& relacje ciągłe						& częste relacje ciągłe &							\\
+	11	& relacje ciągłe						& częste relacje ciągłe & morfeusz					\\
+	12	& relacje ciągłe						& częste relacje ciągłe & morfeusz, częstość $>$ 5	\\
+	13	& relacje i okno, ciągłe				& relacje ciągłe		& 							\\
+	14	& relacje i okno, ciągłe				& relacje ciągłe 		& morfeusz 					\\
+	15	& relacje i okno, ciągłe				& relacje ciągłe		& morfeusz, częstość $>$ 5	\\
+	16	& relacje i okno, ciągłe				& częste relacje ciągłe	&							\\
+	17	& relacje i okno, ciągłe	 			& częste relacje ciągłe	& morfeusz					\\
+	18	& relacje i okno, ciągłe				& częste relacje ciągłe	& morfeusz, częstość $>$ 5	\\
+	19	& relacje ciągłe i nieciągłe			& relacje ciągłe i nieciągłe 		& 							\\
+	20	& relacje ciągłe i nieciągłe			& relacje ciągłe i nieciągłe		& morfeusz					\\
+	21	& relacje ciągłe i nieciągłe			& relacje ciągłe i nieciągłe		& morfeusz, częstość $>$ 5	\\
+	22	& relacje ciągłe i nieciągłe			& częste relacje ciągłe i nieciągłe	& 							\\
+	23	& relacje ciągłe i nieciągłe			& częste relacje ciągłe i nieciągłe	& morfeusz					\\
+	24	& relacje ciągłe i nieciągłe			& częste relacje ciągłe i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	25	& relacje i okno, ciągłe i nieciągłe	& relacje ciągłe i nieciągłe		&							\\
+	26	& relacje i okno, ciągłe i nieciągłe	& relacje ciągłe i nieciągłe		& morfeusz					\\
+	27	& relacje i okno, ciągłe i nieciągłe	& relacje ciągłe i nieciągłe		& morfeusz, częstość $>$ 5	\\
+	28	& relacje i okno, ciągłe i nieciągłe	& częste relacje ciągłe i nieciągłe	&							\\
+	29	& relacje i okno, ciągłe i nieciągłe	& częste relacje ciągłe	i nieciągłe	& morfeusz					\\
+	30	& relacje i okno, ciągłe i nieciągłe	& częste relacje ciągłe	i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw przeprowadzonych badań dla funkcji dwuelementowych na korpusie \emph{KIPI}]{Zestaw przeprowadzonych badań dla funkcji dwuelementowych na korpusie \emph{KIPI}.}
+\label{KIPI_2_research_types}
+\end{table}
+
+\subsubsection{Miary dwuelementowe.}
+Tabela \ref{KIPI_2_function_set} przestawia zestaw zbadanych funkcji na korpusie \emph{KIPI}.
+
+\begin{table}[h!]
+\centering
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{ l | l || l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{nazwa}	& \textbf{nr}	& \textbf{nazwa}	\\
+	\midrule
+	1	&	Frequency$()$									& 37	&	Specific Exponential Correlation$($e=4.7$)$		\\
+	2	&	Expected Frequency$()$							& 38	&	Specific Exponential Correlation$($e=4.8$)$		\\
+	3	&	Inversed Expected Frequency$()$					& 39	&	Specific Exponential Correlation$($e=4.9$)$		\\
+	4	&	Jaccard$()$										& 40	&	Specific Exponential Correlation$($e=5$)$		\\
+	5	&	Dice$()$										& 41	&	Specific Exponential Correlation$($e=5.1$)$		\\
+	6	&	Sorgenfrei$()$									& 42	&	Specific Exponential Correlation$($e=5.2$)$		\\
+	7	&	Odds Ratio$()$									& 43	&	Specific Exponential Correlation$($e=5.3$)$		\\
+	8	&	Unigram Subtuples$()$							& 44	&	Specific Exponential Correlation$($e=5.4$)$		\\
+	9	&	Consonni T1$()$									& 45	&	Specific Exponential Correlation$($e=5.5$)$		\\
+	10	&	Consonni T2$()$									& 46	&	Specific Exponential Correlation$($e=5.6$)$		\\
+	11	&	Mutual Expectation$()$							& 47	&	Specific Exponential Correlation$($e=5.7$)$		\\
+	12	&	Specific Correlation$()$						& 48	&	Specific Exponential Correlation$($e=5.8$)$		\\
+	13	&	W Specific Correlation$()$						& 49	&	Specific Exponential Correlation$($e=5.9$)$		\\
+	14	&	Specific Mutual Dependency$()$					& 50	&	Specific Exponential Correlation$($e=6$)$		\\
+	15	&	Specific Frequency Biased Mutual Dependency$()$	& 51	&	W Specific Exponential Correlation$($e=1.05$)$	\\
+	16	&	Tscore$()$										& 52 	& 	W Specific Exponential Correlation$($e=1.1$)$	\\
+	17	&	Zscore$()$										& 53 	& 	W Specific Exponential Correlation$($e=1.15$)$	\\
+	18	&	Pearsons Chi Square$()$							& 54	&	W Specific Exponential Correlation$($e=1.2$)$	\\
+	19	&	W Chi Square$()$								& 55	&	W Specific Exponential Correlation$($e=1.25$)$	\\
+	20	&	Loglikelihood$()$								& 56	&	W Specific Exponential Correlation$($e=1.3$)$	\\
+	21	&	Specific Exponential Correlation$($e=3.1$)$		& 57	&	W Specific Exponential Correlation$($e=1.35$)$	\\
+	22	&	Specific Exponential Correlation$($e=3.2$)$		& 58	&	W Specific Exponential Correlation$($e=1.4$)$	\\
+	23	&	Specific Exponential Correlation$($e=3.3$)$		& 59	&	W Specific Exponential Correlation$($e=1.45$)$	\\
+	24	&	Specific Exponential Correlation$($e=3.4$)$		& 60	&	W Specific Exponential Correlation$($e=1.5$)$	\\
+	25	&	Specific Exponential Correlation$($e=3.5$)$		& 61	&	W Specific Exponential Correlation$($e=1.55$)$	\\
+	26	&	Specific Exponential Correlation$($e=3.6$)$		& 62	&	W Specific Exponential Correlation$($e=1.6$)$	\\
+	27	&	Specific Exponential Correlation$($e=3.7$)$		& 63	&	W Specific Exponential Correlation$($e=1.65$)$	\\
+	28	&	Specific Exponential Correlation$($e=3.8$)$		& 64	&	W Specific Exponential Correlation$($e=1.7$)$	\\
+	29	&	Specific Exponential Correlation$($e=3.9$)$		& 65	&	W Specific Exponential Correlation$($e=1.75$)$	\\
+	30	&	Specific Exponential Correlation$($e=4$)$		& 66	&	W Specific Exponential Correlation$($e=1.8$)$	\\
+	31	&	Specific Exponential Correlation$($e=4.1$)$		& 67	&	W Specific Exponential Correlation$($e=1.85$)$	\\
+	32	&	Specific Exponential Correlation$($e=4.2$)$		& 68	&	W Specific Exponential Correlation$($e=1.9$)$	\\
+	33	&	Specific Exponential Correlation$($e=4.3$)$		& 69	&	W Specific Exponential Correlation$($e=1.95$)$	\\
+	34	&	Specific Exponential Correlation$($e=4.4$)$		& 70	&	W Specific Exponential Correlation$($e=2$)$		\\
+	35	&	Specific Exponential Correlation$($e=4.5$)$		& 71	&	W Order$()$										\\
+	36	&	Specific Exponential Correlation$($e=4.6$)$		& 72	&	W Term Frequency Order$()$						\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw zbadanych funkcji dwuelementowych na korpusie \emph{KIPI}]{Zestaw zbadanych funkcji dwuelementowych na korpusie \emph{KIPI}.}
+\label{KIPI_2_function_set}
+\end{table}
+
+
+\subsubsection{Perceptron wielowarstwowy.}
+Tabela \ref{KIPI_2_classifiers_set} przestawia zestaw zbadanych klasyfikatorów etykietujących krotki 2- i 3-elementowe na korpusie \emph{KIPI}.
+Wykorzystany zestaw cech został ustalony na podstawie wyników zamieszczonych w dalszych częściach pracy oraz wiedzy pozyskanej z artykułu autorstwa Mariusza Paradowskiego \cite{paradowski_beta}; przyjęto 12 następujących cech:
+\begin{itemize}
+	\item W Specific Correlation;
+	\item Mutual Expectation;
+	\item Specific Frequency Biased Mutual Dependency;
+	\item Tscore;
+	\item Loglikelihood;
+	\item Jaccard;
+	\item Sorgenfrei;
+	\item Unigram Subtuples;
+	\item Specific Exponential Correlation z parametrem o wartości 3,8;
+	\item W Specific Exponential Correlation z parametrem o wartości 1,15;
+	\item W Order;
+	\item W Term Frequency Order.
+\end{itemize}
+
+Dla każdej sieci momentum było stałe i na poziomie 0.5.
+Skrótowiec \emph{LNWU} oznacza liczbę neuronów w każdej z warstw ukrytych sieci, a \emph{WU} to współczynnik uczenia perceptronu wielowarstwowego.
+
+\begin{table}[h!]
+\centering
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{ l | c | l || l | c | l }
+	\toprule
+	\textbf{nr} 	& \textbf{LNWU}	& \textbf{WU}	& \textbf{nr}	& \textbf{LNWU}	& \textbf{WU}	\\
+	\midrule
+	1	&	5, 2	& 0.2	& 25	& 5, 3	& 0.2 \\
+	2	&	6, 2	& 0.2	& 26	& 6, 3	& 0.2 \\
+	3	&	7, 2	& 0.2	& 27	& 7, 3 	& 0.2 \\
+	4	&	8, 2	& 0.2	& 28	& 8, 3	& 0.2 \\
+	5	&	9, 2	& 0.2	& 29	& 9, 3	& 0.2 \\
+	6	&	10, 2	& 0.2	& 30	& 10, 3	& 0.2 \\
+	7	&	11, 2	& 0.2	& 31	& 11, 3	& 0.2 \\
+	8	&	12, 2	& 0.2	& 32	& 12, 3	& 0.2 \\
+	9	&	13, 2	& 0.2	& 33	& 13, 3	& 0.2 \\
+	10	&	14, 2	& 0.2	& 34	& 14, 3	& 0.2 \\
+	11	&	15, 2	& 0.2	& 35	& 15, 3	& 0.2 \\
+	12	&	16, 2	& 0.2	& 36	& 16, 3	& 0.2 \\
+	13	&	5, 2	& 0.1	& 37	& 5, 3	& 0.1 \\
+	14	&	6, 2	& 0.1	& 38	& 6, 3	& 0.1 \\
+	15	&	7, 2	& 0.1	& 39	& 7, 3	& 0.1 \\
+	16	&	8, 2	& 0.1	& 40	& 8, 3	& 0.1 \\
+	17	&	9, 2	& 0.1	& 41	& 9, 3	& 0.1 \\
+	18	&	10, 2	& 0.1	& 42	& 10, 3	& 0.1 \\
+	19	&	11, 2	& 0.1	& 43	& 11, 3	& 0.1 \\
+	20	&	12, 2	& 0.1	& 44	& 12, 3	& 0.1 \\
+	21	&	13, 2	& 0.1	& 45	& 13, 3	& 0.1 \\
+	22	&	14, 2	& 0.1	& 46	& 14, 3	& 0.1 \\
+	23	&	15, 2	& 0.1	& 47	& 15, 3	& 0.1 \\
+	24	&	16, 2	& 0.1	& 48	& 16, 3	& 0.1 \\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw zbadanych binarnych perceptronów wielowarstwowych dla problemu ekstrakcji kolokacji dwuelementowych na korpusie \emph{KIPI}]{Zestaw zbadanych binarnych perceptronów wielowarstwowych dla problemu ekstrakcji kolokacji dwuelementowych na korpusie \emph{KIPI}.}
+\label{KIPI_2_classifiers_set}
+\end{table}
+
+
+\subsubsection{Miary mieszane.}
+Podejście miar mieszanych polegało na wykorzystaniu kombinacji liniowej rankingów wygenerowanych przez pewien zestaw poszczególnych funkcji asocjacyjnych.
+
+Narzędziem wykorzystanym w optymalizacji był opisany we wcześniejszej części tej pracy algorytm ewolucyjny.
+Jako zbiór uczący wybrano korpus \emph{KIPI}, a testowym był cały zbiór \emph{KGR7}.
+Oba wykorzystane zbiory danych były przygotowane do tego zadania w inny sposób niż opisano w części pracy traktującej o wykorzystanych zbiorach danych.
+Nie były one tagowane od nowa, a jedynie zastosowana była konwersja tagsetów z \emph{KIPI} do \emph{NKJP}.
+Zauważyć jednak należy, że zarówno zbiór testowy jak i uczący były przygotowane w taki sam sposób.
+
+Proces optymalizacji wag był wykonany dwuetapowo.
+Pierwszym krokiem było dostrojenie parametrów algorytmu genetycznego, a drugim optymalizacja wag dla rankingów.
+Parametry, które były optymalizowane to: szansa krzyżowania, rozmiar turnieju -- dotyczy operatora selekcji oraz szansa na mutację genotypu osobnika.
+Zbadany zostały wartości parametrów przedstawione w tabeli \ref{optimizer_parameters_optimization}.
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | c }
+	\toprule
+	parametr & wartości \\
+	\midrule
+	rozmiar turnieju & [2:5], skok co 1\\
+	szansa krzyżowania & [0.4:0.8], skok co 0.05\\
+	szansa mutacji & [0.03:0.11], skok co 0.01\\ 
+	\bottomrule
+\end{tabular}
+\caption[Sprawdzone wartości parametrów algorytmu genetycznego]{Sprawdzone wartości parametrów algorytmu genetycznego}
+\label{optimizer_parameters_optimization}
+\end{table}
+
+Optymalizacja parametrów algorytmu została wykonana na korpusie uczącym przy progu odcięcia na poziomie 10000 pozycji rankingu.
+Każda wartość parametru była dostrajana przez 50 iteracji dla rozmiaru populacji równego 25.
+Konkretny parametr był dostrajany przy utrzymaniu stałych wartości innych parametrów przez cały proces jego optymalizacji.
+Ręczna ocena wyników polegała na sprawdzeniu, dla których parametrów wzrost jakości rozwiązani jest najszybszy, ale przy jednoczesnym stosunkowo powolnym zbieganiu się najlepszego, średniego i najgorszego z rozwiązań.
+Ostatecznie wybrany został zestaw parametrów zaprezentowany poniżej:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ c | c | c }
+	\toprule
+	rozmiar turnieju & szansa krzyżowania & szansa mutacji \\
+	\midrule
+	5 & 0.75 & 0.05\\ 
+	\bottomrule
+\end{tabular}
+\end{table}
+
+
+Po ustaleniu parametrów dla algorytmu ewolucyjnego wykonany został drugi krok -- optymalizacja wag dla rankingów.
+Optymalizacja wag rankingów polegała na wybraniu zestawu miar, które dawały dobre wyniki w ekstrakcji miar dwuelementowych, a następnie wykorzystaniu ich w procesie tworzenia rankingów do kombinacji liniowej.
+Dobrane zostały następujące miary:
+\begin{enumerate}
+	\item \emph{Loglikelihood},
+	\item \emph{Mutual Expectation},
+	\item \emph{Specific Frequency Biased Mutual Dependency},
+	\item \emph{Jaccard},
+	\item \emph{W Specific Correlation},
+	\item \emph{W Specific Exponential Correlation} z parameterami 1.35, 1.375 oraz 1.4 stosowanymi zamiennie.
+\end{enumerate}
+
+
+Algorytm genetyczny dostrajał wagi przeszukując przestrzeń rozwiązań, wybierając konkretny zestaw wag i sprawdzając rozwiązanie.
+Zastosowany agregator to \emph{maksymalna suma}, a funkcje normalizujące to \emph{Borda score} oraz \emph{Zipf's Borda score}.
+Użyta miara oceny to \emph{Average precision on hit} przy długości rankingu równej 10000.
+
+
+Podjętych zostało wiele prób optymalizacji wag dla dwóch zakresów możliwych wag dla każdego z rankingu -- od 0 do 1 oraz od -1 do 1, dwóch różnych sposobów punktowania rankingów oraz dla zmiennej wartości parametru funkcji \emph{W Specific Exponential Correlation}.
+
+
+\subsection{Wyniki i obserwacje.}
+Ze względu na dużą ilość wyników nie zostaną one tutaj zamieszczone w pełnej formie.
+Zamiast tego przedstawione zostaną jedynie obserwacje wyciągnięte na ich podstawie oraz pewien wyciąg z nich.
+
+\subsubsection{Miary dwuelementowe.}
+Na podstawie analizy danych zauważyć można, że najlepsze jakościowo wyniki zostały osiągnięte dla następujących miar asocjacyjnych: \emph{W Specific Correlation}, \emph{Specific Frequency Biased Mutual Dependency}, \emph{Loglikelihood}, \emph{W Order}, \emph{W Term Frequency Order} oraz zestaw miar \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} dla pewnych wartości ich jedynego parametru -- wykładnika.
+
+\par
+Analizując jakość wyników dla miar \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} należy skupić się także na typie badania.
+Wartości w tabeli obrazują, że sposób przygotowania danych ma wpływ na optymalny dobór wartości parametru dla obu tych funkcji z osobna.
+
+\par
+Zauważyć można, że im dane są bardziej przefiltrowane, tym lepsze wyniki są osiągane dla mniejszych wartości wykładnika.
+Przykładowo dla miary \emph{Specific Exponential Correlation} w zadaniu ekstrakcji kolokacji z grona kandydatów pozyskanego operatorami oknowymi, wartości parametru w okolicach liczby 3,0 są preferowane dla bardziej przefiltrowanych danych, a do ekstrakcji kolokacji z mniej przefiltrowanych danych lepsze wydają się być wartości bliższe 4,0.
+Dodatkowo dla zadań związanych z ekstrakcją wyrażeń wielowyrazowych preferowane dla obu funkcji są w większości raczej niskie wartości ich parametru -- niskie jak na przyjęty przedział optymalizacji.
+
+\par
+Na podstawie wyników można spróbować wysnuć wniosek, że w okolicach wartości optymalnej parametru funkcji \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} dopuszczalny margines błędu podczas dostrajania wartości wykładnika jest dość duży.
+Innymi słowy, jeśli zostanie znaleziona wartość bliska optymalnej, osiągane przez funkcje wyniki też będą bliskie optimum.
+Nie występują duże skoki w jakości rozwiązania, co może uprościć dostrajanie tego parametru tej funkcji.
+Tym samym funkcje wydają się być odporne na niewielkie zmiany wartości parametrów w okolicach ich optimów.
+Przykładowo dla wartości parametru 1,05 i 1,1 dla badania ze składem oznaczonym numerem 2, różnica w wyniku jest minimalna lub wręcz niezauważalna, ale z drugiej strony zmiana z 1,5 na 1,45 zaowocowała poprawieniem wyniku ponad dwukrotnie.
+Na uwadze trzeba jednak mieć to, że w pierwszym przypadku dla obu wartości otrzymywane są stosunkowo dobre wyniki w porównaniu z innymi funkcjami, a w przypadku drugiej zmiany obie wartości parametru były znacząco bardziej oddalone od wartości optymalnej.
+
+\par
+Dodatkowo w przypadku operatorów oknowych dodanie kandydatów nieciągłych pogarsza wyniki dla każdej z miar z wyjątkiem dwóch -- \emph{W Order} oraz \emph{W Term Frequency Order}, dla których jakość wyników została poprawiona o około 37\% dla wszystkich trzech przypadków filtrowania -- braku filtrowania, filtru opartego o Morfeusza oraz filtru Morfeusza i częstości.
+Powodem takiego wzrostu może być to, że obie miary badają szyk kandydata kolokacji, a tym samym przy dodaniu kolejnych relacji i kandydatów nieciągłych funkcje te miały około dwa razy więcej informacji o kandydatach, niż przy braku kandydatów nieciągłych.
+Dodać także należy, że dzięki poszerzeniu grona kandydatów miary te wysunęły się na prowadzenie jeśli chodzi o jakość wyników dla zbioru bez filtracji i filtracji z użyciem Morfeusza.
+Natomiast w przypadku zbioru poddanego filtrowaniu zbiorem słów Morfeusza i częstości funkcje te przestały być tak skuteczne, jednak ich wyniki w dalszym ciągu były godne uwagi.
+Z kolei w przypadku operatorów relacyjnych sytuacja jest prawie taka sama, czyli zachodzi ogólne pogorszenie wyników z wyjątkiem uzyskanych miarami opartych o szyk -- \emph{W Order} oraz \emph{W Term Frequency Order}.
+Istnieją jednak pewne różnice.
+Tym razem miary oparte o szyk wysunęły się na prowadzenie we wszystkich trzech przypadkach związanych z filtrowaniem danych, a nie tylko dwóch pierwszych.
+Dodatkowo w tym przypadku wzrost jakości rozwiązań generowanych przez miary oparte o szyk wyniósł około 81\%, 88\% oraz 98\% dla odpowiednio trzech kolejnych sposobów filtracji -- braku filtracji, Morfeusz, Morfeusz i częstość większa od pięciu.
+
+\par
+Istotną obserwacją może być też to, że funkcje z rodziny \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} zdają się mieć jedynie pojedyncze optima dla swojego parametru, a jeśli tak jest (wyniki wydają się to potwierdzać), to proces optymalizacji tego parametru -- w dodatku jednego, powinien być zadaniem dość prostym.
+Niestety optymalna wartość parametru dla obu funkcji jest różna, a dodatkowo zmienna dla odmiennych zestawów danych.
+Mimo to wydaje się, że można wydzielić pewne zakresy wartości dla tych parametrów, w obrębie których można próbować optymalizować wartość wykładnika.
+Dla \emph{W Specific Exponential Correlation} zakres taki można spróbować ustalić w przedziale od 0,0+ do 1,3.
+Sytuacja jest trudniejsza dla \emph{Specific Exponential Correlation}, ponieważ w większości przypadków zakres taki można byłoby ograniczyć do wartości od mniej niż 3,0 do 4,1, ale w kilku sytuacjach zakres ten należałoby rozszerzyć do nawet 6,0.
+Należy jednak nadmienić, że w sytuacji, w której \emph{Specific Exponential Correlation} osiąga dobre wyniki dla parametru o wartości 6,0, nie znajduje się ona w czołówce najlepszych funkcji (ich 5\%).
+Dodatkowo istotnym jest, że są to tylko propozycje zakresów wartości parametrów dla tych miar ustalone przez autora tej pracy na podstawie konkretnego zbioru danych, które jednak mogą być pomocne do wyznaczenia wartości początkowej optymalizowanego parametru.
+
+\par
+Ciekawym jest także fakt, że przyjęta przez autora niniejszej pracy ziarnistość optymalizacji tych parametrów pozwala na dokładność optymalizacji umożliwiającą dostrojenie parametrów do wartości bliskiej optymalnej i dla której ich ewentualna zmiana o tę właśnie ziarnistość powoduje jedynie niewielkie zmiany jakości -- na poziomie czwartej cyfry licząc od pierwszej cyfry niezerowej wyniku\footnote{Przy zmianach wartości parametru zgodnie z przyjętą ziarnistością wyniki generowane przez miary praktycznie nie ulegały zmianom jeśli optymalizacja przebiegała w okolicy wartości parametru, dla którego osiągane przez funkcje rezultaty były najlepsze.}.
+Jednak powodem tego może być też to, o czym autor niniejszej pracy napisał wcześniej -- funkcje wydają się być odporne na niewielkie zmiany wartości parametrów w okolicach ich optimów dla danego zbioru danych.
+
+\par
+Należy jednak mieć na uwadze, że wszystkie zamieszczone tutaj wnioski pochodzą z pewnego określonego zbioru danych, a tym samym co do części z nich nie ma pewności, czy powtórzą się w przypadku pracy z innym zbiorem tekstów.
+
+
+\subsubsection{Miary dwuelementowe po wykonaniu dyspersji.}
+Dla podziału korpusu na 10 części najlepsze jakościowo wyniki zostały osiągnięte dla następujących miar asocjacyjnych: \emph{Sorgenfrei}, \emph{Specific Mutual Dependency}, \emph{Specific Frequency Biased Mutual Dependency}, \emph{W Specific Correlation}, \emph{T-Score}, \emph{Z-Score}, $ Pearson's $ $ Chi^{2} $, \emph{Loglikelihood}, \emph{W Order}, \emph{W Term Frequency Order} oraz zestaw miar \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} dla pewnych wartości ich jedynego parametru -- wykładnika.
+Zestaw najlepszych funkcji wyznaczony na podstawie wyników niniejszego badania zawiera ich znaczną liczbę.
+Jednak część z nich okazała się pomocna jedynie przy ekstrakcji kolokacji z kandydatów wyznaczonych za pomocą operatorów oknowych.
+
+\par
+Wykonanie podziału korpusu na 10 części i wykonanie dyspersji kandydatów na kolokacje za pomocą miary \emph{TF-IDF} pogorszyło jakość wyników generowanych przez wszystkie funkcje.
+Efekt taki nie był spodziewany, a powodem zaistniałej sytuacji może być przykładowo to, że teksty źródłowe w korpusie \emph{KIPI} nie zostały pogrupowane tematycznie.
+Brak grupowania może zaowocować rozrzuceniem zwrotów i sformułowań z danej dziedziny tematycznej na przestrzeni całego korpusu, a to mogłoby tłumaczyć problem pogorszenia się wyników.
+Strona internetowa \emph{Korpusu IPI PAN} \cite{korpus_ipi_pan} nie zawierała informacji o zawartości tematycznej tekstów składowych korpusu (jedynie jego próbki) ani informacji o ich zgrupowaniu lub jego braku.
+Autor niniejszej pracy nie znalazł także takich informacji w publikacji traktującej o korpusie \emph{KIPI}\cite{korpus_ipi_pan_publikacja}.
+
+\par
+Istnieje też możliwość wystąpienia innego problemu -- zbyt małej, wybranej arbitralnie ziarnistości podziału korpusu na części.
+Na potrzeby tego badania korpus \emph{KIPI} został podzielony na 10 ciągłych części (każda z nich zawierała około 10\% tekstu z korpusu).
+Źródła nie podają informacji o zawartości tematycznej artykułów ani o procentowej zawartości każdego działu tematycznego w pełnym korpusie \emph{KIPI} \cite{korpus_ipi_pan}\cite{korpus_ipi_pan_publikacja}.
+Takie informacje dostępne są jedynie dla próbki korpusu i znajdują się one na stronie internetowej \emph{Korpusu IPI PAN} \cite{korpus_ipi_pan}.
+
+\par
+Dwukrotne zwiększenie ziarnistości (podział na 20 części) spowodowało poprawę jakości generowanych rozwiązań w stosunku do wyników z poprzedniego badania w każdym przypadku.
+Wzrost jakości sięgnął nawet około 50\% w stosunku do poprzedniego badania, ale taki przeskok nie spowodował nawet wyrównania wyników osiągniętych przy badaniu korpusu bez podziału i dyspersji.
+Wykonanie dyspersji tą metodą spowodowało osiągnięcie wyników na poziomie od około 30\% do 60\% jakości wyników badań przeprowadzonych na korpusie \emph{KIPI} bez dyspersji.
+
+\par
+Najlepsze jakościowo wyniki zostały osiągnięte dla następujących miar asocjacyjnych: \emph{W Specific Correlation}, \emph{Specific Frequency Biased Mutual Dependency}, \emph{T-Score}, \emph{Loglikelihood}, \emph{W Order}, \emph{W Term Frequency Order} oraz zestaw miar \emph{Specific Exponential Correlation} i \emph{W Specific Exponential Correlation} dla pewnych wartości ich parametru.
+Opisany zestaw funkcji uległ zmianie w stosunku do poprzedniego badania wpływu dyspersji na jakość wyników, ale w konkretny sposób, ponieważ nie pojawiła się żadna nowa funkcja w tym zestawie, a został on jedynie okrojony.
+Pierwszą obserwacją jest to, że być może dobre wyniki pewnych funkcji w poprzednim badaniu były spowodowane jedynie ogólnie wynikami niskiej jakości.
+Potwierdzeniem poprawności takiej obserwacji może być przykład miary \emph{Sorgenfrei}, która okazała się być jedną z najlepszych w poprzednim badaniu (jej wynik w poprzednim badaniu jest zbliżony do wyniku w tym badaniu), natomiast wynik funkcji \emph{Loglikelihood} jest zauważalnie lepszy.
+Innymi słowy pojawienie się miary \emph{Sorgenfrei} w gronie najlepszych mogło być spowodowane ogólnym obniżeniem jakości wszystkich funkcji z wyjątkiem właśnie tej -- było jej łatwiej osiągnąć wynik pozwalający na uplasowanie się w czołówce.
+
+\par
+Niniejsze i poprzednie badanie pokazują, że taka metoda dyspersji nie spełnia oczekiwań w przypadku badanego korpusu \emph{KIPI}.
+Nie można jednak jednoznacznie stwierdzić, że winna jest sama metoda.
+Powodem takiej niemożności są informacje zamieszczone przez autora niniejszej pracy przy omawianiu poprzedniego badania, dyspersji korpusu podzielonego na 10 części, a mianowicie brak informacji o grupowaniu tematycznym tekstów składowych korpusu \emph{KIPI}.
+
+
+\subsubsection{Sieć neuronowa dla krotek dwuelementowych.}
+Porównując wyniki sieci z funkcjami asocjacyjnymi zauważyć można, że sieci okazały się dawać lepsze jakościowo wyniki jedynie w części przypadków -- badań, a szczególnie w badaniu numer jeden, gdzie przewaga najlepszej z sieci nad najlepszą miarą sięgnęła prawie 23\%.
+Sumarycznie jednak perceptrony wielowarstwowe osiągają raczej gorsze wyniki niż funkcje, a powodem takiego stanu rzeczy może być duże niedoreprezentowanie klasy pozytywnej. 
+Ważne jednak jest, że najlepszy z wyników osiągniętych przez sieci jest lepszy niż najlepszy wynik najlepszej z miar asocjacyjnych -- obrazuje to rezultat badania osiemnastego.
+Ta różnica jest co prawda minimalna i sięga niecałych 0,2\%, niemniej sieci okazały się być najskuteczniejsze.
+
+\par
+Wyniki sieci są znacząco lepsze od wyników miar jeśli wykona się podpróbkowanie klasy negatywnej. 
+Zbalansowanie klas spowodowało znaczny wzrost jakości wyników generowanych zarówno przez sieci neuronowe, jak i przez miary asocjacyjne.
+Analizując wyniki zauważyć jednak można, że wzrost jakości wyników sieci jest znacznie większy niż wzrost wyników miar, a dodatkowo w większości badań perceptrony wielowarstwowe okazały się nawet prawie czterokrotnie lepsze (3,8433) niż miary asocjacyjne.
+Ponadto wyniki najlepszej z sieci uplasowały się na poziomie większym o ponad 7\% niż wynik najlepszej z miar asocjacyjnych. 
+Perceptron wielowarstwowy zdołał osiągnąć wynik na poziomie ponad \emph{0,966} i mimo, że okazał się być lepszy tylko o 7\%, trzeba mieć na uwadze poziom tego wyniku jak i jakość najlepszej z miar, która osiągnęła prawie \emph{0,899}.
+Innymi słowy w takiej skali polepszenie wyniku o ponad 7\% może być znaczące\footnote{Zwiększenie jakości wyniku z prawie 0,9 do niemal 0,97 jest duże, ponieważ maksymalna możliwa do osiągnięcia jakość rozwiązania jest równa 1.} dla pewnych systemów.
+Na uwagę zasługuje też wynik sieci w badaniu numer trzy, gdzie najlepsza z nich osiągnęła wynik prawie czterokrotnie lepszy niż miary.
+Badanie to było przeprowadzone na zbiorze danych bez użycia filtru relacji opartego o części mowy, a mimo to perceptron osiągnął wynik na poziomie \emph{0,8813}, co stanowi prawie \emph{0,98}\% wyniku osiągniętego przez najlepszą z miar asocjacyjnych w dowolnym z badań, a zaznaczyć trzeba, że maksymalna możliwa do osiągnięcia kompletność na zbiorze numer trzy jest większa niż na jakimkolwiek innym zbiorze filtrowanym za pomocą operatorów \emph{WCCL}.
+Dodatkowo brak zastosowania jakichkolwiek filtrów pozwolił zachować maksymalną możliwą do osiągnięcia kompletność przy jednoczesnym uplasowaniu się wyniku najlepszej z sieci neuronowych na poziomie \emph{0,61}.
+Ciekawym może być fakt, że w drugiej piętnastce części badań sieci osiągały zawsze lepsze wyniki na zbiorach poddanych maksymalnej filtracji (częstość, Morfeusz, relacje); w zbiorach poddanych częściowej filtracji (Morfeusz, relacje) sieci okazały się lepsze już tylko w trzech z pięciu przypadków, a w przypadku wykorzystania już tylko filtrów \emph{WCCL} miary przodowały w każdym z pięciu badań.
+Wnioskiem z tej obserwacji może być to, że miary są bardziej odporne na gorszą jakość danych.
+
+\par
+Zauważyć można, że sieci neuronowe o mniejszej wartości parameteru odpowiedzialnego za szybkość uczenia osiągały lepsze wyniki -- więcej rezultatów w okolicy najlepszych z wyników i o lepszej jakości.
+Jeśli chodzi o liczbę neuronów w warstwach ukrytych, różnice w osiąganych wynikach nie zmieniają się zbytnio przy zwiększaniu rozmiarów warstw, a znacznie bardziej istotne jest przygotowanie danych.
+Najlepsze wyniki sieci osiągały w badaniach numer 12 i 30, czyli w przypadkach ekstrakcji tylko relacji częstych i po wykonaniu filtracji z wykorzystaniem Morfeusza i częstości.
+Dodatkowo zauważyć można, że w tych przypadkach, a także w badaniu numer 24, sieci zwracały wyniki o podobnej jakości mimo różnic w parametrach tych perceptronów wielowarstwowych.
+
+\par
+Podsumowując analizę niniejszego badania zauważyć należy, że zbalansowanie klas ma ogromny wpływ na jakość wyników generowanych przez perceptrony wielowarstwowe.
+Dodatkowo potrafią one radzić sobie w tego typu zadaniach kilkukrotnie lepiej niż pojedyncze miary asocjacyjne.
+Zaznaczyć trzeba jednak, że niniejszy zbiór danych został utworzony sztucznie, a tym samym nie oddaje dokładnie realiów problematyki omawianej w niniejszej pracy, jednak mimo to klasyfikatory mogą okazać się bardzo dobrym narzędziem w procesie ekstrakcji wyrażeń wielowyrazowych.
+
+
+\subsubsection{Miary wieloelementowe.}
+Wyniki obrazują, że najlepszą miarą (przynajmniej dla przeprowadzonych i opisanych tutaj badań) spośród grona wszystkich kandydatów jest \emph{Specific Exponential Correlation} z dokładnością do jej parametru -- wykładnika.
+Najlepszy globalnie wynik został osiągnięty dla badania numer trzy i wartości wykładnika równej 4,2, natomiast dla parametru w okolicach wartości 4,6 funkcja wydaje się być najlepsza w ogólności -- dostarcza dobrych jakościowo wyników dla wszystkich rodzajów przeprowadzonych badań.
+Trzeba jednak mieć na uwadze, że część wyników osiągniętych przez miarę \emph{Fair Dispersion Point Normalization} okazała się lepsza niż najlepsze z wyników poprzednich 72 miar, ale jednak najlepszy wynik globalnie został osiągnięty przez \emph{SEC}.
+Ciekawą obserwacją jest, że \emph{FDPN} okazała się być najlepszą z czterech miar heurystycznych tutaj zastosowanych -- w każdym z badań.
+Interesujące może być to, że najlepszy z wyników został osiągnięty w badaniu, które nie stosuje najmocniejszych filtrów, a jego zestaw relacji nie został ograniczony tylko do relacji częstych.
+Taka anomalia może jednak być spowodowana specyfiką niniejszego zbioru danych, a raczej małym zbiorem testowym wyrażeń wielowyrazowych długości trzech elementów.
+Innym wnioskiem może być gorszy sposób doboru relacji częstych niż w przypadku kolokacji dwuelementowych ze względu na niskie jakościowo wyniki podzbiorów wykorzystujących ten zestaw relacji.
+
+
+\subsubsection{Sieć neuronowa dla krotek trójelementowych.}
+Wyniki pokazują, że jedynie w jednym z badań sieć osiągnęła lepszy wynik niż miary.
+Powodem tego może być bardzo duże niezrównoważenie klas oraz niedopracowany i mały zbiór testowy, a także zwiększony poziom trudności problemu.
+
+\subsubsection{Miary mieszane.}
+Badania wykazały bardzo słaby wynik dla zbioru testowego, w uczącym wynik był poprawiony o około 8\%, ale w przypadku testowego uplasował się na pozycji około 20-25\% gorszym niż najlepsze funkcje.
+
+
+\subsection{Podsumowanie i zebrane wnioski z badań.}
+
+\subsubsection{Obserwacje.}
+Problem ekstrakcji kolokacji jest złożony i trudny do rozwiązania, a powodów tego faktu jest przynajmniej kilka.
+
+\par
+Istnieje niewiele dostępnych zbiorów kolokacji, które są oznaczone choćby dwoma etykietami -- wyrażenie wielowyrazowe lub nie wyrażenie.
+Powodować to może trudności we właściwej ocenie wyników lub wiązać się może z dużymi kosztami czasowymi lub materialnymi przy próbie ręcznej oceny kandydatów na kolokacje z dużych korpusów tekstowych przez lingwistów w celu pozyskania dobrze opisanych zbiorów.
+Innym podejściem może być ograniczenie zbiorów danych i ich ręczna ocena przez lingwistów w celu zmniejszenia wymaganych zasobów, ale taki zbiór odbiegać może mocno od rzeczywistych zabiorów danych, a tym samym badania na nim mogą być teoretyczne i bez możliwości wykorzystania opracowanych rozwiązań praktycznie.
+
+\par
+Drugim problemem może być stosunkowo mały zasób literatury traktującej o ekstrakcji wyrażeń wielowyrazowych, chociaż ta tematyka jest poruszana.
+Dodatkowo literatury zajmującej się językiem polskim jest jeszcze mniej, ponieważ nie było prowadzonych jeszcze na szerszą skalę badań na dużych korpusach w języku polskim.
+Efektem małej popularności badań jest między innymi mała dostępność źródeł, z których można pozyskać wzorce strukturalne tworzące często poprawne wyrażenia wielowyrazowe.
+
+\par
+Sama definicja wyrażenia wielowyrazowego była tworzona wielokrotnie i na wiele sposobów, a tym samym już na początku rozpoczynania badań należało zastanowić się nad tym, którą z nich wybrać lub czy byłoby lepiej opracować własną.
+Dobór definicji może być kluczowy dla jakości osiąganych wyników.
+
+\par
+Kolejny problem często wiąże się z automatycznym przetwarzaniem języka naturalnego, dość nową, obszerną i nie do końca ścisłą dziedziną nauki, co potęguje trudność zadania.
+Dodatkowo należy pamiętać, że język jest językowi nierówny, jeśli pod uwagę bierze się jego trudność.
+Przykładowo język angielski jest uważany za stosunkowo prosty w porównaniu z językami słowiańskimi posiadającymi bogatą fleksję.
+Pisząc o tym autor miał także na myśli to, że ekstrakcja kolokacji jest procesem złożonym, w którym każda z warstw może wnosić pewien błąd propagowany do dalszych warstw.
+Przykładowo błędy tagera mogą propagować się na etap ekstrakcji kandydatów, który z kolei może mieć różną jakość ze względu na zastosowane wzorce strukturalne.
+
+\par
+Przygotowanie danych nie sprowadza się tylko do wybrania korpusu i wyznaczenia wyrażeń wielowyrazowych na potrzeby weryfikacji wyników czy nauki klasyfikatorów.
+Ważnym krokiem jest dobór typów strukturalnych, co jest problemem samym w sobie -- rozbudowanym, czasochłonnym i wymagającym posiadania wiedzy dziedzinowej.
+Także dobór innych filtrów może mocno wpływać na wyniki i być zadaniem nietrywialnym.
+
+\par
+Liczba możliwych do przeprowadzenia badań jest ogromna.
+Do wyboru są miary asocjacyjne, klasyfikatory i inne rankery, filtry, typy strukturalne, funckje dyspersji, dobór tekstów, sposób budowy danych statystycznych i decyzja o tym, z jakiego grona kandydatów ekstrahować wyrażenia wielowyrazowe; nawet sam dobór sposobu oceny wyników czy funkcji oceniającej może być problematyczny.
+
+\par
+Wnioskiem z badań jest to, że różne sposoby budowy informacji statystycznych (np. z wykorzystaniem relacji nieciągłych lub ze wzbogaceniem danych kandydatami pozyskanymi za pomocą relacji oknowych) może mieć duży wpływ na wyniki, podobnie jak filtrowanie.
+Zauważyć można jednak, że zależnie od badanego zbioru danych różne funkcje osiągają wyniki różnej jakości i różne z nich bywają najlepsze dla konkretnych wariantów przygotowania zbioru danych.
+Jednak na podstawie przeprowadzonych badań metod ekstrakcji wyrażeń dwuelementowych można określić zestaw miar asocjacyjnych, które często osiągają bardzo dobre lub najlepsze wyniki w wielu wariantach badań.
+Zostały one zamieszczone w tabeli \ref{ending_best_measures} wraz z komentarzem.
+Warto zaznaczyć, że dwie funkcje -- \emph{Frequency} oraz \emph{Expected Frequency} -- mimo swojej prostoty osiągały w pewnych przypadkach zadziwiająco dobre wyniki.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ p{0.3\linewidth} | p{0.6\linewidth} }
+	\toprule
+	\textbf{funkcja}	& \textbf{komentarz}	\\
+	\midrule
+	\emph{W Specific Correlation}	& funkcja generowała jedne z najlepszych wyników w każdym zestawie badań dla dużej liczby wariantów w nich zawartych; funkcja była jedną z najlepszych dla od 7 do 14 z 30 wariantów badań w każdym z zestawie badań; trzeba mieć na uwadze, że jest to szczególna wersja funkcji \emph{W Specific Exponential Correlation}, a tym samym można byłoby ją odrzucić z grona tutaj zaproponowanych funkcji najlepszych i zmniejszyć niniejsze grono; \\
+	\hline
+	\emph{Specific Frequency Biased Mutual Dependency}	& analogicznie do funkcji \emph{W Specific Correlation}; była jedną z najlepszych dla od 2 do 11 wariantów w zależności od zestawu badań; trzeba mieć na uwadze, że jest to szczególna wersja funkcji \emph{Specific Exponential Correlation}, a tym samym można byłoby ją odrzucić z grona tutaj zaproponowanych funkcji najlepszych; \\
+	\hline
+	\emph{Loglikelihood}	& analogicznie do funkcji \emph{W Specific Correlation} i \emph{Specific Frequency Biased Mutual Dependency}; jedna z najlepszych dla od 7 do 14 wariantów badań;\\
+	\hline
+	\emph{W Order}	& funkcja sprawdzała się dobrze w pewnych przypadkach, zwłaszcza w badaniach od numeru szesnastego; była jedną z najlepszych lub najlepszą w od 8 do 13 wariantów badań we wszystkich zestawach badań;\\
+	\hline
+	\emph{W Term Frequency Order}	& funkcja osiągała raczej gorsze wyniki niż wersja 71, ale dalej dobre i jedne z najlepszych w od 3 do 11 wariantów badań w różnych zestawach;\\
+	\hline
+	\emph{Specific Exponential Correlation}	& niniejsza funkcja potrafiła osiągać dobre wyniki w zasadzie w każdym badaniu, ale zdaje się jednocześnie być bardzo wrażliwa na parametr; mimo to dobrą wartością parameteru zazwyczaj jest 4,2, czasem 4,6, jednak w ogólności wartości w okolicy liczby 4,4; \\
+	\hline
+	\emph{W Specific Exponential Correlation}	& miara osiąga jedne z najlepszych wyników w pewnych badaniach, warto jednak byłoby przeprowadzić więcej badań, dla niższych wartości parametru w celu jego optymalizacji; dobrymi wartościami tego parametru okazały się liczby w okolicy 1,0;\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw najlepszych funkcji wybranych na podstawie badań, z komentarzami]{Zestaw najlepszych funkcji wybranych na podstawie badań, z komentarzami.}
+\label{ending_best_measures}
+\end{table}
+
+W kontekście sieci neuronowych sytuacja jest trudniejsza, ponieważ dla pełnych zbiorów danych -- niepoddanych podpróbkowaniu, różne sieci osiągają najlepsze wyniki dla różnych badań, a przez co autorowi niniejszej pracy nie udało się ustalić złotego rozwiązania.
+Możliwe, że sieci są dość odporne na parametry i zmianę liczby neuronów w warstwach ukrytych przy badaniu jakości dostarczanych przez nie rozwiązań ze zbiorów danych.
+Wykonanie podpróbkowania pozwoliło zaobserwować, że mniejsze wartości parametru odpowiadającego za szybkość uczenia się sieci neuronowej sprawiają, że osiągane przez ten klasyfikator wyniki są lepsze.
+Jednak liczba neuronów w warstwach ukrytych zdaje się nie wpływać na nie tak mocno, jak szybkość uczenia.
+
+\par
+Biorąc pod uwagę wyniki miar trójelementowych zaobserwować można, że miara \emph{Specific Exponential Correlation} jest najlepszą, a dobrą wartością parametru jest liczba w okolicy 4,5.
+Jeśli takie obserwacje i wnioski mogłyby zostać wysunięte dla innych zbiorów danych, można byłoby spróbować zaryzykować stwierdzenie, że niniejsza miara z parametrem w okolicy wartości 4,4 (biorąc pod uwagę także wyniki ekstrakcji krotek dwuelementowych) jest funkcją osiągającą dobre wyniki przy jednoczesnej dość dużej uniwersalności w odniesieniu do różnie przygotowanych zestawów danych.
+Obiecujące wyniki potrafią także generować miary heurystyczne, a można to zaobserwować dzięki rezultatom dostarczonym przez miarę \emph{Fair Dispersion Point Normalization}.
+Wyniki sieci neuronowych nie różniły się w swojej charakterystyce od wyników sieci ekstrahujących kolokacje dwuelementowe -- nie można ustalić najlepszej z nich.
+
+\par
+Część sieci jest bardzo wrażliwa na zrównoważenie klas co można zaobserwować porównując wyniki badań zbiorów przed i po podpróbkowaniu klasy negatywnej.
+
+\par
+Dla zadania ekstrakcji wyrażeń dwuelementowych zbadanych zostało 30 sposobów przygotowania zbioru danych do ekstrakcji kolokacji.
+Na podstawie wyników można wskazać kilka z nich jako te, na podstawie których osiągane rezultaty są zazwyczaj w czołówce.
+Tabela \ref{ending_best_data_sets_part_1} prezentuje zestaw tych sposobów przygotowania danych.
+Kolejność wierszy w tabeli nie jest przypadkowa, ponieważ pierwszy z wierszy opisuje sposób przygotowania zestawu danych, dzięki któremu udało się osiągnąć najlepsze wyniki.
+Każdy kolejny rezultat był gorszy od poprzedniego, ale dalej utrzymywał się na relatywnie wysokim poziomie.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | l | l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{źródło danych statystycznych}			& \textbf{źródło kandydatów}		& \textbf{filtry}					\\
+	\midrule
+	18	& relacje i okno, ciągłe				& częste relacje ciągłe	& morfeusz, częstość $>$ 5	\\
+	12	& relacje ciągłe						& częste relacje ciągłe & morfeusz, częstość $>$ 5	\\
+	30	& relacje i okno, ciągłe i nieciągłe	& częste relacje ciągłe	i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	24	& relacje ciągłe i nieciągłe			& częste relacje ciągłe i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 1]{Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 1.}
+\label{ending_best_data_sets_part_1}
+\end{table}
+
+Na podstawie zaprezentowanego zestawienia zauważyć można, że filtrowanie odegrało kluczową rolę w poprawie osiąganych wyników, każdy z 4 najlepszych sposobów przygotowania danych bazował na filtrowaniu typów strukturalnych, słowniku Morfeusza oraz częstości.
+Nie jest to zaskakujące, bowiem im bardziej ograniczony zbiór, tym łatwiej generować dobre wyniki, oczywiście jeśli filtrowanie jest wykonane w odpowiedni sposób.
+Drugą obserwacją może być to, że dodanie kandydatów pozyskanych za pomocą relacji oknowych do zestawu danych statystycznych, na podstawie których obliczane są miary asocjacyjne, może zwiększyć jakość osiąganych wyników.
+Za potwierdzenie tego wniosku można uznać obserwację, że wiersz drugi i czwarty w taeli \ref{ending_best_data_sets_part_1} opisują sposób przygotowania zbiorów danych taki sam jak odpowiednio wiersz pierwszy i trzeci, ale z odrzuceniem kandydatów pozyskanych za pomocą relacji oknowych w procesie budowy źródła danych statystycznych.
+Dodatkowo widać, że dodanie relacji nieciągłych spowodowało spadek jakości rozwiązań, ale nadal utrzymując go na wysokim poziomie, a dzięki dodaniu do rozważanego grona i do danych statystycznych także kandydatów nieciągłych kompletność rozwiązania nie stała się mniejsza.
+Istotną obserwacją jest to, że w praktycznie wszystkich zestawach badań pierwsze trzy sposoby przygotowania danych umożliwiały miarom osiągnięcie najlepszych wyników spośród wszystkich 30 sposobów -- szczególnie dotyczy to sposobu oznaczonego numerem 18.
+Wyjątkiem była sytuacja z podpróbkowaniem klasy negatywnej w przypadku miar asocjacyjnych, tam zbiór był inny, ale w przypadku sieci neuronowych i ekstrakcji wyrażeń trójelementowych zestaw jest taki sam, a nawet rozszerzony jeszcze o dwa inne zbiory zamieszczone w następnym zestawieniu \ref{ending_best_data_sets_part_2} -- sposoby przygotowania oznaczone numerami 15 oraz 3.
+
+\par
+Tabela \ref{ending_best_data_sets_part_2} prezentuje zestawów danych, dzięki którym także można było osiągnąć dobre wyniki, ale w środowisku sztucznym -- po wykonaniu podpróbkowania klasy negatywnej do 95\%.
+Niniejsze zestawienie nie ma jednak tej cechy co poprzednie -- wiersz bliższy początkowi tabeli niekoniecznie jest sposobem przygotowania danych, na którym osiągnięto lepsze wyniki niż na jego następnikach w tabeli.
+W ogólności jednak wyniki pozyskane na tych zestawach danych były dobre, a niekiedy najlepsze jak np. w przypadku sposobu szesnastego dla badań ekstrakcji wyrażeń dwuelementowych po wykonaniu podpróbkowań klasy negatywnej do 80\% i 95\%.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | l | l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{źródło danych statystycznych}			& \textbf{źródło kandydatów}		& \textbf{filtry}					\\
+	\midrule
+	16	& relacje i okno, ciągłe				& częste relacje ciągłe	&							\\
+	17	& relacje i okno, ciągłe	 			& częste relacje ciągłe	& morfeusz					\\
+	15	& relacje i okno, ciągłe				& relacje ciągłe		& morfeusz, częstość $>$ 5	\\
+	10	& relacje ciągłe						& częste relacje ciągłe &							\\
+	11	& relacje ciągłe						& częste relacje ciągłe & morfeusz					\\
+	3	& okno ciągłe 							& okno ciągłe			& morfeusz, częstość $>$ 5	\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 2]{Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 2.}
+\label{ending_best_data_sets_part_2}
+\end{table}
+
+
+\subsubsection{Miary asocjacyjne.}
+Autor niniejszej pracy zaproponował kilka nowych miar asocjacyjnych, głównie \emph{W Order} i \emph{W Term Frequency Order}, które osiągały najlepsze wyniki w części badań, a dodatkowo różniły się ideą obliczeń, ponieważ bazowały na badaniu częstości szyków -- ich stosunków.
+Te dwie funkcje zostały wymienione jako pierwsze i głównie dlatego, że są one pomysłem autora niniejszej pracy, który nie spotkał się z tego typu funkcją w literaturze.
+
+\par
+Funkcja autora niniejszej pracy \emph{W Specific Exponential Correlation} jest połączeniem miar \emph{Specific Exponential Correlation} oraz \emph{W Specific Correlation}.
+Zmiana w funkcji jest niewielka, ale osiągane przez nią wyniki są relatywnie dobre, w części przypadków najlepsze.
+
+\par
+Część z zaproponowanych funkcji wydaje się być banalna, jak na przykład \emph{Expected Frequency} oraz \emph{Inversed Expected Frequency}, więc nazwanie tego oryginalnym pomysłem autora mogłoby być nadużyciem.
+Jednak mimo swojej prostoty pierwsza z tych funkcji potrafiła osiągać dobre wyniki, razem z częstością, w niektórych badaniach.
+Funkcje zostały zapisane jako autorskie, ale ich prostota jest na tyle duża, że autor nie traktuje ich jako swojego własnego osiągnięcia.
+
+\par
+Innym przykładem funkcji zaimplementowanych ze względu na pomysł autora jest \emph{Specific Exponential Correlation}, która została wymyślona na bazie obserwacji podobieństwa miar \emph{PMI}, \emph{Mutual Dependency} oraz \emph{Frequency biased Mutual Dependency} i jednocześnie, czego autor dowiedział się po dalszym zapoznawaniu się z literaturą, jest inaczej zapisaną wersją funkcji \emph{FbSCP} autorstwa Aleksandra Buczyńskiego \cite{buczynski} -- a tym samym nie jest tworem nowym. Dobre wyniki były także osiągane przez pomysł autora niniejszej pracy na rozszerzenie funkcji \emph{PMI} o element związany z mnożeniem wyniku przez częstość, ale funkcja ta nie różni się wiele od już istniejących, a podobne można znaleźć w literaturze \cite{wsec}.
+
+\par
+Pozostaje jeszcze funkcja $ W Pearson's \: Chi^{2} $ będąca modyfikacją $ Pearson's \: Chi^{2} $.
+Obie funkcje generują w zasadzie takie same jakościowo wyniki, więc autor pracy nie poświęcił wiele czasu swojej propozycji miary i nie uznaje jej za osiągnięcie godne wyszczególnienia.
+Same motywacje do zastosowania funkcji mogą być interesujące, ale modyfikacja wprowadzona przez autora niniejszej pracy nie zapewniła zwiększenia jakości generowanych wyników.
+
+\par
+Istotnym wkładem własnym może być wiele propozycji generalizacji istniejących już oraz nowych miar asocjacyjnych.
+Autor czerpał inspiracje z własnych pomysłów, obserwacji, skojarzeń, a także z literatury, w tym głównie z pracy Sasa Petrovica, Jana Snajdera i Bojana Dalbelo Basica \cite{generalization_patterns} oraz pracy Tima Van de Cruysa \cite{mmi_w11}.
+Ze względu na fakt, że autor mocno posiłkował się literaturą nie twierdzi on, że jest pierwszym lub jedynym pomysłodawcą takich rozwiązań.
+
+\subsubsection{Narzędzie \protect\textit{MWeXtractor}.}
+Między innymi na potrzeby realizacji tematu niniejszej pracy autor utworzył zestaw programów i bibliotekę programistyczną przystosowane do ekstrakcji wyrażeń wielowyrazowych o różnych długościach z dużych korpusów tekstowych.
+
+
+\subsubsection{Zakres badań.}
+Autor pracy przeprowadził badania na dużym zbiorze tekstów języka polskiego -- ponad 250 milionów słów. 
+Zbadane zostały miary asocjacyjne, ich łączenie, a także klasyfikator w postaci perceptronu wielowarstwowego.
+Dodatkowo ekstrahowane były nie tylko wyrażenia dwuelementowe, ale także trójelementowe; możliwe jest również prowadzenie badań na krotkach dłuższych.
+
+
+\subsubsection{Perspektywy rozwoju prac i badań.}
+Wśród proponowanych kontynuacji i planów rozwoju prac i wymienić można sprawdzenie jakości wyników generowanych przez inne klasyfikatory.
+Zwiększenie rozmiaru zbioru testowego o nowe zestawy wyrażeń wielowyrazowych ze \emph{Słowosieci} także wydaje się być dobrą propozycją.
+Skupienie się na kolokacjach dłuższych niż dwuelementowe, ponowne przeprowadzenie lepszej optymalizacji parametrów dla kombinacji liniowej miar i zaimplementowanie kolejnych metod agregacji rankingów, a także zbadanie większego zakresu parametrów perceptronów wielowarstwowych, oraz sprawdzenie jakości wyników generowanych przez sieci neuronowe trzeciej generacji.
+Kontynuacja badań mogłaby opierać się na obserwacjach wyciągniętych z badań opisanych w niniejszej pracy i skupić na konkretnych miarach i sposobach przygotowania danych.
+
+
+\section{Podsumowanie} \label{s5}
+
+W raporcie przedstawiono koncepcję systemu do konstruowania dynamicznego słownika wielowyrazowych jednostek leksykalnych na podstawie korpusu tekstów. Opracowana metoda wydobywania jednostek wielowyrazowych składa się z 6 kroków:
+\begin{enumerate}
+	\item wydobycie krotek z korpusu tekstu;
+	\item obliczenie dyspersji częstości dla wydobytych krotek;
+	\item ekstrakcja kolokacji na podstawie wyuczonych klasyfikatorów;
+	\item badania jakościowe wydobytych kolokacji;
+	\item generowanie cech z wykorzystaniem miar asocjacyjnych do opisu jednostek;
+	\item ekstrakcja nowych jednostek wielowyrazowych na podstawie cech uzyskanych w punkcie 5.
+\end{enumerate}
+
+Opracowane metody zostały zaimplementowane w środowisku eksperymentalnym, w którym przeprowadzono badania w zakresie zarówno strojenia licznych parametrów poszczególnych algorytmów, jak również weryfikacji jakości opracowanych metod. Pierwsze wyniki pokazały, że uzyskiwana precyzja jest bardzo wrażliwa na parametry algorytmów, dlatego niezbędne są dalsze badania.
+
+\begin{thebibliography}{4}
+
+\bibitem{baldwin} Baldwin, T. i Su Nam K. (2009): Multiword Expressions. In Nitin Indurkhya i Fred J. Damerau (red.) Handbook of Natural Language Processing. Second Edition, CRC Press, Boca Raton, USA.
+
+%\bibitem{ccr}
+	%Berry M. W. (2003): Survey of Text Mining - Clustering, Classification, and Retrieval.
+
+\bibitem{broda} Broda, B., Derwojedowa, M. i Piasecki, M. (2008): Recognition of Structured Collocations in An Inflective Language. Systems Science 34, s. 27--36.
+
+\bibitem{buczynski}	
+	Buczyński A. (2004): Pozyskiwanie z Internetu tekstów do badań lingwistycznych. Praca magisterska.
+	Wydział Matematyki, Informatyki i Mechaniki, 	Uniwersytet Warszawski.
+
+\bibitem{mmi_w11}		
+	Cruys T. V.: Two Multivariate Generalizations of Pointwise Mutual Information. W: Proceedings of the Workshop on Distributional Semantics and Compositionality, s. 16--20.
+
+\bibitem{mutual_expectation}
+Dias G., Lopes J. G., Guillore S. (1999): Mutual Expectation: A Measure for Multiword Lexial Unit Extraction. W: Proceedings of VEXTAL, s. 133--138.
+	
+%\bibitem{aggregation}		
+	%Dinu A., Dinu P. L., Sorodoc I. T. (2014): Aggregation methods for efficient collocation detection.
+	%University of Bucharest.
+
+%\bibitem{evert}
+	%Evert S. (2004): The Statistics of Word Cooccurrences Word Pairs and Collocations.
+	%Uniwersytet Struttgart
+
+%\bibitem{firth}
+	%Firth J. R. (1957): A synopsis of linguistic theory 1930–55. In Studies in linguistic analysis.	The Philological Society, Oxford.
+
+\bibitem{klyk}	
+	Kłyk Ł. (2013): Metody sztucznej inteligencji w zwiększaniu skuteczności klasyfikatora. Praca magisterska.
+	Politechnika Wrocławska, 	Wrocław.
+
+\bibitem{hypermat}
+	Lim L. H. (2013): Tensors and hypermatrices. W: Handbook of Linear Algebra pod redakcją L. Hogben (Ed.), 
+	wydanie drugie, 
+	CRC Press, Boca Raton.
+		
+\bibitem{mit} Manning Ch. D., Schütze H. (1999): Foundations of Statistical Natural Language Processing.
+	Massachusetts Institute of Technology, 
+	wydanie drugie.
+
+	\bibitem{paradowski_beta}	
+	Paradowski M. (2014): Opracowanie formalnej analizy zależności pomiędzy współczynnikami służącymi do wykrywania wyrażeń wielowyrazowych oraz na tej podstawie opracowanie współczynnika uogólniającego. Politechnika Wrocławska.
+
+\bibitem{coling}
+  	Pecina P., Schlesinger P. (2006): Combining Association Measures for Collocation Extraction. W: Proceedings of the COLING/ACL on Main conference poster sessions, s. 651--658.
+  
+\bibitem{pecina_measures}
+Pecina P. (2010): Lexical association measures and collocation extraction. Language Resources and Evaluation, Volume 44, Issue 1-2, s 137--158.
+
+%\bibitem{pecina_resource}
+	%Pecina P.: Reference Data for Czech Collocation Extraction.
+	%W: Proceedings of LREC workshop towards a shared task for multiword expressions, s. 11--14.
+
+\bibitem{generalization_patterns}
+	Petrovic S., Snajder J., Basic B. D. (2010): Extending lexical association measures for collocation extraction. Computer Speech \& Language, Volume 24, Issue 2, s 383--394.
+
+	
+\bibitem{wcrft} Radziszewski A. (2013): A tiered CRF tagger for Polish. Studies in Computational Intelligence 467, s. 215--230.
+
+	 
+\bibitem{wccl}
+	Radziszewski A., Wardyński A., Śniatowski T. (2011): WCCL: A Morpho-syntactic Feature Toolkit. Lecture Notes in Computer Science Volume 6836, s. 434--441.
+	
+	\bibitem{fdpn}
+	Silva J. F., Lopes G. P. (1999): A Local Maxima method and a Fair Dispersion Normalization for extracting multi-word units from corpora.
+	Sixth Meeting on Mathematics of Language.
+
+%\bibitem{smadja_xtract}
+	%Smadja F. (1993): Retrieving Collocations from Text: Xtract. Journal of Computational Linguistics - Special issue on using large corpora: I archive. 
+%Volume 19 Issue 1, s. 143--177. 
+%MIT Press Cambridge, MA, USA.
+		
+\bibitem{fbmd}		
+	Thanopoulos A., Fakotakis N., Kokkinakis G. (2002): Comparative Evaluation of Collocation Extraction Metrics.
+	W: Proceedings of The 3rd Language Resources Evaluation Conference, s. 620--625.
+	
+
+\bibitem{kipi} http://korpus.pl/
+
+\bibitem{slowosiec}		
+	http://plwordnet.pwr.wroc.pl/wordnet/
+	
+\bibitem{dispersions}
+	Stefan Th. Fries: Dispersions and adjusted frequencies in corpora.
+	University of California, Santa Barbara.
+
+
+\end{thebibliography}
+\end{document}

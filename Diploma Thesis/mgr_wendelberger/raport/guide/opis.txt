@@ -1,0 +1,65 @@
+_s1.png:
+Po założeniu konta na DSpace i zalogowaniu się wybieramy opcję "My Account -> Submissions" (czerwona ramka).
+Następnie klikamy na link "start a new submission" (zielona ramka).
+Jeśli wcześniej dodaliśmy już jakieś pliki na repozytorium to ich lista powinna zostać wyświetlona poniżej (ramka żółta).
+
+_s2.png
+Po rozpoczęciu dodawania nowych danych do DSpace opcję Corpus (zielona ramka).
+Fragment widoku oznaczony czerwoną ramką obrazuje liczbę kroków, które należy wykonać, aby pliki zostały dodane. 
+Trzeba wykonać je wszystkie.
+
+_s3.png
+Po udanym dodaniu pliku w zakładce "Submissions" powinien pojawić się nowy wpis (zielona ramka).
+Należy kliknąć w nazwę nowego zasobu (czerwona ramka), aby zobaczyć informacje o nim i rozpocząć dalszy potok przetwarzania.
+
+_s4.png
+Zrzut ekranu przedstawia widok zawierający informacje o dodanym korpusie, metadane, pliki składowe oraz umożliwia rozpoczęcie przetwarzania dokumentów (ramka czerwona).
+Krok ten jest niezbędny w celu korzystania z narzędzi -- w tym także z Wielowyra.
+Wstępne przetwarzanie plików (czerwona ramka) może potrwać, ale po jego rozpoczęciu pojawi się panel pozwalający śledzić przebieg tego zadania.
+
+_s5.png
+Po wykonaniu przetwarzania wstępnego dokumentów składowych korpusu pojawi się kilka nowych opcji (czerwona ramka) umożliwiających wykorzystanie dodanego korpusu jako danych dla narzędzi takich jak "Wielowyr" i "Inforex".
+Wydobywanie wyrażeń wielowyrazowych jest możliwe dzięki pierwszej z nich.
+Po naciśnięciu przycisku "Export to Wielowyr" zostaniemy przekierowani do aplikacji umożliwiającej wykorzystanie oprogramowania do ekstrakcji wyrażeń wielowyrazowych.
+
+_s6.png
+Pierwszym krokiem jest zalogowanie się do aplikacji.
+Dane potrzebne do logowania są identyczne z tymi, które wykorzystywane są podczas autoryzacji na serwerze DSpace.
+
+_s7.png
+Po zalogowaniu użytkownik zostaje automatycznie przekierowany do ekranu ekstrakcji wyrażeń wielowyrazowych.
+Góra część widoku zawiera menu i zestaw możliwych do wykonania akcji (czerwona ramka).
+Zieloną ramką został otoczony element pozwalający wybrać korpus, który użytkownik chce wykorzystyać do ekstrakcji kolokacji.
+Możliwe jest dodanie słownej notki dla tego konkretnego zadania, aby użytkownik mogł w dogodny dla siebie sposób je opisać (ramka żółta).
+Po wybraniu korpusu należy dokonać decyzji, które z miar, funkcji i typów strukturalnych (relacji) mają zostać wykorzystane w procesie ekstrakcji (niebieska ramka).
+Funkcja dyspersji jest opcjonalna, może być wybrana tylko jedna.
+Miara ekstrakcji także może zostać wybrana tylko jedna, jej wybór jest obowiązkowy.
+Dodatkowo należy wybrać zestaw typów strukturalnych, które definiują jakie typy kolokacji mają być w tekście wyszukiwane.
+Nazwy miar, funkcji i relacji mogą być niejasne, ale po nakierowaniu na nazwę którejś z nich, we fragmencie okna oznaczonym ramką fioletową pojawi się jej dokładniejszy opis.
+Dodatkowo po kliknięciu w nazwę typu strukturalnego można pobrać na dysk plik z kodem źródłowym operatora (język WCCL).
+Kiedy wszystkie parametery zostaną ustalone należy rozpocząć zadanie klikając w przycisk "Wydobywaj" (błękitna ramka).
+
+_s9.png
+Po rozpoczęciu zadania otrzymamy informacje o tym ile zadań jest aktualnie dla nas przetwarzanych, ile maksymalnie zadań może być aktywnych jednocześnie oraz zaprezentowany zostanie link, który pozwoli nam śledzić status zadania.
+Link przekierowuje na stronę zawierającą informacje o wszystkich zadaniach użytkownika.
+
+_s10.png
+Panel pozwala na śledzenie statusu wykonywanych zadań, przeglądanie informacji o nich oraz przeglądanie części wyników (górna część rankingu), a także eksport jednostek do pliku w formacie CSV lub bezpośrednio do bazy "Wielowyra".
+Czerwoną ramką oznaczone zostały cztery różne zadania.
+Po kliknięciu w jedno z już zakończonych sukcesem zadań powinien pojawić się panel umożliwiający przeglądanie wyników (dolna część widoku).
+Panel umożliwia filtrowanie listy rankingkowej z wykorzystaniem zadanego zestawu słów (niebieska ramka).
+Użytkownik może podać kilka wyrazów oddzielonych spacjami w celu wyszukania tylko tych kolokacji, w skład których wchodzą wszystkie podane przez niego słowa.
+Zieloną ramką zaznaczone zostały dwa pola zawierające liczby. 
+Definiują one jak dużo jednostek ma być branych pod uwagę oraz od której jednostki należy zacząć prezentację.
+Oczywiście liczba pierwsza (od) nie może być mniejsza niż druga (do).
+Kolejność filtracji danych jest następująca: najpierw wyszukiwane są kolokacje, które zawierają dane słowa filtrujące (niebieska ramka), a następnie z pośród nich wybierane są te wyrażenia, które znajdują się pomiędzy podanymi liczbami (zielona ramka) włącznie.
+Kiedy filtry zostaną ustawione można wykonać jedną z czterech akcji.
+Dwie z nich oznaczone żółtą ramką związne są z prezentacją wyników w interfejsie webowym w aktualnym widoku.
+Pierwsza z nich to prezentacja pojedynczego rankingu, a druga wielu -- po jednym dla każdego typu strukturalnego.
+Dwie inne opcje to eksport jednostek (zgodnie z zasadami filtrowania) do pliku CSV, który może zostać pobrany na dysk (błękitna ramka) lub do bazy danych "Wielowyra" (różowa ramka) w celu ich dalszego przetwarzania w innych widokach narzędzia.
+Dodatkowo każde z zadań ma opcję jego usunięcia (fioletowa ramka, czerwony x), natomiast pełne wyniki każdego zadania, które zakończyło się sukcesem, moża pobrać w postaci spakowanego pliku CSV.
+
+_s11.png
+Zrzut ekranu prezentuje przykładowy wynik przeglądania jednostek za pomocą interfejsu webowego.
+Wykorzystane słowa filtrujące to "polski" i "wojsko", długość rankingu została ograniczona do pozycji od pierwszej (włącznie) do ósmej (włącznie).
+Po naciśnięciu w przycisk pokaż przy danej pozycji w rankingu wyświetlona zostanie tabela zawierająca formy napotkane wraz z ich częstościami.

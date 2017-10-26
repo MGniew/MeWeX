@@ -1,0 +1,40 @@
+///////////////////////////////////////////////
+@b:"20_AllVerbSiebieAB_2" (
+	or(
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			in(["się"], base[1]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 1)
+		),
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			inter(class[1], {qub}),
+			in(["się"], base[2]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 2)
+		),
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			inter(class[1], {qub}),
+			inter(class[2], {aglt}),
+			in(["się"], base[3]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 3)
+		)
+	)
+)
+
+@b:"20_AllVerbSiebieBA_2" (
+	and(
+		inter(class[1], {fin,impt,imps,inf,praet}),
+		in(["się"], base[0]),
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+)
+ 

@@ -1,0 +1,52 @@
+
+\chapter{Wstęp}
+
+\section{Cel pracy}
+Celem niniejszej pracy jest przeprowadzenie badań metod stosowanych do wydobywania wyrażeń wielowyrazowych i wyznaczenie metody lub zestawu metod, które osiągają najlepsze wyniki w procesie wydobywania kolokacji.
+Informacje o metodach mają być pozyskane głównie z literatury.
+Celem pracy ma być także zaproponowanie przez autora nowego rozwiązania oraz sprawdzenie wyników przez nie generowanych.
+Ważnym aspektem zadania jest przeprowadzenie badań na dużych zbiorach tekstowych w języku polskim.
+
+
+\section{Struktura pracy}
+Praca składa się z sześciu rozdziałów.
+
+\par
+Pierwszy rozdział jest wprowadzeniem do niniejszej pracy -- wstępem.
+
+\par
+Drugi porusza problematykę związaną z definicją kolokacji, przedstawione zostały ich cechy oraz przykładowe definicje kolokacji odnalezione w literaturze.
+Na końcu rozdziału podana została definicja wyrażenia wielowyrazowego stosowana na potrzeby pozyskania zbioru testowego wykorzystywanego w badaniach opisanych w pracy.
+
+\par
+Trzeci rozdział zawiera opisy metod ekstrakcji wyrażeń wielowyrazowych pozyskane z literatury.
+Opisany tutaj został także problem wydobywania kolokacji dłuższych niż dwuelementowe, poruszany w literaturze.
+
+\par
+Rozdział czwarty powstał z zamiarem opisania wykorzystywanych na potrzeby realizacji badań narzędzi i bibliotek programistycznych.
+Opisane tutaj narzędzia i zasoby są w większości wykorzystywane pośrednio lub bezpośrednio do współpracy (poza narzędziem \emph{SuperMatrix}) z pakietem \emph{MWeXtractor}.
+Znaczna część tego fragmentu pracy jest opisem wspomnianego pakietu programistycznego i narzędzi stworzonych przez autora pracy w celu ekstrakcji wyrażeń wielowyrazowych z dużych korpusów tekstowych.
+
+\par
+Piąty rozdział to prezentacja wykorzystanych zbiorów danych, ich statystyk, rezultatów ich weryfikacji, badań.
+Zawarte i omówione tutaj są także sposoby badania metod ekstrakcji wyrażeń wielowyrazowych i wyniki osiągnięte przez te metody.
+
+\par
+Ostatnio z rozdziałów -- szósty -- to podsumowanie pracy, zsumowany opis wkładu własnego autora pracy, a także wnioski wyciągnięte na podstawie przeprowadzonych badań i zdobytej dzięki zajmowaniu się tematyką związaną z poruszanym tutaj problemem wiedzy.
+
+
+\section{Wyjaśnienie ważniejszych terminów}
+Zamieszczona poniżej lista przedstawia wykaz ważniejszych terminów wraz z ich definicjami ustalonymi na potrzeby niniejszej pracy:
+
+\begin{itemize}
+	\setlength{\itemsep}{1em}
+	\item \textbf{wyraz} - na potrzeby niniejszej pracy termin ten określa dowolne słowo występujące w języku; w szczególności za wyraz uznawany będzie także pojedynczy znak; nie może on jednak zawierać żadnych znaków białych; termin ten jest stosowany zamiennie z określeniem \emph{słowo};
+	\item \textbf{zdanie} - sekwencja wyrazów w określonej kolejności, zakończona kropką;
+	\item \textbf{segment} - część tekstu ciągłego z zachowaniem kolejności jego składowych (przykładowo: zdanie, zbiór zdań lub paragraf);
+	\item \textbf{token} - pojedyncze wystąpienie jakiegoś bytu \cite[str. 22]{mit}; jednostka będąca obiektem rozważań lingwistycznych; element składowy danych tekstowych wykorzystywany w ich przetwarzaniu; często pojedynczy wyraz lub zdanie, rzadziej całe segmenty; token zawierać może też znaki specjalne, które nie wchodzą w skład wyrazów;
+	\item \textbf{częstość} - liczba, która określa ile razy w rozważanych danych tekstowych wystąpił dany byt, najczęściej słowo lub konkretny zbiór wyrazów;
+	\item \textbf{tagset} - zestaw metadanych wykorzystywany do opisu składowych tekstów języka;
+	\item \textbf{tager} - narzędzie wykonujące znakowanie morfosyntaktyczne elementów tekstu z wykorzystaniem określonego tagsetu; ewentualnie spełniać może także funkcję ujednoznaczniania znaczenia słów w przypadku ich polisemiczności;
+	\item \textbf{korpus} - zebrany na potrzeby analiz lingwistycznych zbiór tekstów; dane zawarte w korpusie mogą zawierać różne metadane opisujące zebrane w nim informacje; przykładem popularnych metadanych jest oznakowanie morfosyntaktyczne słów zawartych w tym zbiorze; pożądaną cechą korpusu jest zrównoważenie polegające na zapewnieniu w nim odpowiednich stosunków ilości danych ze wszystkich rejestrów stylistycznych języka\footnote{Styl języka rozumiany jako jeden z obszarów jego użycia, na przykład mowa potoczna, słownictwo naukowe, teksty pseudonaukowe, wiadomości, terminologia związana ze sztuką czy innymi dziedzinami wiedzy lub działalności ludzkiej itp.}, co ma zapewnić jego dużą reprezentatywność; część korpusów jest także określona mianem równoległych, co oznacza, że każdemu tekstowi zawartemu w korpusie przyporządkowany jest tekst z co najmniej jednego innego języka, a zestawione mogą być na różnym poziomie - zdania czy akapitu;
+	\item \textbf{słowo przetwarzane} - termin wprowadzony na potrzeby niniejszej pracy przez jej autora; określenie wyrazu, który podczas przeglądania korpusu jest aktualnie czytany;
+\end{itemize}  

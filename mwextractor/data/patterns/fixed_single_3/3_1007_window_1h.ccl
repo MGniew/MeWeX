@@ -1,0 +1,40 @@
+@b:"1007_Window3ABxC_3"(
+        and (
+                not(empty(orth[3])),
+
+                setvar($Pos1, 0),
+                setvar($Pos2, 1),
+                setvar($Pos3, 3)
+        )
+)
+
+@b:"1007_Window3AxBC_3"(
+        and (
+                not(empty(orth[3])),
+
+                setvar($Pos1, 0),
+                setvar($Pos2, 2),
+                setvar($Pos3, 3)
+        )
+)
+
+@b:"1007_Window3CxBA_3"(
+        and (
+                not(empty(orth[3])),
+
+                setvar($Pos1, 3),
+                setvar($Pos2, 1),
+                setvar($Pos3, 0)
+        )
+)
+
+@b:"1007_Window3CBxA_3"(
+        and (
+                not(empty(orth[3])),
+
+                setvar($Pos1, 3),
+                setvar($Pos2, 2),
+                setvar($Pos3, 0)
+        )
+)
+

@@ -1,0 +1,60 @@
+\documentclass[magister,archiwum,ramka]{dyplom}
+\usepackage[utf8]{inputenc}
+
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}	
+\usepackage{changepage}	% for table margins
+\usepackage{morefloats} % for solving floats limit problem
+
+% do not break footnote numbering
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+% table font
+\usepackage{floatrow}
+\DeclareFloatFont{tiny}{\small} % "scriptsize" is defined by floatrow, "tiny" not
+\floatsetup[table]{font=tiny}
+
+% table desc top
+%\usepackage[tableposition=top]{caption}
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+
+\author{Michał Jan Wendelberger}
+\title{Automatyczne wydobywanie i klasyfikowanie kolokacji z korpusów języka polskiego.}
+\titlen{Automatic Extraction and Classification of Collocations from Polish Corpora.}
+\promotor{dr inż. Maciej Piasecki, K-2}
+\wydzial{Wydział Informatyki i Zarządzania}
+\kierunek{Informatyka}
+\specjalnosc{Inteligentne Systemy Informatyczne}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{content/abstract.tex}
+
+\input{content/introduction.tex} 
+
+\input{content/collocation_definition.tex}
+
+\input{content/collocation_extraction.tex}
+
+\input{content/tools.tex}
+
+\input{content/research.tex}
+
+\input{content/ending.tex}
+
+\listoffigures
+\listoftables
+
+\input{content/bibliography.tex}
+
+\end{document}

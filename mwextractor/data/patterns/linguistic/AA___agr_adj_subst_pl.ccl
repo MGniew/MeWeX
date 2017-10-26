@@ -1,0 +1,12 @@
+///////////////////////////////////////////////
+@b:"AgrAdjSubstPl_2" (
+	and(
+		not(in(["coś"], base[1])),
+		inter(class[0], {adj,ppas,pact}),
+		inter(class[1], {subst,ger,depr}),
+		inter(nmb[0],{pl}),
+		agrpp(0,1, {nmb,gnd,cas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)   
+	)
+)

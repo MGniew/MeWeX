@@ -1,0 +1,20 @@
+///////////////////////////////////////////////  
+@b:"3_AllAdvPartAB_2" (
+	and(
+		inter(class[1], {pact,ppas}),
+		inter(class[0], {adv,qub}), 
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)
+
+@b:"3_AllAdvPartBA_2" (
+	and(
+		inter(class[0], {pact,ppas}),
+		inter(class[1], {adv,qub}), 
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+) 

@@ -1,0 +1,39 @@
+///////////////////////////////////////////////
+@b:"12_AllVerbSiebieAxB_2" (
+	or(
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			in(["się"], base[2]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 2)
+		),
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			inter(class[1], {qub}),
+			in(["się"], base[3]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 3)
+		),
+		and(
+			inter(class[0], {fin,impt,imps,inf,praet}),
+			inter(class[1], {qub}),
+			inter(class[2], {aglt}),
+			in(["się"], base[4]),
+
+			setvar($Pos1, 0),
+			setvar($Pos2, 4)
+		)
+	)	
+)
+
+@b:"12_AllVerbSiebieBxA_2" (
+	and(
+		inter(class[2], {fin,impt,imps,inf,praet}),
+		in(["się"], base[0]),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)	
+)

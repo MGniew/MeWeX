@@ -1,0 +1,24 @@
+@b:"1004_SubstConjSubstABxC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], conj),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1004_SubstConjSubstAxBC_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[2], conj),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2),
+		setvar($Pos3, 3)
+	)
+)
+

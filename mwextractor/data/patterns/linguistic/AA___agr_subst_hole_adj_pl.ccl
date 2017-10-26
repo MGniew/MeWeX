@@ -1,0 +1,13 @@
+///////////////////////////////////////////////
+@b:"AgrSubstHoleAdjPl_2" (
+	and(
+		not(in(["coś"], base[0])),
+		inter(class[0], {subst,ger,depr}),
+		inter(class[2], {adj,ppas,pact}),
+		not(in(class[1],{prep,interp,conj})),
+		inter(nmb[0],{pl}),
+		agrpp(0,2, {nmb,gnd,cas}),
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)

@@ -1,0 +1,20 @@
+/////////////////////////////////////////////// 
+@b:"8_AllQubGerAB_2" (
+	and(
+		inter(class[1], {ger}),
+		inter(class[0], {qub}),  
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)
+
+@b:"8_AllQubGerBA_2" (
+	and(
+		inter(class[0], {ger}),
+		inter(class[1], {qub}),  
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+)

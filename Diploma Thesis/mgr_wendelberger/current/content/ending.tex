@@ -1,0 +1,180 @@
+
+\chapter{Podsumowanie i wnioski}
+
+\section{Wkład własny autora}
+Sekcja opisuje wkład własny autora w trakcie tworzenia niniejszej pracy.
+
+\subsection{Miary asocjacyjne}
+Autor niniejszej pracy zaproponował kilka nowych miar asocjacyjnych, głównie \emph{W Order} i \emph{W Term Frequency Order}, które osiągały najlepsze wyniki w części badań, a dodatkowo różniły się ideą obliczeń, ponieważ bazowały na badaniu częstości szyków -- ich stosunków.
+Te dwie funkcje zostały wymienione jako pierwsze i głównie dlatego, że są one pomysłem autora niniejszej pracy, który nie spotkał się z tego typu funkcją w literaturze.
+
+\par
+Funkcja autora niniejszej pracy \emph{W Specific Exponential Correlation} jest połączeniem miar \emph{Specific Exponential Correlation} oraz \emph{W Specific Correlation}.
+Zmiana w funkcji jest niewielka, ale osiągane przez nią wyniki są relatywnie dobre, w części przypadków najlepsze.
+
+\par
+Część z zaproponowanych funkcji wydaje się być banalna, jak na przykład \emph{Expected Frequency} oraz \emph{Inversed Expected Frequency}, więc nazwanie tego oryginalnym pomysłem autora mogłoby być nadużyciem.
+Jednak mimo swojej prostoty pierwsza z tych funkcji potrafiła osiągać dobre wyniki, razem z częstością, w niektórych badaniach.
+Funkcje zostały zapisane jako autorskie, ale ich prostota jest na tyle duża, że autor nie traktuje ich jako swojego własnego osiągnięcia.
+
+\par
+Innym przykładem funkcji zaimplementowanych ze względu na pomysł autora jest \emph{Specific Exponential Correlation}, która została wymyślona na bazie obserwacji podobieństwa miar \emph{PMI}, \emph{Mutual Dependency} oraz \emph{Frequency biased Mutual Dependency} i jednocześnie, czego autor dowiedział się po dalszym zapoznawaniu się z literaturą, jest inaczej zapisaną wersją funkcji \emph{FbSCP} autorstwa Aleksandra Buczyńskiego \cite{buczynski} -- a tym samym nie jest tworem nowym. Dobre wyniki były także osiągane przez pomysł autora niniejszej pracy na rozszerzenie funkcji \emph{PMI} o element związany z mnożeniem wyniku przez częstość, ale funkcja ta nie różni się wiele od już istniejących, a podobne można znaleźć w literaturze \cite{wsec}.
+
+\par
+Pozostaje jeszcze funkcja $ W Pearson's \: Chi^{2} $ będąca modyfikacją $ Pearson's \: Chi^{2} $.
+Obie funkcje generują w zasadzie takie same jakościowo wyniki, więc autor pracy nie poświęcił wiele czasu swojej propozycji miary i nie uznaje jej za osiągnięcie godne wyszczególnienia.
+Same motywacje do zastosowania funkcji mogą być interesujące, ale modyfikacja wprowadzona przez autora niniejszej pracy nie zapewniła zwiększenia jakości generowanych wyników.
+
+\par
+Istotnym wkładem własnym może być wiele propozycji generalizacji istniejących już oraz nowych miar asocjacyjnych.
+Autor czerpał inspiracje z własnych pomysłów, obserwacji, skojarzeń, a także z literatury, w tym głównie z pracy Sasa Petrovica, Jana Snajdera i Bojana Dalbelo Basica \cite{generalization_patterns} oraz pracy Tima Van de Cruysa \cite{mmi_w11}.
+Ze względu na fakt, że autor mocno posiłkował się literaturą nie twierdzi on, że jest pierwszym lub jedynym pomysłodawcą takich rozwiązań.
+
+\subsection{Narzędzie \protect\textit{MWeXtractor}}
+Między innymi na potrzeby realizacji tematu niniejszej pracy autor utworzył zestaw programów i bibliotekę programistyczną przystosowane do ekstrakcji wyrażeń wielowyrazowych o różnych długościach z dużych korpusów tekstowych.
+
+
+\subsection{Zakres badań}
+Autor pracy przeprowadził badania na dużym zbiorze tekstów języka polskiego -- ponad 250 milionów słów. 
+Zbadane zostały miary asocjacyjne, ich łączenie, a także klasyfikator w postaci perceptronu wielowarstwowego.
+Dodatkowo ekstrahowane były nie tylko wyrażenia dwuelementowe, ale także trójelementowe; możliwe jest również prowadzenie badań na krotkach dłuższych.
+
+
+\section{Wnioski i obserwacje}
+Problem ekstrakcji kolokacji jest złożony i trudny do rozwiązania, a powodów tego faktu jest przynajmniej kilka.
+
+\par
+Istnieje niewiele dostępnych zbiorów kolokacji, które są oznaczone choćby dwoma etykietami -- wyrażenie wielowyrazowe lub nie wyrażenie.
+Powodować to może trudności we właściwej ocenie wyników lub wiązać się może z dużymi kosztami czasowymi lub materialnymi przy próbie ręcznej oceny kandydatów na kolokacje z dużych korpusów tekstowych przez lingwistów w celu pozyskania dobrze opisanych zbiorów.
+Innym podejściem może być ograniczenie zbiorów danych i ich ręczna ocena przez lingwistów w celu zmniejszenia wymaganych zasobów, ale taki zbiór odbiegać może mocno od rzeczywistych zabiorów danych, a tym samym badania na nim mogą być teoretyczne i bez możliwości wykorzystania opracowanych rozwiązań praktycznie.
+
+\par
+Drugim problemem może być stosunkowo mały zasób literatury traktującej o ekstrakcji wyrażeń wielowyrazowych, chociaż ta tematyka jest poruszana.
+Dodatkowo literatury zajmującej się językiem polskim jest jeszcze mniej, ponieważ nie było prowadzonych jeszcze na szerszą skalę badań na dużych korpusach w języku polskim.
+Efektem małej popularności badań jest między innymi mała dostępność źródeł, z których można pozyskać wzorce strukturalne tworzące często poprawne wyrażenia wielowyrazowe.
+
+\par
+Sama definicja wyrażenia wielowyrazowego była tworzona wielokrotnie i na wiele sposobów, a tym samym już na początku rozpoczynania badań należało zastanowić się nad tym, którą z nich wybrać lub czy byłoby lepiej opracować własną.
+Dobór definicji może być kluczowy dla jakości osiąganych wyników.
+
+\par
+Kolejny problem często wiąże się z automatycznym przetwarzaniem języka naturalnego, dość nową, obszerną i nie do końca ścisłą dziedziną nauki, co potęguje trudność zadania.
+Dodatkowo należy pamiętać, że język jest językowi nierówny, jeśli pod uwagę bierze się jego trudność.
+Przykładowo język angielski jest uważany za stosunkowo prosty w porównaniu z językami słowiańskimi posiadającymi bogatą fleksję.
+Pisząc o tym autor miał także na myśli to, że ekstrakcja kolokacji jest procesem złożonym, w którym każda z warstw może wnosić pewien błąd propagowany do dalszych warstw.
+Przykładowo błędy tagera mogą propagować się na etap ekstrakcji kandydatów, który z kolei może mieć różną jakość ze względu na zastosowane wzorce strukturalne.
+
+\par
+Przygotowanie danych nie sprowadza się tylko do wybrania korpusu i wyznaczenia wyrażeń wielowyrazowych na potrzeby weryfikacji wyników czy nauki klasyfikatorów.
+Ważnym krokiem jest dobór typów strukturalnych, co jest problemem samym w sobie -- rozbudowanym, czasochłonnym i wymagającym posiadania wiedzy dziedzinowej.
+Także dobór innych filtrów może mocno wpływać na wyniki i być zadaniem nietrywialnym.
+
+\par
+Liczba możliwych do przeprowadzenia badań jest ogromna.
+Do wyboru są miary asocjacyjne, klasyfikatory i inne rankery, filtry, typy strukturalne, funckje dyspersji, dobór tekstów, sposób budowy danych statystycznych i decyzja o tym, z jakiego grona kandydatów ekstrahować wyrażenia wielowyrazowe; nawet sam dobór sposobu oceny wyników czy funkcji oceniającej może być problematyczny.
+
+\par
+Wnioskiem z badań jest to, że różne sposoby budowy informacji statystycznych (np. z wykorzystaniem relacji nieciągłych lub ze wzbogaceniem danych kandydatami pozyskanymi za pomocą relacji oknowych) może mieć duży wpływ na wyniki, podobnie jak filtrowanie.
+Zauważyć można jednak, że zależnie od badanego zbioru danych różne funkcje osiągają wyniki różnej jakości i różne z nich bywają najlepsze dla konkretnych wariantów przygotowania zbioru danych.
+Jednak na podstawie przeprowadzonych badań metod ekstrakcji wyrażeń dwuelementowych można określić zestaw miar asocjacyjnych, które często osiągają bardzo dobre lub najlepsze wyniki w wielu wariantach badań.
+Zostały one zamieszczone w tabeli \ref{ending_best_measures} wraz z komentarzem.
+Warto zaznaczyć, że dwie funkcje -- \emph{Frequency} oraz \emph{Expected Frequency} -- mimo swojej prostoty osiągały w pewnych przypadkach zadziwiająco dobre wyniki.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ p{0.3\linewidth} | p{0.6\linewidth} }
+	\toprule
+	\textbf{funkcja}	& \textbf{komentarz}	\\
+	\midrule
+	\emph{W Specific Correlation}	& funkcja generowała jedne z najlepszych wyników w każdym zestawie badań dla dużej liczby wariantów w nich zawartych; funkcja była jedną z najlepszych dla od 7 do 14 z 30 wariantów badań w każdym z zestawie badań; trzeba mieć na uwadze, że jest to szczególna wersja funkcji \emph{W Specific Exponential Correlation}, a tym samym można byłoby ją odrzucić z grona tutaj zaproponowanych funkcji najlepszych i zmniejszyć niniejsze grono; \\
+	\hline
+	\emph{Specific Frequency Biased Mutual Dependency}	& analogicznie do funkcji \emph{W Specific Correlation}; była jedną z najlepszych dla od 2 do 11 wariantów w zależności od zestawu badań; trzeba mieć na uwadze, że jest to szczególna wersja funkcji \emph{Specific Exponential Correlation}, a tym samym można byłoby ją odrzucić z grona tutaj zaproponowanych funkcji najlepszych; \\
+	\hline
+	\emph{Loglikelihood}	& analogicznie do funkcji \emph{W Specific Correlation} i \emph{Specific Frequency Biased Mutual Dependency}; jedna z najlepszych dla od 7 do 14 wariantów badań;\\
+	\hline
+	\emph{W Order}	& funkcja sprawdzała się dobrze w pewnych przypadkach, zwłaszcza w badaniach od numeru szesnastego; była jedną z najlepszych lub najlepszą w od 8 do 13 wariantów badań we wszystkich zestawach badań;\\
+	\hline
+	\emph{W Term Frequency Order}	& funkcja osiągała raczej gorsze wyniki niż wersja 71, ale dalej dobre i jedne z najlepszych w od 3 do 11 wariantów badań w różnych zestawach;\\
+	\hline
+	\emph{Specific Exponential Correlation}	& niniejsza funkcja potrafiła osiągać dobre wyniki w zasadzie w każdym badaniu, ale zdaje się jednocześnie być bardzo wrażliwa na parametr; mimo to dobrą wartością parameteru zazwyczaj jest 4,2, czasem 4,6, jednak w ogólności wartości w okolicy liczby 4,4; \\
+	\hline
+	\emph{W Specific Exponential Correlation}	& miara osiąga jedne z najlepszych wyników w pewnych badaniach, warto jednak byłoby przeprowadzić więcej badań, dla niższych wartości parametru w celu jego optymalizacji; dobrymi wartościami tego parametru okazały się liczby w okolicy 1,0;\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw najlepszych funkcji wybranych na podstawie badań, z komentarzami]{Zestaw najlepszych funkcji wybranych na podstawie badań, z komentarzami.}
+\label{ending_best_measures}
+\end{table}
+
+W kontekście sieci neuronowych sytuacja jest trudniejsza, ponieważ dla pełnych zbiorów danych -- niepoddanych podpróbkowaniu, różne sieci osiągają najlepsze wyniki dla różnych badań, a przez co autorowi niniejszej pracy nie udało się ustalić złotego rozwiązania.
+Możliwe, że sieci są dość odporne na parametry i zmianę liczby neuronów w warstwach ukrytych przy badaniu jakości dostarczanych przez nie rozwiązań ze zbiorów danych.
+Wykonanie podpróbkowania pozwoliło zaobserwować, że mniejsze wartości parametru odpowiadającego za szybkość uczenia się sieci neuronowej sprawiają, że osiągane przez ten klasyfikator wyniki są lepsze.
+Jednak liczba neuronów w warstwach ukrytych zdaje się nie wpływać na nie tak mocno, jak szybkość uczenia.
+
+\par
+Biorąc pod uwagę wyniki miar trójelementowych zaobserwować można, że miara \emph{Specific Exponential Correlation} jest najlepszą, a dobrą wartością parametru jest liczba w okolicy 4,5.
+Jeśli takie obserwacje i wnioski mogłyby zostać wysunięte dla innych zbiorów danych, można byłoby spróbować zaryzykować stwierdzenie, że niniejsza miara z parametrem w okolicy wartości 4,4 (biorąc pod uwagę także wyniki ekstrakcji krotek dwuelementowych) jest funkcją osiągającą dobre wyniki przy jednoczesnej dość dużej uniwersalności w odniesieniu do różnie przygotowanych zestawów danych.
+Obiecujące wyniki potrafią także generować miary heurystyczne, a można to zaobserwować dzięki rezultatom dostarczonym przez miarę \emph{Fair Dispersion Point Normalization}.
+Wyniki sieci neuronowych nie różniły się w swojej charakterystyce od wyników sieci ekstrahujących kolokacje dwuelementowe -- nie można ustalić najlepszej z nich.
+
+\par
+Część sieci jest bardzo wrażliwa na zrównoważenie klas co można zaobserwować porównując wyniki badań zbiorów przed i po podpróbkowaniu klasy negatywnej.
+
+\par
+Dla zadania ekstrakcji wyrażeń dwuelementowych zbadanych zostało 30 sposobów przygotowania zbioru danych do ekstrakcji kolokacji.
+Na podstawie wyników można wskazać kilka z nich jako te, na podstawie których osiągane rezultaty są zazwyczaj w czołówce.
+Tabela \ref{ending_best_data_sets_part_1} prezentuje zestaw tych sposobów przygotowania danych.
+Kolejność wierszy w tabeli nie jest przypadkowa, ponieważ pierwszy z wierszy opisuje sposób przygotowania zestawu danych, dzięki któremu udało się osiągnąć najlepsze wyniki.
+Każdy kolejny rezultat był gorszy od poprzedniego, ale dalej utrzymywał się na relatywnie wysokim poziomie.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | l | l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{źródło danych statystycznych}			& \textbf{źródło kandydatów}		& \textbf{filtry}					\\
+	\midrule
+	18	& relacje i okno, ciągłe				& częste relacje ciągłe	& morfeusz, częstość $>$ 5	\\
+	12	& relacje ciągłe						& częste relacje ciągłe & morfeusz, częstość $>$ 5	\\
+	30	& relacje i okno, ciągłe i nieciągłe	& częste relacje ciągłe	i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	24	& relacje ciągłe i nieciągłe			& częste relacje ciągłe i nieciągłe	& morfeusz, częstość $>$ 5	\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 1]{Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 1.}
+\label{ending_best_data_sets_part_1}
+\end{table}
+
+Na podstawie zaprezentowanego zestawienia zauważyć można, że filtrowanie odegrało kluczową rolę w poprawie osiąganych wyników, każdy z 4 najlepszych sposobów przygotowania danych bazował na filtrowaniu typów strukturalnych, słowniku Morfeusza oraz częstości.
+Nie jest to zaskakujące, bowiem im bardziej ograniczony zbiór, tym łatwiej generować dobre wyniki, oczywiście jeśli filtrowanie jest wykonane w odpowiedni sposób.
+Drugą obserwacją może być to, że dodanie kandydatów pozyskanych za pomocą relacji oknowych do zestawu danych statystycznych, na podstawie których obliczane są miary asocjacyjne, może zwiększyć jakość osiąganych wyników.
+Za potwierdzenie tego wniosku można uznać obserwację, że wiersz drugi i czwarty w taeli \ref{ending_best_data_sets_part_1} opisują sposób przygotowania zbiorów danych taki sam jak odpowiednio wiersz pierwszy i trzeci, ale z odrzuceniem kandydatów pozyskanych za pomocą relacji oknowych w procesie budowy źródła danych statystycznych.
+Dodatkowo widać, że dodanie relacji nieciągłych spowodowało spadek jakości rozwiązań, ale nadal utrzymując go na wysokim poziomie, a dzięki dodaniu do rozważanego grona i do danych statystycznych także kandydatów nieciągłych kompletność rozwiązania nie stała się mniejsza.
+Istotną obserwacją jest to, że w praktycznie wszystkich zestawach badań pierwsze trzy sposoby przygotowania danych umożliwiały miarom osiągnięcie najlepszych wyników spośród wszystkich 30 sposobów -- szczególnie dotyczy to sposobu oznaczonego numerem 18.
+Wyjątkiem była sytuacja z podpróbkowaniem klasy negatywnej w przypadku miar asocjacyjnych, tam zbiór był inny, ale w przypadku sieci neuronowych i ekstrakcji wyrażeń trójelementowych zestaw jest taki sam, a nawet rozszerzony jeszcze o dwa inne zbiory zamieszczone w następnym zestawieniu \ref{ending_best_data_sets_part_2} -- sposoby przygotowania oznaczone numerami 15 oraz 3.
+
+\par
+Tabela \ref{ending_best_data_sets_part_2} prezentuje zestawów danych, dzięki którym także można było osiągnąć dobre wyniki, ale w środowisku sztucznym -- po wykonaniu podpróbkowania klasy negatywnej do 95\%.
+Niniejsze zestawienie nie ma jednak tej cechy co poprzednie -- wiersz bliższy początkowi tabeli niekoniecznie jest sposobem przygotowania danych, na którym osiągnięto lepsze wyniki niż na jego następnikach w tabeli.
+W ogólności jednak wyniki pozyskane na tych zestawach danych były dobre, a niekiedy najlepsze jak np. w przypadku sposobu szesnastego dla badań ekstrakcji wyrażeń dwuelementowych po wykonaniu podpróbkowań klasy negatywnej do 80\% i 95\%.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ l | l | l | l }
+	\toprule
+	\textbf{nr} 	& \textbf{źródło danych statystycznych}			& \textbf{źródło kandydatów}		& \textbf{filtry}					\\
+	\midrule
+	16	& relacje i okno, ciągłe				& częste relacje ciągłe	&							\\
+	17	& relacje i okno, ciągłe	 			& częste relacje ciągłe	& morfeusz					\\
+	15	& relacje i okno, ciągłe				& relacje ciągłe		& morfeusz, częstość $>$ 5	\\
+	10	& relacje ciągłe						& częste relacje ciągłe &							\\
+	11	& relacje ciągłe						& częste relacje ciągłe & morfeusz					\\
+	3	& okno ciągłe 							& okno ciągłe			& morfeusz, częstość $>$ 5	\\
+	\bottomrule
+\end{tabular}
+\caption[Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 2]{Zestaw sposobów przygotowania danych, na podstawie których udało się wygenerować najlepsze wyniki, część 2.}
+\label{ending_best_data_sets_part_2}
+\end{table}
+
+\section{Perspektywy rozwoju prac i badań}
+Wśród proponowanych kontynuacji i planów rozwoju prac i wymienić można sprawdzenie jakości wyników generowanych przez inne klasyfikatory.
+Zwiększenie rozmiaru zbioru testowego o nowe zestawy wyrażeń wielowyrazowych ze \emph{Słowosieci} także wydaje się być dobrą propozycją.
+Skupienie się na kolokacjach dłuższych niż dwuelementowe, ponowne przeprowadzenie lepszej optymalizacji parametrów dla kombinacji liniowej miar i zaimplementowanie kolejnych metod agregacji rankingów, a także zbadanie większego zakresu parametrów perceptronów wielowarstwowych, oraz sprawdzenie jakości wyników generowanych przez sieci neuronowe trzeciej generacji.
+Kontynuacja badań mogłaby opierać się na obserwacjach wyciągniętych z badań opisanych w niniejszej pracy i skupić na konkretnych miarach i sposobach przygotowania danych.

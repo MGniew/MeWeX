@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"11_AllSubstNumAxB_2" (
+	and(
+		inter(class[2], {num}),
+		inter(class[0], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)   
+	) 
+)
+
+@b:"11_AllSubstNumBxA_2" (
+	and(
+		inter(class[0], {num}),
+		inter(class[2], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)   
+	) 
+)
