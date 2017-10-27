@@ -271,3 +271,4 @@ set(TEST_SRCS
 add_executable(Test ${TEST_SRCS})
 target_link_libraries(Test ${LIBS})
 
+add_subdirectory(${SOURCE_DIRS_PREFIX}/tests/)
