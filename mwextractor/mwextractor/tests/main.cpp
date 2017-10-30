@@ -5,6 +5,8 @@ MWeXtractor to biblioteka programistyczna oraz zestaw narzędzi
 i skryptów przeznaczonych do ekstrakcji wyrażeń wielowyrazowych
 z tekstów, a także badań nad metodami wydobywania kolokacji.
 */
+#define BOOST_TEST_MODULE measures_test
+#define BOOST_TEST_DYN_LINK
 
 #include <unordered_set>
 
@@ -16,11 +18,9 @@ z tekstów, a także badań nad metodami wydobywania kolokacji.
 #include "../structure/storage/TupleFeatureStorage.h"
 
 #include "../function/association/AverageBigram.h"
+#include "../function/association/Jaccard.h"
 #include "../function/association/ConsonniT1.h"
 #include "../function/association/ConsonniT2.h"
-#include "../function/association/VectorAssociationMeasure.h"
-#include "../machine_learning/multilayer_perceptron/MultilayerPerceptron.h"
-#include "../machine_learning/heuristic_optimization/LinearCombination.h"
 
 #include "../exception/Exception.h"
 
@@ -28,45 +28,26 @@ z tekstów, a także badań nad metodami wydobywania kolokacji.
 #include <string>
 #include <iostream>
 
-int main()
+#include <boost/test/unit_test.hpp>
+
+using namespace function::association;
+
+
+BOOST_AUTO_TEST_CASE( Jaccard_test )
 {
-	using namespace function;
-	using namespace function::association;
-	using namespace machine_learning::multilayer_perceptron;
-	using namespace machine_learning::heuristic_optimization;
+	Jaccard jaccard;
 
+	std::cout << jaccard.usage() << std::endl;
+	
+	std::string cs0("");                                                 // 1 //
+	BOOST_CHECK_EQUAL( cs0.length(), (size_t)0 );
+	BOOST_CHECK( cs0.empty() );
+}
 
-	std::vector<std::shared_ptr<Function>> functions;
-	functions.emplace_back(new AverageBigram());
-	functions.emplace_back(new ConsonniT1());
-	functions.emplace_back(new ConsonniT2());
-	functions.emplace_back(new MultilayerPerceptron());
-	functions.emplace_back(new VectorAssociationMeasure());
-	functions.emplace_back(new LinearCombination());
-
-	for (size_t i = 0; i < functions.size(); ++i)
-	{
-		std::cerr << functions[i]->usage() << std::endl << std::endl;
-	}
-
-	try
-	{
-		function::FunctionFactory().createClassifier("mlp()");
-	}
-	catch(exception::Exception const& e)
-	{
-		std::cerr << e.getMessage() << std::endl << std::endl;
-	}
-
-	try
-	{
-		function::FunctionFactory().createOptimizationFunction("lc()");
-	}
-	catch(exception::Exception const& e)
-	{
-		std::cerr << e.getMessage() << std::endl << std::endl;
-	}
-
-
-	return 0;
+BOOST_AUTO_TEST_CASE( ConsonniT1_test )
+{
+	std::cout << "ConsonniT1" << std::endl;
+	std::string cs0("");                                                 // 1 //
+	BOOST_CHECK_EQUAL( cs0.length(), (size_t)0 );
+	BOOST_CHECK( cs0.empty() );
 }
