@@ -3,8 +3,6 @@ find_package(Boost COMPONENTS unit_test_framework)
 link_directories(${Boost_LIBRARY_DIRS})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 
-MESSAGE("Hello from the inside :)")
-
 # ADD_DEFINITIONS(-DBOOST_TEST_MAIN)
 # ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK)
 

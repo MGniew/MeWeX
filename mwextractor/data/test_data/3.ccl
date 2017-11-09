@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chunkList SYSTEM "ccl.dtd">
+<chunkList>
+ <chunk id="ch1" type="p">
+  <sentence id="s1">
+   <tok>
+    <orth>Kulawy</orth>
+    <lex disamb="1"><base>kulawy</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
+   </tok>
+   <tok>
+    <orth>kot</orth>
+    <lex disamb="1"><base>kot</base><ctag>subst:sg:nom:m2</ctag></lex>
+   </tok>
+   <ns/>
+   <tok>
+    <orth>,</orth>
+    <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+   </tok>
+   <tok>
+    <orth>włochaty</orth>
+    <lex disamb="1"><base>włochaty</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
+   </tok>
+   <tok>
+    <orth>ogon</orth>
+    <lex disamb="1"><base>ogon</base><ctag>subst:sg:nom:m2</ctag></lex>
+   </tok>
+   <ns/>
+   <tok>
+    <orth>.</orth>
+    <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+   </tok>
+  </sentence>
+ </chunk>
+</chunkList>
+
