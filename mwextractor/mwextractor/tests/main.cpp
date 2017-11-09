@@ -67,7 +67,12 @@ private:
 			{"/home/igor/MeWeX/mwextractor/data/test_data/1.ccl",
 			"/home/igor/MeWeX/mwextractor/data/test_data/2.ccl",
 			"/home/igor/MeWeX/mwextractor/data/test_data/3.ccl",
-			"/home/igor/MeWeX/mwextractor/data/test_data/4.ccl"}};
+			"/home/igor/MeWeX/mwextractor/data/test_data/4.ccl"},
+			{"/home/igor/MeWeX/mwextractor/data/test_data/1.ccl",
+			"/home/igor/MeWeX/mwextractor/data/test_data/2.ccl",
+			"/home/igor/MeWeX/mwextractor/data/test_data/3.ccl",
+			"/home/igor/MeWeX/mwextractor/data/test_data/4.ccl",
+			"/home/igor/MeWeX/mwextractor/data/test_data/5.ccl"}};
 		
 	
 		for(auto corpora : corporas)
@@ -79,7 +84,8 @@ private:
 			contTableGen.push_back(
 				ContingencyTableGeneratorBuilder().build(
 				matrixTupleStorage.back(),
-				matrixTupleStorage.back()->retrieveTupleIdVector()
+				matrixTupleStorage.back()->retrieveTupleIdVector(),
+				ContingencyTableGenerator::TableCreationPolicy::JOIN_NONE
 			));
 		}
 	}
@@ -105,13 +111,14 @@ BOOST_AUTO_TEST_CASE( Frequency_test )
 	auto tableGenerators = fix.instance->getContTableGen();
 	int i = -1;
 
-	double results[8][2] = {
+	double results[9][2] = {
 		{1,0},
 		{1,0},
 		{2,0},
 		{1,1},
 		{1,1},
 		{1,1},
+		{3,0},
 		{3,0},
 		{5,2}
 	};
@@ -138,13 +145,14 @@ BOOST_AUTO_TEST_CASE( Jaccard_test )
 	auto tableGenerators = fix.instance->getContTableGen();
 	int i = -1;
 
-	double results[8][2] = {
+	double results[9][2] = {
 		{1.0/3.0,0},
 		{1.0/3.0,0},
 		{1.0/3.0,0},
 		{1.0/3.0,1.0/3.0},
 		{1.0/3.0,1.0/3.0},
 		{1.0/4.0,1.0/4.0},
+		{1.0/3.0,1.0/3.0},
 		{1.0/3.0,1.0/3.0},
 		{1.0/3.0,1.0/3.0}
 	};
@@ -179,9 +187,9 @@ BOOST_AUTO_TEST_CASE( Cout_test )
 			auto table = tableGen->createTable(matrix->findTuple(tuple));
 			std::cout << matrix->createTupleReprezentation(matrix->findTuple(tuple)) << std::endl;
 			std::cout << "  " << Frequency().rankUsingTable(tuple, table) <<
-			"\t" << table.createReprezentation() << std::endl;
+			"\t" << table.createReprezentation() << "sum:" << tableGen->mTupleFrequencySum << std::endl;
 		}
-		std::cout << "\n--------------------Matrix--------------------" << std::endl;
+		std::cout << "\n--------------------Matrix--------------------\n" << std::endl;
 	}
 }
 /*

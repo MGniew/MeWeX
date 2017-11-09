@@ -36,6 +36,7 @@ public:
 
 	typedef storage::ContingencyTableGenerator			ContingencyTableGenerator;
 	typedef std::shared_ptr<ContingencyTableGenerator>	ContingencyTableGeneratorPtrS;
+	typedef ContingencyTableGenerator::TableCreationPolicy TableCreationPolicy;
 
 	typedef TupleStorage::TupleIdVector					TupleIdVector;
 
@@ -51,8 +52,10 @@ public:
 
 
 	ContingencyTableGeneratorPtrS build(
-		TupleStorageConstPtrS const& 	pTupleStorage,
-		TupleIdVector const&			pTupleIdVector) const;
+		TupleStorageConstPtrS const&	pTupleStorage,
+		TupleIdVector const&			pTupleIdVector,
+		TableCreationPolicy 			pCreationPolicy = TableCreationPolicy::JOIN_SAME_SIZE_RELATIONS
+		) const;
 };
 
 

@@ -9,14 +9,15 @@ namespace structure
 	{
 
 
-
 auto ContingencyTableGeneratorBuilder::build(
-	TupleStorageConstPtrS const& 	pTupleStorage,
-	TupleIdVector const&			pTupleIdVector) const -> ContingencyTableGeneratorPtrS
+	TupleStorageConstPtrS const&	pTupleStorage,
+	TupleIdVector const&			pTupleIdVector,
+	TableCreationPolicy 			pCreationPolicy
+	) const -> ContingencyTableGeneratorPtrS
 {
 	typedef ContingencyTableGenerator::InsertResult __Res;
 
-	ContingencyTableGeneratorPtrS generator(new ContingencyTableGenerator());
+	ContingencyTableGeneratorPtrS generator(new ContingencyTableGenerator((size_t)0, pCreationPolicy));
 
 	std::vector<TupleT> keys;
 	{
