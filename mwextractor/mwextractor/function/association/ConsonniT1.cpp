@@ -30,7 +30,7 @@ double ConsonniT1::rankUsingTable(
 
 	double denominator = pContingencyTable.sumObserved() + 1.0;
 
-	return log(nominator) - log(denominator);
+	return log(nominator) / log(denominator);
 }
 
 

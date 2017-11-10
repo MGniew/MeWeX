@@ -11,6 +11,11 @@
     <orth>ogon</orth>
     <lex disamb="1"><base>ogon</base><ctag>subst:sg:nom:m2</ctag></lex>
    </tok>
+   <ns/>
+   <tok>
+    <orth>.</orth>
+    <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+   </tok>
   </sentence>
  </chunk>
 </chunkList>
