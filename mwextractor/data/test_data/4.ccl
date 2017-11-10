@@ -4,8 +4,8 @@
  <chunk id="ch1" type="p">
   <sentence id="s1">
    <tok>
-    <orth>Kulawy</orth>
-    <lex disamb="1"><base>kulawy</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
+    <orth>Szary</orth>
+    <lex disamb="1"><base>szary</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
    </tok>
    <tok>
     <orth>kot</orth>
@@ -16,8 +16,8 @@
     <lex disamb="1"><base>mieć</base><ctag>fin:sg:ter:imperf</ctag></lex>
    </tok>
    <tok>
-    <orth>włochaty</orth>
-    <lex disamb="1"><base>włochaty</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
+    <orth>szary</orth>
+    <lex disamb="1"><base>szary</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
    </tok>
    <tok>
     <orth>ogon</orth>
