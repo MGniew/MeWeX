@@ -33,7 +33,7 @@ double LogLikelihood::rankUsingTable(
 		}
 	}
 
-	return 2.0 * ll;
+	return -2.0 * ll;
 }
 
 

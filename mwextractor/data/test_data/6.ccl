@@ -23,20 +23,16 @@
   </sentence>
   <sentence id="s2">
    <tok>
-    <orth>Kot</orth>
-    <lex disamb="1"><base>Kot</base><ctag>subst:sg:nom:m2</ctag></lex>
-   </tok>
-   <tok>
-    <orth>ma</orth>
-    <lex disamb="1"><base>mieć</base><ctag>fin:sg:ter:imperf</ctag></lex>
-   </tok>
-   <tok>
-    <orth>włochaty</orth>
+    <orth>Włochaty</orth>
     <lex disamb="1"><base>włochaty</base><ctag>adj:sg:nom:m2:pos</ctag></lex>
    </tok>
    <tok>
     <orth>ogon</orth>
     <lex disamb="1"><base>ogon</base><ctag>subst:sg:nom:m2</ctag></lex>
+   </tok>
+   <tok>
+    <orth>kota</orth>
+    <lex disamb="1"><base>kot</base><ctag>subst:sg:gen:m2</ctag></lex>
    </tok>
    <ns/>
    <tok>

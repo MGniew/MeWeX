@@ -40,11 +40,11 @@ double WOrder::rank(TupleId pTupleId) const
 
 		if (tupleId == nullptr || !getRankerData()->isTupleIdValid(tupleId))
 		{
-			elements[i] = 1.0;
+			elements[i] = 0.0;
 		}
 		else
 		{
-			elements[i] = 1.0 + storage->findTuple(tupleId).getMetadata().getGlobalFrequency();
+			elements[i] = storage->findTuple(tupleId).getMetadata().getGlobalFrequency();
 		}
 
 		max = std::max(max, elements[i]);
@@ -53,7 +53,7 @@ double WOrder::rank(TupleId pTupleId) const
 	double result = 1.0;
 	for (size_t i = 0; i < elements.size(); ++i)
 	{
-		result *= elements[i] / max;
+		result *= 1.0 + (elements[i] / (max + 1.0));
 	}
 
 	return 1.0 / result;
