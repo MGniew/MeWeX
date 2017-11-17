@@ -112,16 +112,6 @@ private:
 					contTableSrc.back()
 			)));
 		}
-
-
-		// RankerData(
-		// MatrixTupleStoragePtrS const& 		pMatrixTupleStorage,
-		// ContingencyTableSourcePtrS const&	pContingencyTableSource = nullptr,
-		// TupleFeatureSourcePtrS const&		pTupleFeatureSource = nullptr,
-		// RelevantTupleIdSetPtrS const&		pRelevantTupleIdSet = nullptr,
-		// FilterPtrS const&					pStatisticTupleFilter = nullptr);
-
-
 	}
 	static Fixture *inst;
 };
@@ -869,6 +859,62 @@ BOOST_AUTO_TEST_CASE( OddsRatio_test )
 	}
 }
 
+BOOST_AUTO_TEST_CASE( UnigramSubtuples_test )
+{
+	FixtureWrapper fix;
+	auto matrices = fix.instance->getMatrixTupleStorage();
+	auto tableSources = fix.instance->getContTable();
+	int i = -1;
+	
+	std::vector<Tmap> results;
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 0)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 2.00000),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 2.00000),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 2.00000)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 3.0),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 4.0),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 3.0)});
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 1.0),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:kulawy", 1.0)});
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:kot	adj:szary", 0),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:szary", 0)});
+	results.push_back(
+		Tmap{Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 2.00000),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 2.00000),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 2.00000)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:kot", 2.0),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 2.0),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 8.0),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:kot", 0.25),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 0.25)});
+	results.push_back(
+		Tmap{Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 33.0),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:szary", 2.75),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:kulawy", 6.0),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 20.0),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:szary", 0.58333),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 33.0)});
+
+	std::cout << UnigramSubtuples().usage() << std::endl;
+	for(auto matrix : matrices)
+	{
+		auto tableSrc = tableSources[++i];
+		for(auto tuple : matrix->retrieveTupleIdVector())
+		{
+			auto table = tableSrc->constructTable(matrix->findTuple(tuple), matrix);
+			std::string repr(matrix->createTupleReprezentation(matrix->findTuple(tuple)));
+			auto rank = UnigramSubtuples().rankUsingTable(tuple, table);
+			BOOST_CHECK_CLOSE( rank, results[i].find(repr)->second, 0.01);
+		}
+	}
+}
+
 BOOST_AUTO_TEST_CASE( Sorgenfrei_test )
 {
 	FixtureWrapper fix;
@@ -1045,8 +1091,66 @@ BOOST_AUTO_TEST_CASE( WTFOrder_test )
 		}
 	}
 }
-
 /*
+BOOST_AUTO_TEST_CASE( WTFOrder_test )
+{
+	WTFOrder fun;
+	FixtureWrapper fix;
+	auto matrices = fix.instance->getMatrixTupleStorage();
+	auto tableSources = fix.instance->getContTable();
+	auto rankers = fix.instance->getRankerData();
+	int i = -1;
+	
+	std::vector<Tmap> results;
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 0.66666),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 1.2),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:kulawy", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AgrSubstAdj	2	subst:kot	adj:szary", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:szary", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 0.66666),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AllSubstSubst	2	subst:ogon	subst:kot", 0.66666),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 1.2),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:kot", 0.66666),
+			Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 0.66666)});
+	results.push_back(
+		Tmap{Tpair("1	AdjSubstSubst	3	adj:włochaty	subst:ogon	subst:pies", 1.71428),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:szary", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:kot	adj:kulawy", 0.66666),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:włochaty", 2.72727),
+			Tpair("1	AgrSubstAdj	2	subst:ogon	adj:szary", 0.66666),
+			Tpair("1	AllSubstSubst	2	subst:ogon	subst:pies", 1.71428)});
+
+	std::cout << fun.usage() << std::endl;
+	for(auto matrix : matrices)
+	{
+		auto tableSrc = tableSources[++i];
+		fun.initialize(rankers[i]);
+		for(auto tuple : matrix->retrieveTupleIdVector())
+		{
+			auto table = tableSrc->constructTable(matrix->findTuple(tuple), matrix);
+			std::string repr(matrix->createTupleReprezentation(matrix->findTuple(tuple)));
+			double rank = fun.rankUsingTable(tuple, table);
+			BOOST_CHECK_CLOSE( rank, results[i].find(repr)->second, 0.01);
+		}
+	}
+}*/
+
 BOOST_AUTO_TEST_CASE( Cout_test )
 {
 	FixtureWrapper fix;
