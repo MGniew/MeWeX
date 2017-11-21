@@ -255,7 +255,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
  add_subdirectory(${SOURCE_DIRS_PREFIX}/program/teacher/)
  add_subdirectory(${SOURCE_DIRS_PREFIX}/program/web_tool/)
  add_subdirectory(${SOURCE_DIRS_PREFIX}/program/heuristic/)
-# add_subdirectory(${SOURCE_DIRS_PREFIX}/program/metatool/)
 
 
 ###########################################################
