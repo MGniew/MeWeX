@@ -78,8 +78,7 @@ void Config::validateParameters(VariableMap& pMap)
 	{
 		setError("Neither tuple index nor contingency table set", -7);
 	}
-
-	if (pMap["filter"].as<std::string>().empty())
+	if (pMap["extraction_filter"].as<std::string>().empty())
 	{
 		std::cerr << "No filter set, will compute measures for every relation." << std::endl;
 	}

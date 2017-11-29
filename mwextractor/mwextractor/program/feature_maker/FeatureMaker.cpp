@@ -55,7 +55,7 @@ void FeatureMaker::createFunctions()
 	{
 		std::cerr << "Building score function: " << mConfig.scoreFunction << std::endl;
 		mScoreFunction = ff.createScoreFunction(mConfig.scoreFunction);
-		std::cerr << "Build score function:" << mScoreFunction->reprezentation() << std::endl;
+		std::cerr << "Build score function: " << mScoreFunction->reprezentation() << std::endl;
 	}
 
 	mRankerData.reset(new RankerData(nullptr));

@@ -221,7 +221,7 @@ auto ContingencyTableGenerator::createTableJoinSameSizeRelations(TupleT const& p
 {
 	ContingencyTable table(pTupleT.subtupleCount());
 
-	//DEBUG_MESSAGE("Tuple: " << pTupleT);
+	// std::cout << "Tuple: " << pTupleT << std::endl;
 
 	double thisFrequency = pTupleT.getMetadata().getGlobalFrequency();
 	TupleT key(pTupleT.size(), nullptr, 0, 0);
@@ -230,11 +230,11 @@ auto ContingencyTableGenerator::createTableJoinSameSizeRelations(TupleT const& p
 		pTupleT.createSubtuple(i, key);
 		ContainerIteratorConstPair iterPair = range(key);
 
-		//DEBUG_MESSAGE("begin: " << i);
+		// std::cout << "begin: " << i << std::endl;
 
 		while (iterPair.first != iterPair.second)
 		{
-			//DEBUG_MESSAGE('\t' << (*iterPair.first));
+			// std::cout << '\t' << (*iterPair.first) << std::endl;
 			table[i].observed += iterPair.first->getMetadata().getGlobalFrequency();
 			++iterPair.first;
 		}
@@ -248,7 +248,7 @@ auto ContingencyTableGenerator::createTableJoinSameSizeRelations(TupleT const& p
 			table[i].observed = std::max(0.0, table[i].observed - thisFrequency);
 		}
 
-		//DEBUG_MESSAGE("end  : " << (*iterPair.second));
+		// std::cout << "end  : " << (*iterPair.second) << std::endl;
 	}
 
 	//DEBUG_MESSAGE("");
