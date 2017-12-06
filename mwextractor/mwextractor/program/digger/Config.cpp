@@ -84,7 +84,7 @@ void Config::validateParameters(VariableMap& pMap)
 	{
 		setError("Association vector function count is different than aggregation function count.", -3);
 	}
-	else if (!(pMap.count("classifier") == pMap.count("features") == pMap.count("preprocessor")))
+	else if (!(pMap.count("classifier") == pMap.count("features")) && (pMap.count("features") == pMap.count("preprocessor")))
 	{
 		setError("Classifier, features and preprocessor count must be equal.", -3);
 	}
