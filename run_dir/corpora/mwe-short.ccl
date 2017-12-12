@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chunkList SYSTEM "ccl.dtd">
+<chunkList>
+<chunk>
+  <sentence id="1">
+    <tok>
+      <orth>Szlachetnie</orth>
+      <lex disamb="1"><base>szlachetnie</base><ctag>adv:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>urodzona</orth>
+      <lex disamb="1"><base>urodzony</base><ctag>adj:sg:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>żelazna</orth>
+      <lex disamb="1"><base>żelazny</base><ctag>adj:sg:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dziewica</orth>
+      <lex disamb="1"><base>dziewica</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>napchała</orth>
+      <lex disamb="1"><base>napchać</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>lanymi</orth>
+      <lex disamb="1"><base>lać</base><ctag>ppas:pl:inst:m3:imperf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>kluskami</orth>
+      <lex disamb="1"><base>klusek</base><ctag>subst:pl:inst:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="2">
+    <tok>
+      <orth>Preimplementacyjna</orth>
+      <lex disamb="1"><base>Preimplementacyjna</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>diagnostyka</orth>
+      <lex disamb="1"><base>diagnostyka</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>jest</orth>
+      <lex disamb="1"><base>być</base><ctag>fin:sg:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>luksusowym</orth>
+      <lex disamb="1"><base>luksusowy</base><ctag>adj:sg:inst:n:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dobrem</orth>
+      <lex disamb="1"><base>dobro</base><ctag>subst:sg:inst:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>w</orth>
+      <lex disamb="1"><base>w</base><ctag>prep:loc:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>socjalistycznym</orth>
+      <lex disamb="1"><base>socjalistyczny</base><ctag>adj:sg:loc:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>realiźmie</orth>
+      <lex disamb="1"><base>realiźmie</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="3">
+    <tok>
+      <orth>Świeżo</orth>
+      <lex disamb="1"><base>świeżo</base><ctag>adv:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>upieczona</orth>
+      <lex disamb="1"><base>upiec</base><ctag>ppas:sg:nom:f:perf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>juniorka</orth>
+      <lex disamb="1"><base>juniorka</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>młodsza</orth>
+      <lex disamb="1"><base>młody</base><ctag>adj:sg:nom:f:com</ctag></lex>
+    </tok>
+    <tok>
+      <orth>spotkała</orth>
+      <lex disamb="1"><base>spotkać</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>płetwala</orth>
+      <lex disamb="1"><base>płetwal</base><ctag>subst:sg:acc:m2</ctag></lex>
+    </tok>
+    <tok>
+      <orth>karłowatego</orth>
+      <lex disamb="1"><base>karłowaty</base><ctag>adj:sg:acc:m2:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>i</orth>
+      <lex disamb="1"><base>i</base><ctag>conj</ctag></lex>
+    </tok>
+    <tok>
+      <orth>razem</orth>
+      <lex disamb="1"><base>razem</base><ctag>adv</ctag></lex>
+    </tok>
+    <tok>
+      <orth>z</orth>
+      <lex disamb="1"><base>z</base><ctag>prep:inst:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>nim</orth>
+      <lex disamb="1"><base>on</base><ctag>ppron3:sg:inst:m1:ter:akc:praep</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>po</orth>
+      <lex disamb="1"><base>po</base><ctag>prep:acc</ctag></lex>
+    </tok>
+    <tok>
+      <orth>wiejsku</orth>
+      <lex disamb="1"><base>wiejski</base><ctag>adjp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>nacieszyła</orth>
+      <lex disamb="1"><base>nacieszyć</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>zespołem</orth>
+      <lex disamb="1"><base>zespół</base><ctag>subst:sg:inst:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Rittera</orth>
+      <lex disamb="1"><base>Rittera</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="4">
+    <tok>
+      <orth>Najświętsza</orth>
+      <lex disamb="1"><base>święty</base><ctag>adj:sg:nom:f:sup</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Ofiara</orth>
+      <lex disamb="1"><base>ofiara</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>w</orth>
+      <lex disamb="1"><base>w</base><ctag>prep:acc:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Wielki</orth>
+      <lex disamb="1"><base>wielki</base><ctag>adj:sg:acc:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Post</orth>
+      <lex disamb="1"><base>post</base><ctag>subst:sg:acc:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>podczas</orth>
+      <lex disamb="1"><base>podczas</base><ctag>prep:gen</ctag></lex>
+    </tok>
+    <tok>
+      <orth>cichej</orth>
+      <lex disamb="1"><base>cichy</base><ctag>adj:sg:gen:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>mszy</orth>
+      <lex disamb="1"><base>msza</base><ctag>subst:sg:gen:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>została</orth>
+      <lex disamb="1"><base>zostać</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>odprawiona</orth>
+      <lex disamb="1"><base>odprawić</base><ctag>ppas:sg:nom:f:perf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>o</orth>
+      <lex disamb="1"><base>o</base><ctag>prep:loc</ctag></lex>
+    </tok>
+    <tok>
+      <orth>bladym</orth>
+      <lex disamb="1"><base>blady</base><ctag>adj:sg:loc:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>świcie</orth>
+      <lex disamb="1"><base>świt</base><ctag>subst:sg:loc:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="5">
+    <tok>
+      <orth>Biały</orth>
+      <lex disamb="1"><base>biały</base><ctag>adj:sg:nom:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>proszek</orth>
+      <lex disamb="1"><base>proszek</base><ctag>subst:sg:nom:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>to</orth>
+      <lex disamb="1"><base>to</base><ctag>pred</ctag></lex>
+    </tok>
+    <tok>
+      <orth>świetny</orth>
+      <lex disamb="1"><base>świetny</base><ctag>adj:sg:nom:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>sposób</orth>
+      <lex disamb="1"><base>sposób</base><ctag>subst:sg:nom:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>żeby</orth>
+      <lex disamb="1"><base>żeby</base><ctag>comp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>wyszaleć</orth>
+      <lex disamb="1"><base>wyszaleć</base><ctag>inf:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>do</orth>
+      <lex disamb="1"><base>do</base><ctag>prep:gen</ctag></lex>
+    </tok>
+    <tok>
+      <orth>bladego</orth>
+      <lex disamb="1"><base>blady</base><ctag>adj:sg:gen:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>świtu</orth>
+      <lex disamb="1"><base>świt</base><ctag>subst:sg:gen:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>choć</orth>
+      <lex disamb="1"><base>choć</base><ctag>comp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ma</orth>
+      <lex disamb="1"><base>mieć</base><ctag>fin:sg:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>to</orth>
+      <lex disamb="1"><base>to</base><ctag>subst:sg:acc:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>też</orth>
+      <lex disamb="1"><base>też</base><ctag>qub</ctag></lex>
+    </tok>
+    <tok>
+      <orth>drugie</orth>
+      <lex disamb="1"><base>drugi</base><ctag>adj:sg:acc:n:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dno</orth>
+      <lex disamb="1"><base>dno</base><ctag>subst:sg:acc:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="6">
+    <tok>
+      <orth>Szlachetnie</orth>
+      <lex disamb="1"><base>szlachetnie</base><ctag>adv:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>urodzona</orth>
+      <lex disamb="1"><base>urodzony</base><ctag>adj:sg:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>żelazna</orth>
+      <lex disamb="1"><base>żelazny</base><ctag>adj:sg:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dziewica</orth>
+      <lex disamb="1"><base>dziewica</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>napchała</orth>
+      <lex disamb="1"><base>napchać</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>lanymi</orth>
+      <lex disamb="1"><base>lać</base><ctag>ppas:pl:inst:m3:imperf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>kluskami</orth>
+      <lex disamb="1"><base>klusek</base><ctag>subst:pl:inst:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="7">
+    <tok>
+      <orth>Świeżo</orth>
+      <lex disamb="1"><base>świeżo</base><ctag>adv:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>upieczona</orth>
+      <lex disamb="1"><base>upiec</base><ctag>ppas:sg:nom:f:perf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>juniorka</orth>
+      <lex disamb="1"><base>juniorka</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>młodsza</orth>
+      <lex disamb="1"><base>młody</base><ctag>adj:sg:nom:f:com</ctag></lex>
+    </tok>
+    <tok>
+      <orth>spotkała</orth>
+      <lex disamb="1"><base>spotkać</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>płetwala</orth>
+      <lex disamb="1"><base>płetwal</base><ctag>subst:sg:acc:m2</ctag></lex>
+    </tok>
+    <tok>
+      <orth>karłowatego</orth>
+      <lex disamb="1"><base>karłowaty</base><ctag>adj:sg:acc:m2:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>i</orth>
+      <lex disamb="1"><base>i</base><ctag>conj</ctag></lex>
+    </tok>
+    <tok>
+      <orth>razem</orth>
+      <lex disamb="1"><base>razem</base><ctag>adv</ctag></lex>
+    </tok>
+    <tok>
+      <orth>z</orth>
+      <lex disamb="1"><base>z</base><ctag>prep:inst:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>nim</orth>
+      <lex disamb="1"><base>on</base><ctag>ppron3:sg:inst:m1:ter:akc:praep</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>po</orth>
+      <lex disamb="1"><base>po</base><ctag>prep:acc</ctag></lex>
+    </tok>
+    <tok>
+      <orth>wiejsku</orth>
+      <lex disamb="1"><base>wiejski</base><ctag>adjp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>nacieszyła</orth>
+      <lex disamb="1"><base>nacieszyć</base><ctag>praet:sg:f:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>zespołem</orth>
+      <lex disamb="1"><base>zespół</base><ctag>subst:sg:inst:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Rittera</orth>
+      <lex disamb="1"><base>Rittera</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="8">
+    <tok>
+      <orth>Preimplementacyjna</orth>
+      <lex disamb="1"><base>Preimplementacyjna</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>diagnostyka</orth>
+      <lex disamb="1"><base>diagnostyka</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>jest</orth>
+      <lex disamb="1"><base>być</base><ctag>fin:sg:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>luksusowym</orth>
+      <lex disamb="1"><base>luksusowy</base><ctag>adj:sg:inst:n:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dobrem</orth>
+      <lex disamb="1"><base>dobro</base><ctag>subst:sg:inst:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>w</orth>
+      <lex disamb="1"><base>w</base><ctag>prep:loc:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>socjalistycznym</orth>
+      <lex disamb="1"><base>socjalistyczny</base><ctag>adj:sg:loc:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>realiźmie</orth>
+      <lex disamb="1"><base>realiźmie</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="9">
+    <tok>
+      <orth>Szlachetna</orth>
+      <lex disamb="1"><base>szlachetny</base><ctag>adj:sg:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>paczka</orth>
+      <lex disamb="1"><base>paczka</base><ctag>subst:sg:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>to</orth>
+      <lex disamb="1"><base>to</base><ctag>pred</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>nie</orth>
+      <lex disamb="1"><base>nie</base><ctag>qub</ctag></lex>
+    </tok>
+    <tok>
+      <orth>obdarowywanie</orth>
+      <lex disamb="1"><base>obdarowywać</base><ctag>ger:sg:nom:n:imperf:aff</ctag></lex>
+    </tok>
+    <tok>
+      <orth>luksusowym</orth>
+      <lex disamb="1"><base>luksusowy</base><ctag>adj:sg:inst:n:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>dobrem</orth>
+      <lex disamb="1"><base>dobro</base><ctag>subst:sg:inst:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>tylko</orth>
+      <lex disamb="1"><base>tylko</base><ctag>qub</ctag></lex>
+    </tok>
+    <tok>
+      <orth>śietny</orth>
+      <lex disamb="1"><base>śietny</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>sposób</orth>
+      <lex disamb="1"><base>sposób</base><ctag>pred</ctag></lex>
+    </tok>
+    <tok>
+      <orth>na</orth>
+      <lex disamb="1"><base>na</base><ctag>prep:acc</ctag></lex>
+    </tok>
+    <tok>
+      <orth>pomoc</orth>
+      <lex disamb="1"><base>pomoc</base><ctag>subst:sg:acc:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ubogim</orth>
+      <lex disamb="1"><base>ubogi</base><ctag>adj:pl:dat:m1:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="10">
+    <tok>
+      <orth>Białe</orth>
+      <lex disamb="1"><base>biały</base><ctag>adj:pl:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ściany</orth>
+      <lex disamb="1"><base>ściana</base><ctag>subst:pl:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>mogą</orth>
+      <lex disamb="1"><base>móc</base><ctag>fin:pl:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>szybko</orth>
+      <lex disamb="1"><base>szybko</base><ctag>adv:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ubrudzić</orth>
+      <lex disamb="1"><base>ubrudzić</base><ctag>inf:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>,</orth>
+      <lex disamb="1"><base>,</base><ctag>interp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>jeśli</orth>
+      <lex disamb="1"><base>jeśli</base><ctag>comp</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ktoś</orth>
+      <lex disamb="1"><base>ktoś</base><ctag>subst:sg:nom:m1</ctag></lex>
+    </tok>
+    <tok>
+      <orth>postanowi</orth>
+      <lex disamb="1"><base>postanowić</base><ctag>fin:sg:ter:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>wyszaleć</orth>
+      <lex disamb="1"><base>wyszaleć</base><ctag>inf:perf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>się</orth>
+      <lex disamb="1"><base>się</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>w</orth>
+      <lex disamb="1"><base>w</base><ctag>prep:loc:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>mieszkaniu</orth>
+      <lex disamb="1"><base>mieszkanie</base><ctag>subst:sg:loc:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="11">
+    <tok>
+      <orth>Najlepszą</orth>
+      <lex disamb="1"><base>dobry</base><ctag>adj:sg:inst:f:sup</ctag></lex>
+    </tok>
+    <tok>
+      <orth>ochroną</orth>
+      <lex disamb="1"><base>ochrona</base><ctag>subst:sg:inst:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>przed</orth>
+      <lex disamb="1"><base>przed</base><ctag>prep:inst:nwok</ctag></lex>
+    </tok>
+    <tok>
+      <orth>włamywaczami</orth>
+      <lex disamb="1"><base>włamywacz</base><ctag>subst:pl:inst:m1</ctag></lex>
+    </tok>
+    <tok>
+      <orth>są</orth>
+      <lex disamb="1"><base>być</base><ctag>fin:pl:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>żelazne</orth>
+      <lex disamb="1"><base>żelazny</base><ctag>adj:pl:nom:n:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>drzwi</orth>
+      <lex disamb="1"><base>drzwi</base><ctag>subst:pl:nom:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>i</orth>
+      <lex disamb="1"><base>i</base><ctag>conj</ctag></lex>
+    </tok>
+    <tok>
+      <orth>żelazne</orth>
+      <lex disamb="1"><base>żelazny</base><ctag>adj:pl:nom:f:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>okiennice</orth>
+      <lex disamb="1"><base>okiennica</base><ctag>subst:pl:nom:f</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="12">
+    <tok>
+      <orth>Ktoś</orth>
+      <lex disamb="1"><base>ktoś</base><ctag>subst:sg:nom:m1</ctag></lex>
+    </tok>
+    <tok>
+      <orth>tu</orth>
+      <lex disamb="1"><base>tu</base><ctag>adv</ctag></lex>
+    </tok>
+    <tok>
+      <orth>cierpi</orth>
+      <lex disamb="1"><base>cierpieć</base><ctag>fin:sg:ter:imperf</ctag></lex>
+    </tok>
+    <tok>
+      <orth>na</orth>
+      <lex disamb="1"><base>na</base><ctag>prep:acc</ctag></lex>
+    </tok>
+    <tok>
+      <orth>zespół</orth>
+      <lex disamb="1"><base>zespół</base><ctag>subst:sg:acc:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>Rittera</orth>
+      <lex disamb="1"><base>Rittera</base><ctag>ign</ctag></lex>
+    </tok>
+    <tok>
+      <orth>.</orth>
+      <lex disamb="1"><base>.</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+  <sentence id="13">
+    <tok>
+      <orth>Co</orth>
+      <lex disamb="1"><base>co</base><ctag>subst:sg:nom:n</ctag></lex>
+    </tok>
+    <tok>
+      <orth>to</orth>
+      <lex disamb="1"><base>to</base><ctag>pred</ctag></lex>
+    </tok>
+    <tok>
+      <orth>za</orth>
+      <lex disamb="1"><base>za</base><ctag>qub</ctag></lex>
+    </tok>
+    <tok>
+      <orth>biały</orth>
+      <lex disamb="1"><base>biały</base><ctag>adj:sg:nom:m3:pos</ctag></lex>
+    </tok>
+    <tok>
+      <orth>proszek</orth>
+      <lex disamb="1"><base>proszek</base><ctag>subst:sg:nom:m3</ctag></lex>
+    </tok>
+    <tok>
+      <orth>?</orth>
+      <lex disamb="1"><base>?</base><ctag>interp</ctag></lex>
+    </tok>
+  </sentence>
+</chunk>
+</chunkList>
+
