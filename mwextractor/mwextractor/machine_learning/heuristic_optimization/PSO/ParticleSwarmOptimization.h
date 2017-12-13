@@ -57,8 +57,37 @@ public:
     /**
     * Solves the optimization problem. Result of optimization is saved in a file.
     */
-    Point start(){;}
-    // int start();
+    Point start()
+    {
+    Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
+
+        StepCounter<ArgumentsType, StepType> step(this->mCallPoliciesArguments);
+        Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
+
+        Point candidate = this->mBest;
+
+        mpEvaluator->evaluate(this->mBest);
+        this->mNumberOfEvaluations++;
+
+        while(!step.isFinished())
+        {
+            candidate.setRandomParameters();
+            mpEvaluator->evaluate(candidate);
+            this->mNumberOfEvaluations++;
+
+            if(candidate.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
+            {
+                this->mBest = candidate;
+            }
+
+            report.reportStep(step.getCurrentStep(), candidate, this->mBest);
+            step.increase();
+        }
+
+        report.reportSummary(this->mNumberOfEvaluations, timer.getTime(), this->mBest);
+
+        return this->mBest;
+    }
 
 private:
     ParticleSwarmOptimization(void){}
