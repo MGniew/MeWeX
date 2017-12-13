@@ -182,7 +182,6 @@ set(LEARNING_SRCS
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/SimulatedAnnealing/CallPoliciesArgumentsSA.cpp
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/EvolutionaryAlgorithm/CallPoliciesArgumentsEA.cpp
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/EvolutionaryAlgorithm/Individual.cpp
-	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/PSO/ParticleSwarmOptimization.cpp
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/PSO/CallPoliciesArgumentsPSO.cpp
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/Data.cpp
 	${SOURCE_DIRS_PREFIX}/machine_learning/heuristic_optimization/DoubleEvaluationPerformance.cpp

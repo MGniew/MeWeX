@@ -12,7 +12,6 @@ namespace machine_learning
 	{
 		namespace particle_swarm_optimization
 		{
-
 /**
 * The random search algorithm class template.
 *
@@ -58,7 +57,8 @@ public:
     /**
     * Solves the optimization problem. Result of optimization is saved in a file.
     */
-    Point start();
+    Point start(){;}
+    // int start();
 
 private:
     ParticleSwarmOptimization(void){}

@@ -15,6 +15,7 @@
 #include "TabuSearch/CallPoliciesArgumentsTS.h"
 #include "SimulatedAnnealing/CallPoliciesArgumentsSA.h"
 #include "EvolutionaryAlgorithm/CallPoliciesArgumentsEA.h"
+#include "PSO/CallPoliciesArgumentsPSO.h"
 
 
 namespace machine_learning
@@ -28,11 +29,12 @@ class EvaluatorWrapper
 public:
 	typedef Evaluator*	EvaluatorPtrR;
 
-	typedef RandomSearch::CallPoliciesArgumentsRS 			RSCallPolicy;
-	typedef HillClimbing::CallPoliciesArgumentsHC 			HCCallPolicy;
-	typedef TabuSearch::CallPoliciesArgumentsTS 			TSCallPolicy;
-	typedef SimulatedAnnealing::CallPoliciesArgumentsSA 	SACallPolicy;
-	typedef EvolutionaryAlgorithm::CallPoliciesArgumentsEA 	EACallPolicy;
+	typedef RandomSearch::CallPoliciesArgumentsRS 					RSCallPolicy;
+	typedef HillClimbing::CallPoliciesArgumentsHC 					HCCallPolicy;
+	typedef TabuSearch::CallPoliciesArgumentsTS 					TSCallPolicy;
+	typedef SimulatedAnnealing::CallPoliciesArgumentsSA 			SACallPolicy;
+	typedef EvolutionaryAlgorithm::CallPoliciesArgumentsEA		 	EACallPolicy;
+	typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
 
 	enum MethodType
 	{
@@ -41,6 +43,7 @@ public:
 	    TS, // Tabu Search
 	    SA, // Simulated Annealing
 	    EA,  // Evolutionary Algorithm
+	    PSO,  // Particle Swarm Optimization
 	    EMPTY
 	};
 
@@ -83,14 +86,21 @@ public:
 		Point const&			pStartPoint,
 		EACallPolicy const& 	pPolicy);
 
+	EvaluatorWrapper(
+		EvaluatorPtrR const&	pEvaluator,
+		MethodType 				pMethodType,
+		Point const&			pStartPoint,
+		PSOCallPolicy const& 	pPolicy);
+
 
 	Point start();
 
-	void setRandomSearchPolicy(RSCallPolicy const& 			pPolicy);
-	void setHillClimbingPolicy(HCCallPolicy const& 			pPolicy);
-	void setTabuSearchPolicy(TSCallPolicy const& 			pPolicy);
-	void setSimulatedAnnealingPolicy(SACallPolicy const& 	pPolicy);
-	void setEvolutionaryAlgorithmPolicy(EACallPolicy const& pPolicy);
+	void setRandomSearchPolicy(RSCallPolicy const& 				pPolicy);
+	void setHillClimbingPolicy(HCCallPolicy const& 				pPolicy);
+	void setTabuSearchPolicy(TSCallPolicy const& 				pPolicy);
+	void setSimulatedAnnealingPolicy(SACallPolicy const& 		pPolicy);
+	void setEvolutionaryAlgorithmPolicy(EACallPolicy const&		pPolicy);
+	void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
 
 
 private:
@@ -103,6 +113,7 @@ private:
 	TSCallPolicy mTSCPA;
 	SACallPolicy mSACPA;
 	EACallPolicy mEACPA;
+	PSOCallPolicy mPSOCPA;
 };
 
 

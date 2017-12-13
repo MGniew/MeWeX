@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../BaseReport.h"
-#include "../../Point.h"
+#include "../BaseReport.h"
+#include "../Point.h"
 
 
 namespace machine_learning
@@ -24,8 +24,7 @@ namespace machine_learning
 */
 template<typename ArgumentsType,
          typename TimeType,
-         typename StepType,
-         typename NeighbourhoodType>
+         typename StepType>
 class ReportPSO : public BaseReport
 {
 public:
@@ -59,7 +58,7 @@ public:
     * @param[in] rBest			The best found point.
     * @param[in] rNeighbourhood	The neighbourhood of <code>rCurrent</code>.
     */
-    void reportStep(StepType step, const Point& rCandidate, const Point& rCurrent, const Point& rBest, NeighbourhoodType& rNeighbourhood)
+    void reportStep(StepType step, const Point& rCandidate, const Point& rCurrent, const Point& rBest)
     {
         this->mReport<<step;
         this->mReport<<":"<<std::endl;
@@ -71,10 +70,6 @@ public:
         this->mReport<<","<<std::endl;
         this->mReport<<"\tBest=";
         this->mReport<<rBest.toString();
-        this->mReport<<std::endl;
-
-        this->mReport<<"\tNeighbourhood=";
-        this->mReport<<rNeighbourhood.toString();
         this->mReport<<std::endl;
     }
 }; // class ReportPSO

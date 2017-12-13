@@ -51,8 +51,13 @@ public:
     void readFromFile(const std::string& rFileName);
 
 private:
+    unsigned int mSwarmSize;
+    unsigned int mNeighbourhood;
+
     static const std::string SECTION;
     static const std::string STEPS_KEY;
+    static const std::string SWARM_SIZE_KEY;
+    static const std::string NEIGHBOURHOOD_KEY;
 }; // class CallPoliciesArgumentsPSO
 
 
