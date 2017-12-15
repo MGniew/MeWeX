@@ -59,8 +59,7 @@ Point HypersphereNeighbourhood::getNeighbour(const Point& rPoint)
             sizeParam = rPoint.getParameterAt(i).getSize();
             for(unsigned int j=0; j<sizeParam; j++)
             {
-                p = Random::random();
-                if(Random::random()>p)
+                if(Random::random() > 0.5)
                 {
                     neighbour.getParameterAt(i).setRandomValue(j);
                 }

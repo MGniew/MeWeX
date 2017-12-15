@@ -3,6 +3,8 @@
 #include <ctime>
 #include <cstdlib>
 
+#include <random>
+
 
 namespace machine_learning
 {
@@ -18,9 +20,6 @@ namespace machine_learning
 class Random
 {
 public:
-    Random(void);
-
-    ~Random(void);
 
     /**
     * Returns random number from the range [0, 1].
@@ -56,7 +55,10 @@ public:
     }
 
 private:
-    static time_t been;
+    static std::uniform_real_distribution<double> distance;
+    static std::mt19937_64 generator;
+    
+    Random(void){}
 }; // class Random
 
 

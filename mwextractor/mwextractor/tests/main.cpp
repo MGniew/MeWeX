@@ -1150,7 +1150,7 @@ BOOST_AUTO_TEST_CASE( WTFOrder_test )
 		}
 	}
 }*/
-
+/*
 BOOST_AUTO_TEST_CASE( Cout_test )
 {
 	FixtureWrapper fix;

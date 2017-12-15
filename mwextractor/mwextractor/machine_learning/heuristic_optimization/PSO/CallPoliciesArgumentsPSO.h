@@ -35,14 +35,21 @@ public:
     ~CallPoliciesArgumentsPSO(void);
 
     /**
-    * Reads the characteristic parameters from a .ini <a href="optimizer.cfg">file</a>
-    * (section "random_search"). If one of the value (or key) is missing in file then method takes
-    * default value for that key. Default values for keys are as follows:
-    * <ul>
-    * <li>steps = 10.</li>
-    * </ul>
+    * Returns neighbourhood size.
     *
-    * @note See example in section "random_search" in config <a href="optimizer.cfg">file</a>.
+    * @return The neighbourhood size.
+    */
+    unsigned int getNeighbourhood(void) const;
+
+    /**
+    * Returns a value of the radius.
+    *
+    * @return The value of the radius.
+    */
+    unsigned int getSwarmSize(void) const;
+
+    /**
+    * Reads the characteristic parameters from a .ini <a href="optimizer.cfg">file</a>
     *
     * @param[in] rFileName The config file name.
     *

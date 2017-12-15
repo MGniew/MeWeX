@@ -58,13 +58,10 @@ public:
     * @param[in] rBest			The best found point.
     * @param[in] rNeighbourhood	The neighbourhood of <code>rCurrent</code>.
     */
-    void reportStep(StepType step, const Point& rCurrent, const Point& rBest)
+    void reportStep(StepType step, const Point& rBest)
     {
         this->mReport<<step;
         this->mReport<<":"<<std::endl;
-        this->mReport<<"\tCurrent=";
-        this->mReport<<rCurrent.toString();
-        this->mReport<<","<<std::endl;
         this->mReport<<"\tBest=";
         this->mReport<<rBest.toString();
         this->mReport<<std::endl;

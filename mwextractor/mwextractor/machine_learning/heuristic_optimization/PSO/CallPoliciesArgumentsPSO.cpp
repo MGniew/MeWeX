@@ -15,6 +15,11 @@ CallPoliciesArgumentsPSO::CallPoliciesArgumentsPSO(void) : BaseCallPoliciesArgum
 CallPoliciesArgumentsPSO::~CallPoliciesArgumentsPSO(void)
 {;}
 
+unsigned int CallPoliciesArgumentsPSO::getSwarmSize(void) const
+{
+    return mSwarmSize;
+}
+
 void CallPoliciesArgumentsPSO::readFromFile(const std::string& rFileName)
 {
     CSimpleIniA configFile;

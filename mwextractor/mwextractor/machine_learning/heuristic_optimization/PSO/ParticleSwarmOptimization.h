@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Particle.h"
 #include "../Point.h"
 #include "../Evaluator.h"
 
@@ -59,31 +60,44 @@ public:
     */
     Point start()
     {
-    Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
+        Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
 
         StepCounter<ArgumentsType, StepType> step(this->mCallPoliciesArguments);
         Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
 
-        Point candidate = this->mBest;
+        std::vector<Particle> swarm;
+        swarm.reserve(this->mCallPoliciesArguments.getSwarmSize());
+        Particle particle(this->mBest);
+        for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
+        {
+            particle.setRandomParameters();
+            swarm.emplace_back(particle);
+            mpEvaluator->evaluate(swarm.back());
+        }
 
         mpEvaluator->evaluate(this->mBest);
         this->mNumberOfEvaluations++;
 
         while(!step.isFinished())
         {
-            candidate.setRandomParameters();
-            mpEvaluator->evaluate(candidate);
-            this->mNumberOfEvaluations++;
-
-            if(candidate.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
+            for(auto particle : swarm)
             {
-                this->mBest = candidate;
+                particle.move(this->mBest);
+                mpEvaluator->evaluate(particle);
+                if(particle.getLocalBest().getEvaluationPerformance().isGreater(particle.getEvaluationPerformance()))
+                {
+                    particle.setLocalBest(particle);
+                }
+                if(particle.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
+                {
+                    this->mBest = particle;
+                }
+                report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
             }
-
-            report.reportStep(step.getCurrentStep(), candidate, this->mBest);
+            this->mNumberOfEvaluations++;
+            report.reportStep(step.getCurrentStep(), this->mBest);
             step.increase();
         }
-
         report.reportSummary(this->mNumberOfEvaluations, timer.getTime(), this->mBest);
 
         return this->mBest;
