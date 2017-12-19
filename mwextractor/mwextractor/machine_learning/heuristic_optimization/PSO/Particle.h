@@ -17,10 +17,11 @@ class Particle : public Point
 {
 public:
     Particle(void);
+    ~Particle(void);
 
     Particle(const Point& rPoint);
     Particle(const Particle& rPoint);
-    //Particle& operator=(const Particle& rParticle);
+    Particle& operator=(Particle rParticle);
     //bool isEqual(const Point& rPoint);
     void addParameter(const BaseParameter& rParameter);
     void setLocalBest(const Point& rPoint);

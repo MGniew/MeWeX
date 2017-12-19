@@ -71,8 +71,9 @@ public:
         for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
         {
             particle.setRandomParameters();
+            mpEvaluator->evaluate(particle);
+            particle.setLocalBest(particle);
             swarm.emplace_back(particle);
-            mpEvaluator->evaluate(swarm.back());
         }
 
         mpEvaluator->evaluate(this->mBest);
@@ -80,7 +81,7 @@ public:
 
         while(!step.isFinished())
         {
-            for(auto particle : swarm)
+            for(auto& particle : swarm)
             {
                 particle.move(this->mBest);
                 mpEvaluator->evaluate(particle);
@@ -92,7 +93,7 @@ public:
                 {
                     this->mBest = particle;
                 }
-                report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
+                //report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
             }
             this->mNumberOfEvaluations++;
             report.reportStep(step.getCurrentStep(), this->mBest);

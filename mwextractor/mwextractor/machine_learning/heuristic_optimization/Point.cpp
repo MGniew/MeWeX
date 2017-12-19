@@ -35,8 +35,9 @@ Point::~Point(void)
 Point& Point::operator=(Point rPoint)
 {
     mParameters.swap(rPoint.mParameters);
-    delete this->mpEvaluationPerformance;
-    this->mpEvaluationPerformance = rPoint.mpEvaluationPerformance->duplicate();
+    auto tmp = mpEvaluationPerformance;
+    mpEvaluationPerformance = rPoint.mpEvaluationPerformance;
+    rPoint.mpEvaluationPerformance = tmp;
     return *this;
 }
 

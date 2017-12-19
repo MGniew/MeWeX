@@ -16,11 +16,19 @@ Particle::Particle(void)
     this->mpEvaluationPerformance = NULL;
 }
 
+Particle::~Particle(void)
+{
+    for(auto& velocity : mVelocity)
+    {
+        delete velocity;
+    }
+}
+
 Particle::Particle(const Point& rPoint) : Point(rPoint), mBest(rPoint)
 {
     mVelocity.resize(rPoint.getNumberOfParameters());
     if(rPoint.getNumberOfParameters() > 0)
-        for(auto velocity : mVelocity)
+        for(auto& velocity : mVelocity)
         {
             velocity = rPoint.getParameterAt(0).duplicate();
             velocity->getValueAt(0).set(0);
@@ -28,10 +36,23 @@ Particle::Particle(const Point& rPoint) : Point(rPoint), mBest(rPoint)
 }
 
 Particle::Particle(const Particle& rParticle) : Point(rParticle), mBest(rParticle), mVelocity(rParticle.mVelocity)
-{}
+{
+    if(rParticle.getNumberOfParameters() > 0)
+        for(auto& velocity : mVelocity)
+        {
+            velocity = velocity->duplicate();
+        }
+}
 
-//Particle& operator=(const Particle& rParticle);
-//bool isEqual(const Point& rPoint);
+Particle& Particle::operator=(Particle rParticle)
+{
+    mVelocity.swap(rParticle.mVelocity);
+    mParameters.swap(rParticle.mParameters);
+    auto tmp = mpEvaluationPerformance;
+    mpEvaluationPerformance = rParticle.mpEvaluationPerformance;
+    rParticle.mpEvaluationPerformance = tmp;
+    return *this;
+}
 
 void Particle::addParameter(const BaseParameter& rParameter)
 {
