@@ -13,19 +13,23 @@ namespace machine_learning
 
 Particle::Particle(void)
 {
-    this->mpEvaluationPerformance = NULL;
+    this->mpEvaluationPerformance = nullptr;
+    this->mBest = nullptr;
 }
 
 Particle::~Particle(void)
 {
+    if(mBest != nullptr)
+        delete mBest;
     for(auto& velocity : mVelocity)
     {
         delete velocity;
     }
 }
 
-Particle::Particle(const Point& rPoint) : Point(rPoint), mBest(rPoint)
+Particle::Particle(const Point& rPoint) : Point(rPoint)
 {
+    mBest = new Point(rPoint);
     mVelocity.resize(rPoint.getNumberOfParameters());
     if(rPoint.getNumberOfParameters() > 0)
         for(auto& velocity : mVelocity)
@@ -35,8 +39,9 @@ Particle::Particle(const Point& rPoint) : Point(rPoint), mBest(rPoint)
         }
 }
 
-Particle::Particle(const Particle& rParticle) : Point(rParticle), mBest(rParticle), mVelocity(rParticle.mVelocity)
+Particle::Particle(const Particle& rParticle) : Point(rParticle), mVelocity(rParticle.mVelocity)
 {
+    mBest = new Point(rParticle.getLocalBest());
     if(rParticle.getNumberOfParameters() > 0)
         for(auto& velocity : mVelocity)
         {
@@ -48,6 +53,9 @@ Particle& Particle::operator=(Particle rParticle)
 {
     mVelocity.swap(rParticle.mVelocity);
     mParameters.swap(rParticle.mParameters);
+    auto tmpBest = mBest;
+    mBest = rParticle.mBest;
+    rParticle.mBest = tmpBest;
     auto tmp = mpEvaluationPerformance;
     mpEvaluationPerformance = rParticle.mpEvaluationPerformance;
     rParticle.mpEvaluationPerformance = tmp;
@@ -62,29 +70,60 @@ void Particle::addParameter(const BaseParameter& rParameter)
 
 void Particle::move(const Point& rBest)
 {
-    double c1 = 1.0, c2 = 1.0, c3 = 1.0;
+    double c1 = 1.0, c2 = 0.2, c3 = 0.8;
     double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
     for(int i = 0; i < mVelocity.size(); i++)
     {
         double v,mX,rX,cX;
+        auto data = mVelocity[i]->getValueAt(0);
         mVelocity[i]->getValueAt(0).get(v);
-        mBest.getParameterAt(i).getValueAt(0).get(mX);
+        mBest->getParameterAt(i).getValueAt(0).get(mX);
         mParameters[i]->getValueAt(0).get(cX);
         rBest.getParameterAt(i).getValueAt(0).get(rX);
         v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
-        mVelocity[i]->getValueAt(0).set(v);
-        mParameters[i]->getValueAt(0).set(cX + v);
+        data.set(v);
+        mVelocity[i]->setValueAt(0, data);
+        data.set(cX + v);
+        mParameters[i]->setValueAt(0, data);
     }
+}
+
+void Particle::setRandomParameters(void)
+{
+    unsigned int sizeParam;
+    for(unsigned int i=0; i<this->mParameters.size(); i++)
+    {
+        sizeParam = this->mParameters[i]->getSize();
+        for(unsigned int j=0; j<sizeParam; j++)
+        {
+            this->mParameters[i]->setRandomValue(j,Random::Distribution::INV_NORMAL);
+        }
+    }
+    this->mpEvaluationPerformance->clear();
 }
 
 void Particle::setLocalBest(const Point& rPoint)
 {
-    mBest = rPoint;
+    if(mBest == nullptr)
+        mBest = new Point(rPoint);
+    else
+        *mBest = rPoint;
 }
 
-const Point& Particle::getLocalBest()
+const Point& Particle::getLocalBest() const
 {
-    return mBest;
+    return *mBest;
+}
+
+double Particle::getVelocityLengthSquared() const
+{
+    double sum = 0.0, val;
+    for(auto& elem : mVelocity)
+    {
+        elem->getValueAt(0).get(val);
+        sum += val * val;
+    }
+    return sum;
 }
 
 std::string Particle::toString(void) const

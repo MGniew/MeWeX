@@ -21,6 +21,8 @@ class Random
 {
 public:
 
+    enum class Distribution {UNIFORM, INV_NORMAL};
+
     /**
     * Returns random number from the range [0, 1].
     *
@@ -30,6 +32,7 @@ public:
     * @return The random number.
     */
     static double random(void);
+    static double random_inv_normal(void);
 
     /**
     * Returns random number from the range [<code>minValue</code>, <code>maxValue</code>].
@@ -54,8 +57,22 @@ public:
         }
     }
 
+    template<typename T>
+    static T random_inv_normal(const T& minValue, const T& maxValue)
+    {
+        if(minValue >= maxValue)
+        {
+            return minValue;
+        }
+        else
+        {
+            return minValue+((maxValue - minValue)*Random::random_inv_normal());
+        }
+    }
+
 private:
     static std::uniform_real_distribution<double> distance;
+    static std::normal_distribution<double> normal;
     static std::mt19937_64 generator;
     
     Random(void){}

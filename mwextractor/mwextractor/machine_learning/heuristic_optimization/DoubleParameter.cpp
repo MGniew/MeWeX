@@ -37,11 +37,19 @@ BaseParameter* DoubleParameter::duplicate(void) const
     return new DoubleParameter(*this);
 }
 
-void DoubleParameter::setRandomValue(unsigned int index)
+void DoubleParameter::setRandomValue(unsigned int index, Random::Distribution dist)
 {
     if(index<this->mParameter.size())
     {
-        this->mParameter[index] = this->mStep[index]*((int)(Random::random(this->mMin[index], this->mMax[index])/this->mStep[index]));
+    switch(dist)
+    {
+        case Random::Distribution::INV_NORMAL:
+            this->mParameter[index] = this->mStep[index]*((int)(Random::random_inv_normal(this->mMin[index], this->mMax[index])/this->mStep[index]));
+            break;
+        case Random::Distribution::UNIFORM:
+            this->mParameter[index] = this->mStep[index]*((int)(Random::random(this->mMin[index], this->mMax[index])/this->mStep[index]));
+            break;
+    }
     }
 }
 

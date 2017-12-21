@@ -35,7 +35,7 @@ public:
     ~DoubleParameter(void) throw();
 
     virtual BaseParameter* duplicate(void) const;
-    virtual void setRandomValue(unsigned int index);
+    virtual void setRandomValue(unsigned int index, Random::Distribution dist = Random::Distribution::UNIFORM);
     virtual bool isEqual(const BaseParameter& rParameter);
     virtual std::string getName(void);
     virtual Data getValueAt(unsigned int index);

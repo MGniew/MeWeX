@@ -25,13 +25,15 @@ public:
     //bool isEqual(const Point& rPoint);
     void addParameter(const BaseParameter& rParameter);
     void setLocalBest(const Point& rPoint);
-    const Point& getLocalBest();
+    const Point& getLocalBest() const;
+    double getVelocityLengthSquared() const;
     void move(const Point& rBest);
+    void setRandomParameters(void);
     std::string toString(void) const;
 
 private:
     std::vector<BaseParameter*> mVelocity;
-    Point mBest;
+    Point* mBest;
 }; // class Particle
 
 

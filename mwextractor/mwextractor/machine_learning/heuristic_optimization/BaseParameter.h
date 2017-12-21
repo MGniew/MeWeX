@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Data.h"
+#include "Random.h"
 
 
 namespace machine_learning
@@ -36,7 +37,7 @@ public:
     *
     * @param[in] index Index of a parameter.
     */
-    virtual void setRandomValue(unsigned int index) = 0;
+    virtual void setRandomValue(unsigned int index, Random::Distribution dist = Random::Distribution::UNIFORM) = 0;
 
     /**
     * Determines if <code>this</code> and rParameter objects are equal.

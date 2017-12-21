@@ -38,7 +38,7 @@ BaseParameter* IntParameter::duplicate(void) const
     return new IntParameter(*this);
 }
 
-void IntParameter::setRandomValue(unsigned int index)
+void IntParameter::setRandomValue(unsigned int index, Random::Distribution dist)
 {
     if(index<this->mParameter.size())
     {

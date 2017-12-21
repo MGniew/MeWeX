@@ -55,6 +55,18 @@ public:
     */
     ~ParticleSwarmOptimization(void) {}
 
+    void massMutation(std::vector<Particle>& swarm, const Point& mBest)
+    {
+        Particle particle(mBest);
+        for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
+        {
+            particle.setRandomParameters();
+            mpEvaluator->evaluate(particle);
+            particle.setLocalBest(particle);
+            swarm[i] = particle;
+        }
+    }
+
     /**
     * Solves the optimization problem. Result of optimization is saved in a file.
     */
@@ -66,21 +78,17 @@ public:
         Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
 
         std::vector<Particle> swarm;
-        swarm.reserve(this->mCallPoliciesArguments.getSwarmSize());
-        Particle particle(this->mBest);
-        for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
-        {
-            particle.setRandomParameters();
-            mpEvaluator->evaluate(particle);
-            particle.setLocalBest(particle);
-            swarm.emplace_back(particle);
-        }
+        swarm.resize(this->mCallPoliciesArguments.getSwarmSize());
+        massMutation(swarm, this->mBest);
 
         mpEvaluator->evaluate(this->mBest);
         this->mNumberOfEvaluations++;
 
+        double sumVelocity;
+
         while(!step.isFinished())
         {
+            sumVelocity = 0.0;
             for(auto& particle : swarm)
             {
                 particle.move(this->mBest);
@@ -93,8 +101,11 @@ public:
                 {
                     this->mBest = particle;
                 }
-                //report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
+                sumVelocity += particle.getVelocityLengthSquared();
+                // report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
             }
+            if((sumVelocity / (double)swarm.size()) < 0.01)
+                massMutation(swarm, this->mBest);
             this->mNumberOfEvaluations++;
             report.reportStep(step.getCurrentStep(), this->mBest);
             step.increase();
