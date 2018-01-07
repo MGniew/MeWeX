@@ -41,8 +41,9 @@ namespace machine_learning
  * TS -- przeszukiwanie tabu
  * SA -- symulowane wyżarzanie
  * EA -- algorytm ewolucyjny
+ * PSO -- particle swarm optimization
  *
- * method=[HC|RS|TS|SA|EA]
+ * method=[HC|RS|TS|SA|EA|PSO]
  * ~~~
  *
  * Plik konfiguracyjny metod (ścieżka):

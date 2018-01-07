@@ -256,6 +256,13 @@ void LinearCombination::construct()
 	eacp.setTargetName("target_name");
 	eacp.setReportFileName("report_file");
 	mEvaluatorWrapper->setEvolutionaryAlgorithmPolicy(eacp);
+
+	EvaluatorWrapper::PSOCallPolicy psocp;
+	psocp.readFromFile(mMethodsConfig);
+	psocp.setStartStep(0);
+	psocp.setTargetName("target_name");
+	psocp.setReportFileName("report_file");
+	mEvaluatorWrapper->setParticleSwarmOptimizationPolicy(psocp);
 }
 
 

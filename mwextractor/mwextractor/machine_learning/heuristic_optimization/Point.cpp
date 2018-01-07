@@ -9,18 +9,16 @@ namespace machine_learning
 
 Point::Point(void)
 {
-    this->mParameters.clear();
     this->mpEvaluationPerformance = NULL;
 }
 
 Point::Point(const Point& rPoint)
 {
-    this->mParameters.clear();
+    mParameters.reserve(rPoint.mParameters.size());
     for(unsigned int i=0; i<rPoint.mParameters.size(); i++)
     {
         this->mParameters.push_back(rPoint.mParameters[i]->duplicate());
     }
-
     this->mpEvaluationPerformance = rPoint.mpEvaluationPerformance->duplicate();
 }
 
@@ -30,25 +28,16 @@ Point::~Point(void)
     {
         delete this->mParameters[i];
     }
-
     delete this->mpEvaluationPerformance;
 }
 
 
-Point& Point::operator=(const Point& rPoint)
+Point& Point::operator=(Point rPoint)
 {
-    for(unsigned int i=0; i<this->mParameters.size(); i++)
-    {
-        delete this->mParameters[i];
-    }
-    this->mParameters.clear();
-    for(unsigned int i=0; i<rPoint.mParameters.size(); i++)
-    {
-        this->mParameters.push_back(rPoint.mParameters[i]->duplicate());
-    }
-
-    delete this->mpEvaluationPerformance;
-    this->mpEvaluationPerformance = rPoint.mpEvaluationPerformance->duplicate();
+    mParameters.swap(rPoint.mParameters);
+    auto tmp = mpEvaluationPerformance;
+    mpEvaluationPerformance = rPoint.mpEvaluationPerformance;
+    rPoint.mpEvaluationPerformance = tmp;
     return *this;
 }
 

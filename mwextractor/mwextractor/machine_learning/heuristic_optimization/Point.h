@@ -45,9 +45,9 @@ public:
     /**
     * The assignment operator.
     *
-    * @param[in] rPoint	A reference to copied Point object.
+    * @param[in] rPoint	An object to be copied.
     */
-    Point& operator=(const Point& rPoint);
+    Point& operator=(Point rPoint);
 
     /**
     * Determines if <code>this</code> and rPoint objects are equal.

@@ -34,6 +34,8 @@
 #include "EvolutionaryAlgorithm/TournamentSelection.h"
 #include "EvolutionaryAlgorithm/ReportEA.h"
 
+#include "PSO/ParticleSwarmOptimization.h"
+#include "PSO/ReportPSO.h"
 
 namespace machine_learning
 {
@@ -128,6 +130,20 @@ EvaluatorWrapper::EvaluatorWrapper(
 
 }
 
+EvaluatorWrapper::EvaluatorWrapper(
+	EvaluatorPtrR const&	pEvaluator,
+	MethodType 				pMethodType,
+	Point const&			pStartPoint,
+	PSOCallPolicy const& 	pPolicy)
+:
+	mMethodType(pMethodType),
+	mStartPoint(pStartPoint),
+	mEvaluator(pEvaluator),
+	mPSOCPA(pPolicy)
+{
+
+}
+
 
 auto EvaluatorWrapper::parseMethodType(std::string const& pMethod) -> MethodType
 {
@@ -150,6 +166,10 @@ auto EvaluatorWrapper::parseMethodType(std::string const& pMethod) -> MethodType
 	else if(boost::iequals(pMethod, "EA"))
 	{
 		return EA;
+	}
+	else if(boost::iequals(pMethod, "PSO"))
+	{
+		return PSO;
 	}
 
 	return EMPTY;
@@ -183,6 +203,11 @@ void EvaluatorWrapper::setSimulatedAnnealingPolicy(SACallPolicy const& pPolicy)
 void EvaluatorWrapper::setEvolutionaryAlgorithmPolicy(EACallPolicy const& pPolicy)
 {
 	mEACPA = pPolicy;
+}
+
+void EvaluatorWrapper::setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy)
+{
+	mPSOCPA = pPolicy;
 }
 
 
@@ -241,6 +266,14 @@ auto EvaluatorWrapper::start() -> Point
 				Timer,
 				EvolutionaryAlgorithm::ReportEA> EAAlgorithm;
 
+	typedef particle_swarm_optimization::ParticleSwarmOptimization<
+				particle_swarm_optimization::CallPoliciesArgumentsPSO,
+				unsigned int,
+				Step,
+				time_t,
+				Timer,
+				particle_swarm_optimization::ReportPSO> PSOAlgorithm;
+
     try
     {
         switch(mMethodType)
@@ -268,6 +301,11 @@ auto EvaluatorWrapper::start() -> Point
 			case EA:
 			{
 				return EAAlgorithm(mStartPoint, mEvaluator, mEACPA).start();
+			}
+			break;
+			case PSO:
+			{
+				return PSOAlgorithm(mStartPoint, mEvaluator, mPSOCPA).start();
 			}
 			break;
 			default:
