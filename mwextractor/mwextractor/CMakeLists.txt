@@ -120,6 +120,7 @@ set(FUNCTIONS_SRCS
 	${SOURCE_DIRS_PREFIX}/function/association/UnigramSubtuples.cpp
 	${SOURCE_DIRS_PREFIX}/function/association/ConsonniT1.cpp
 	${SOURCE_DIRS_PREFIX}/function/association/ConsonniT2.cpp
+	${SOURCE_DIRS_PREFIX}/function/association/Cvalue.cpp
 	${SOURCE_DIRS_PREFIX}/function/association/MutualExpectation.cpp
 	${SOURCE_DIRS_PREFIX}/function/association/SpecificInformation.cpp
 	${SOURCE_DIRS_PREFIX}/function/association/SpecificCorrelation.cpp

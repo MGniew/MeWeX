@@ -24,6 +24,7 @@
 #include "association/Sorgenfrei.h"
 #include "association/OddsRatio.h"
 #include "association/UnigramSubtuples.h"
+#include "association/Cvalue.h"
 #include "association/ConsonniT1.h"
 #include "association/ConsonniT2.h"
 #include "association/MutualExpectation.h"
@@ -144,6 +145,9 @@ Creators::FunctionMapping const AssociationFunctionCreators::MAPPING(
 
 	{"unigram_subtuples",							&UnigramSubtuples},
 	{"us",											&UnigramSubtuples},
+
+	{"c_value",										&Cvalue},
+	{"cval",										&Cvalue},
 
 	{"consonni_t1",									&ConsonniT1},
 	{"ct1",											&ConsonniT1},
@@ -452,6 +456,12 @@ auto AssociationFunctionCreators::OddsRatio() -> FunctionPtrS
 auto AssociationFunctionCreators::UnigramSubtuples() -> FunctionPtrS
 {
 	return FunctionPtrS(new association::UnigramSubtuples());
+}
+
+
+auto AssociationFunctionCreators::Cvalue() -> FunctionPtrS
+{
+	return FunctionPtrS(new association::Cvalue());
 }
 
 

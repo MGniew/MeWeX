@@ -73,6 +73,7 @@ public:
 	static FunctionPtrS Sorgenfrei();
 	static FunctionPtrS OddsRatio();
 	static FunctionPtrS UnigramSubtuples();
+	static FunctionPtrS Cvalue();
 	static FunctionPtrS ConsonniT1();
 	static FunctionPtrS ConsonniT2();
 
