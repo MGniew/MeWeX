@@ -3,30 +3,22 @@
 
 \section{Definition of collocation}
 
-% Trudność jednoznacznego i ścisłego zdefiniowania kolokacji została opisana w obrazowy
-% sposób przez Choueka i przytoczona przez Stefana Everta – Even though any two lexicogra-
-% phers would agree that ’once upon a time’, ’hit the road’ and similar idioms are collocations,
-% they would most certainly disagree on almost anything else. [8, str. 15]. Cytat ten jest metafo-
-% rą obrazującą bardzo niską korelację oceny wyrażeń wielowyrazowych jako kolokacji, nawet
-% pomiędzy lingwistami.
-% Na przestrzeni ponad osiemdziesięciu ostatnich lat definicja terminu kolokacja była wielo-
-% krotnie modyfikowana, dostosowywana i poddawana uszczegółowieniu co sprawiło, że poja-
-% wiło się wiele jej wersji
 
 Precise defining collocation is not a simple task. This problem was nicely illustrated by Choueka in Stefan Evert book 
-% wstawić w cytat czy cuś
-\textit {Even though any two lexicographers would agree that ’once upon a time’, ’hit the road’ and similar idioms are collocations,
-they would most certainly disagree on almost anything else.}
+\textit{"Even though any two lexicographers would agree that ’once upon a time’, ’hit the road’ and similar idioms are collocations,
+they would most certainly disagree on almost anything else."}
 Lexicographers argued over the years on correct defining what collocation is and because of that there is not one fixed definition of collocation  
 and in relevant literature we can find many different versions but most of them have one common characteristic, 
 collocation is a multiword expression that are syntactically and/or semantically idiomatic. Because this thesis will base on MeWeX system 
 it assumes the same definition as in Michał Wendelberger thesis, for which purpose MeWeX was created.
-% wstawić w cytat czy cuś
-\\ \textit{Collocation is a multiword specialistic term or noncompositional general term. 
-It may be both continous or not and both in fixed or flexible order.} \\
-% Za wyrażenie wielowyrazowe uznawane są wieloelementowe terminy specjalistyczne oraz
-% niekompozycyjne terminy ogólne. Mogą być one zarówno ciągłe, w szyku przemiennym, jak i
-% ustalonym.
+\begin{quote}
+    Collocation is a multiword specialistic term or noncompositional general term. 
+    It may be both continous or not and both in fixed or flexible order.
+    \cite{mgr}
+    % Za wyrażenie wielowyrazowe uznawane są wieloelementowe terminy specjalistyczne oraz
+    % niekompozycyjne terminy ogólne. Mogą być one zarówno ciągłe, w szyku przemiennym, jak i
+    % ustalonym.
+\end{quote}
 This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish MWE dictionary (lexicon). 
 
 \section{Methods for extraction of collocations}
@@ -61,43 +53,53 @@ This also simplify further extensions and modifications of the system.
 \end{figure}
 
 All functionalities are provided as a set of programs that together creates complete tool for collocation extraction,
-verification of the results, tunning weigths, text analysis etc.
+verification of the results, tunning weigths, result analysis etc.
 \begin{itemize}
     \item \textbf{TuplesBuilder} - Program that reads corpora given as an input and using wccl operators given in input file 
     it creates candidates for collocations.
  
-    \item \textbf{Continger}
+    \item \textbf{Continger} - It creates generators of contingency tables from tuples built by TuplesBuilder.
  
-    \item \textbf{Indexer}
+    \item \textbf{Indexer} - This program uses contingency table generators to create set of contingency tables.
  
-    \item \textbf{Normalizer}
+    \item \textbf{Normalizer} - Program that performs dispersion on contingency tables.
  
-    \item \textbf{FeatureMaker}
+    \item \textbf{FeatureMaker} - This program prepares feature vector by evaluating association measures specified at input for each tuple. 
+    using output of this program we can train weights for aggregators in reasonable time.
  
-    \item \textbf{Heuristic}
+    \item \textbf{Heuristic} - It uses given machine learning algorithm to tune weights for association measures. 
+    This process is highly adjustable, all parameters for training can be specified in config file.
  
-    \item \textbf{Digger}
+    \item \textbf{Digger} - This program extract collocations basing on given association measures or vector of them. 
+    It also provide functionality of extracting encountered forms of collocations.
  
-    \item \textbf{Miner}
+    \item \textbf{Miner} - Program created to perform f-fold cross validation for choosen association measures or classifiers.
+    
+    \item \textbf{Cover} - It examines coverage of extracted collocations in relations set. It also creates matrix 
+    that shows intersection of extracted tuples between relations. It allows to check how many tuples was assigned to more than one relation 
+    and which are the most frequent.
  
-    \item \textbf{Cover}
+    \item \textbf{Judger} - This program evaluates results of extracted collocations. It calculates the percentage of correct MWE.
  
-    \item \textbf{Judger}
+    \item \textbf{Reductor} - This program reduces the number of false candidates from set of all tuples created from the text. 
+    Ratio of true to false candidates can be specified in parameter.
  
-    \item \textbf{Reductor}
+    \item \textbf{WebTool} - Complex tool that performs whole process of extraction at once, starting from plain text 
+    it returns list of extracted collocations.
  
-    \item \textbf{TuplesBuilder}
+    \item \textbf{Teacher} - Program that can be used for training neural network or support vector machine.
  
     
 \end{itemize}
 
 \subsection{Workflow of the program} \label{mewex_workflow}
-asas
+As functionalities of MeWeX are splitted between many separate programs, usually to achive some result several programs must be run in specific order. 
+This design, to construct different chains of programs, extends set of possibilities. Some exemplary workflow of the system are shown in the 
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.3]{img/karina.jpg}
-	\caption{Example of wroflow}
+	\caption{Example of workflow}
 	\label{img_worflow1}
 \end{figure}
 
@@ -110,7 +112,7 @@ will consist of few parts listed in sections below.
 \subsection{Test association measure functions}
 First step is to perform unit test of association measures implementation. Author of the MeWeX did not prepared unit test for this part, 
 so there is possibility, that those functions are incorrectly implemented. Errors generated on this stage will propagate in following data process, 
-so it can "uniemożliwiać" improving further stages. That way it is important to start with checking correctness of the implementation 
+so it can preclude improving further stages. That way it is important to start with checking correctness of the implementation 
 at the beggining.
 
 \subsection{Implement new association measures}
@@ -132,5 +134,5 @@ Using new, more copmplete, dataset weigths for aggregators should be retrained i
 
 \subsection{Compare new results with previous one}
 Last step is to compare results achived by improved version with score that author of MeWeX achieved in his thesis.
-To do that, some of the "surveys" conducted in thesis by Michał Wendelberger will be repeated with new implemented or improved features. 
-Only part of "surveys" will be conducted again, because scope of this thesis does not cover all functionalities offered by MeWeX.
+To do that, some of the examinations conducted in thesis by Michał Wendelberger will be repeated with new implemented or improved features. 
+Only part of experiments will be conducted again, because scope of this thesis does not cover all functionalities offered by MeWeX.
