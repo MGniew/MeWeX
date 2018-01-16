@@ -35,7 +35,7 @@ more detailed description is included in section \ref{mewex_workflow}.
 
 \subsection{General description}
 MeWeX is a system designed for extraction of collocations. It is designed as a set of separate programs 
-that preforms consequitive parts of extraction process, but it can be also used as a programmatic library in other projects. 
+that preforms consequitive parts of extraction process, but it can be also used as a "programmatic" library in other projects. 
 This design gives huge flexibility, because it allows to run given part many times in different setup, 
 or to preprocess large data and save result of every step. This capabilities are very useful in conducting reaserch. 
 It is also helpful in natural language processing where often size of data is very large, so possibility 
@@ -94,14 +94,125 @@ verification of the results, tunning weigths, result analysis etc.
 
 \subsection{Workflow of the program} \label{mewex_workflow}
 As functionalities of MeWeX are splitted between many separate programs, usually to achive some result several programs must be run in specific order. 
-This design, to construct different chains of programs, extends set of possibilities. Some exemplary workflow of the system are shown in the 
-
+This design, to construct different chains of programs, extends set of possibilities. Some exemplary workflow of the system are described below. 
+\\ \textbf{Workflow for evaluation of efficiency of methods for extraction of collocations}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.3]{img/karina.jpg}
-	\caption{Example of workflow}
-	\label{img_worflow1}
+	\caption{Examplary workflow}
+	\label{img_workflow1}
 \end{figure}
+\\ Figure \ref{img_workflow1} shows schema of typical path for evaluation of efficiency of given association measure or classifier.
+\\ \textbf{Step 1: Tuples generating}\\
+First step is to generate tuples from text using WCCL operators, which determine what groups of words are selected for candidates. 
+To preform that step program TuplesBuilder is used. It requires list of corpora, corpus reader and name of tagset and 
+set of mentioned before wccl operators. Output of this program is CSV file with one tuple per line, consisting information about relation, 
+its name, group and size and also all elements of tuple.
+\\ \textbf{Step 2: Normalization}\\
+Second step is optional and allows modification of information about tuples using one of availble dispersion function. 
+It may be useful for processing many corpora of differentiated categories, because it changes frequency distribution of tuples 
+favouring less common candidates.
+\\ \textbf{Step 3: Evaluation}\\
+Final step is to perform f-fold, r-round cross-validation for given dataset. Program accepts as an input many parameters, 
+so they are described in table \ref{tbl_workflow1}. After processing it returns 2 sets of files. First type contains k-best list 
+of candidates for every fold in every round for every measure and second includes evaluation of those lists. 
+Those files should be further analized by the user. 
+
+\begin{table}[t]
+    \centering
+    % \begin{tabular}{|l|l|}
+    \begin{tabular*}{\textwidth}{|l @{\extracolsep{\fill}} l|}
+        \hline 
+        \textbf{Name of parameter} & \textbf{Description} \\
+        \hline
+        Tuple storage & Name of the folder with generated tuples \\
+        \hline
+        Output & Path to the folder were output will be placed \\
+        \hline
+        Association Measure & Name of association measure to use, \\& this can be specified many times \\
+        \hline
+        Vector association measure & Text representing vector association measure \\
+        \hline
+        Aggregator & Aggregator fuction for vector association measure \\
+        \hline
+        Classifier & Text representing classifier which has to be used \\
+        \hline
+        Feature generator & Vector association measure which will be used \\& for generating features for classifier \\
+        \hline
+        Feature preprocessor & Text representing function which has to be used \\& to normalze features for classifier \\
+        \hline
+        Relevant set & File containing proper MWE, one in line \\
+        \hline
+        Quality function & Text representing function for evaluation of quality \\& of extracted collocations \\
+        \hline
+        Tuple filter & Filter that is used to reduce number of tuples \\
+        \hline
+        Thread number & Maximal number of threads used by program \\
+        \hline
+        Number of folds & Number of folds for cross-validation \\
+        \hline
+        Number of rounds & Number of rounds for cross-validation \\
+        \hline
+    \end{tabular*} 
+    \caption{Input parameters for program Miner}
+    \label{tbl_workflow1}
+\end{table}
+
+\noindent \textbf{Workflow for extraction of collocations}
+\\ Figure \ref{img_workflow2} shows schema of typical path for extraction of MWEs using given association measure or classifier.
+Steps 1 and 2 are identical as in previous example, so they will not be described again.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=1.3]{img/karina.jpg}
+	\caption{Examplary workflow}
+	\label{img_workflow2}
+\end{figure}
+\\ \textbf{Step 3: Building contingency table}\\
+All measures needs statistical data contained in contingency tables, so they must be generated for further process. 
+There are two ways of creating that tables. First is to use Continger, which prepares source of contingency tables, 
+this solution uses less memory, but it is more time-consuming. Second way is to use Indexer which generates storage of contingency tables, 
+that consumes more memory, but further using those tables requires less time.
+\\ \textbf{Step 4: Creating features set}\\
+TODO
+\\ \textbf{Step 5: Extraction}\\
+Final step is perform extraction of collocations. This step is performed by program Digger. Input parameters are described 
+in table \ref{tbl_workflow1}. Output of this program is similar as in previous case, but this time there are only two files, 
+one with k-best list and second includes quality evaluation of this lists, because no cross-validation is performed.
+
+\begin{table}[t]
+    \centering
+    \begin{tabular*}{\textwidth}{|l @{\extracolsep{\fill}} l|}
+        \hline 
+        \textbf{Name of parameter} & \textbf{Description} \\
+        \hline
+        Tuple storage & Name of the folder with generated tuples \\
+        \hline
+        Contingency tables & Path to file with contingency table source or storage \\
+        \hline
+        Output & Path to the folder were output will be placed \\
+        \hline
+        Association Measure & Name of association measure to use, \\& this can be specified many times \\
+        \hline
+        Vector association measure & Text representing vector association measure \\
+        \hline
+        Aggregator & Aggregator fuction for vector association measure \\
+        \hline
+        Classifier & Text representing classifier which has to be used \\
+        \hline
+        Features set & Path to file with calculated set of features \\
+        \hline
+        Relevant set & File containing proper MWE, one in line \\
+        \hline
+        Quality function & Text representing function for evaluation of quality \\& of extracted collocations \\
+        \hline
+        Tuple filter & Filter that is used to reduce number of tuples \\
+        \hline
+        Thread number & Maximal number of threads used by program \\
+        \hline
+    \end{tabular*} 
+    \caption{Input parameters for program Digger}
+    \label{tbl_workflow2}
+\end{table}
 
 \section{Scope of the thesis}
 
@@ -116,7 +227,7 @@ so it can preclude improving further stages. That way it is important to start w
 at the beggining.
 
 \subsection{Implement new association measures}
-MeWeX was implemented in 2015r and science branch of natural language processing is developing rapidly nowadays, 
+MeWeX was implemented in 2014 and natural language processing is a branch of science developing rapidly nowadays, 
 so from that time new association measures may were invented. Task for the author of this tesis is to carefully examine recently written literature 
 in search of newly proposed association measures which would be suitable for rating MWE. If some measure will satisfy those condition it should 
 be implemented and the last step would be to verify efficiency of that measure.
