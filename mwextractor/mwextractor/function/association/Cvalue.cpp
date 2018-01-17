@@ -23,26 +23,23 @@ double Cvalue::rankUsingTable(
 	TupleId 				pTupleId,
 	ContingencyTable const& pContingencyTable) const
 {
-	double LP = 0.0, LPsum = 0.0, rank;
+	double LP = 0.0, LPsum = 0.0;
 	for(int i = 1; i < pContingencyTable.size() - 1;i++)
 	{
 		LPsum += pContingencyTable[i].observed;
 		if(pContingencyTable[i].observed > 0)
 			LP += 1.0;
 	}
-	double l = (log(pContingencyTable.tupleSize()) + 0.1);
+	double l = log(pContingencyTable.tupleSize());
 
 	if(LP == 0)
 	{
-		rank = l * pContingencyTable[0].observed;
+		return (l * pContingencyTable[0].observed);
 	}
 	else
 	{
-		double l = (log(pContingencyTable.tupleSize()) + 0.1);
-		rank = l * (pContingencyTable[0].observed - (LPsum/LP));
+		return (l * (pContingencyTable[0].observed - (LPsum/LP)));
 	}
-
-	return rank;
 }
 
 

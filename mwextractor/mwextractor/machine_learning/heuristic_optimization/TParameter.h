@@ -95,7 +95,10 @@ public:
     {
         if(index < this->mParameter.size())
         {
-            this->mParameter[index] = value;
+            // this->mParameter[index] = value;
+            // this->mParameter[index] = this->mStep[index]*((int)(value/this->mStep[index]));
+            this->mParameter[index] = trimValue(this->mStep[index]*((int)(value/this->mStep[index])),
+                                                this->mMin[index], this->mMax[index]);
         }
         else
         {
