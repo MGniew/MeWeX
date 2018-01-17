@@ -21,7 +21,7 @@ it assumes the same definition as in Michał Wendelberger thesis, for which purp
 \end{quote}
 This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish MWE dictionary (lexicon). 
 
-\section{Methods for extraction of collocations}
+\section{Methods for extraction of collocations} \label{extraction_method}
 Automatic extraction of collocations is a very hard task. First of all precise specification of collocation is required.
 Method of extraction is dependent on choosen definition of MWE but also on other factors like language. 
 Even having precisly specified all conditions it may be performed in many different ways. 
@@ -43,17 +43,18 @@ to preprocess input once and repeating further stages many times with different 
 
 \subsection{Structure of the program}
 MeWeX has a lot functionalities, so to preserve clear and maintainable code it has expanded stucture. 
-This also simplify further extensions and modifications of the system.
+This also simplify further extensions and modifications of the system. Schema of code structure of more important 
+or significant for this thesis parts of MeWeX is presented on figure \ref{img_structure}.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.3]{img/karina.jpg}
+	\includegraphics[scale=0.5]{img/mewex_structure.png}
 	\caption{Code structure of MeWeX}
 	\label{img_structure}
 \end{figure}
 
 All functionalities are provided as a set of programs that together creates complete tool for collocation extraction,
-verification of the results, tunning weigths, result analysis etc.
+verification of the results, tunning weigths, result analysis etc. Below there is a list of all of them together with short description.
 \begin{itemize}
     \item \textbf{TuplesBuilder} - Program that reads corpora given as an input and using wccl operators given in input file 
     it creates candidates for collocations.
@@ -173,7 +174,8 @@ There are two ways of creating that tables. First is to use Continger, which pre
 this solution uses less memory, but it is more time-consuming. Second way is to use Indexer which generates storage of contingency tables, 
 that consumes more memory, but further using those tables requires less time.
 \\ \textbf{Step 4: Creating features set}\\
-TODO
+Next step is to prepare features set. This is done be calculating results of all specified association measures for all tuples. 
+Those scores will be further used by classifiers or aggregators.
 \\ \textbf{Step 5: Extraction}\\
 Final step is perform extraction of collocations. This step is performed by program Digger. Input parameters are described 
 in table \ref{tbl_workflow1}. Output of this program is similar as in previous case, but this time there are only two files, 

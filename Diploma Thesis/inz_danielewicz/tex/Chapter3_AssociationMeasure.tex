@@ -2,20 +2,66 @@
 
 
 \section{Termopl}
-Opisać z grubsza co to jest że działa podobnie do mewexa i opisać wszystkoie 3 kroki i dlaczego wydobywanie terminów
-jest podobne do kolokacji i wspomnieć już o cval
+Natural Language Processing is developing very quickly nowadays, but extraction of collocations is still quite low advanced field. 
+In recent years "many" papers or books have been published in this topic, but most of them describes method for extraction of MWE in english 
+and since this task is strongly language dependent, polish literature about this subject is much more valuable for this thesis.
+In 2016 Małgorzata Marciniak, Agnieszka Mykowiecka and Piotr Rychlik from Institute of Computer Science PAS published paper about their application 
+for polish terminology extraction. Method that they use for that task is very similar to described in section \ref{extraction_method}. 
+Whole extraction is a 3-stage process. At first candidates for terms are selected from text basing on grammar rules. 
+Second step is evaluation of candidates using term quality measure and making ranking accordingly to the obtained score. 
+Final step is filtering out general terms used in many domains by comparing phrases containing that terms to those obtained from non-domain corpora.
+"Principle of working" is similar to the one used in MeWeX, also definidion of terminology used in that paper 
+partialy cover definition of collocation used in this thesis. The difference is, that in opposition to MWE, term can be a single word, 
+also terminology is domain-specific only while collocation can be also non-compositional general expression. 
+These discrepancies may be easily "walkaround" by adding some simple constraints and then the same method can be used for extracting MWE. 
+First stage of processing is very similar to already implemented, so this can be skipped. Last one filters out general terms, 
+which is not desired step in collocation extraction. Middle stage uses quality measure to evaluate candidates and sort them 
+accordingly to the obtained score, but TermoPL uses for that purpose C-value measure, which is not implemented in MeWeX. 
+Extending availble list of association measures by this new function can improve efficiency of the system.
 
 \section{C-Value}
 
 \subsection{Motivation}
+MeWeX contains many association measure which base on frequency, expected frequency, order, number of relation etc. 
+and using vector association measure it can 
 
 \subsection{Measure description}
 \[ 
     C{\text -}value(p) = \begin{cases}
-        l(p) * (freq(p) - \over{das} & \text{if } x\geq 1\\
-        0,              & \text{otherwise}
+        l(p) * (freq(p) - \frac{1}{r(LP)}\sum_{lp \in LP}{freq(lp)} & \text{if } r(LP) > 0\\
+        l(p) * freq(p)            & \text{if } r(LP) = 0\\
     \end{cases}
 \]
+Where: \\
+\(p\)  - phrase \\
+\(l(p) = ln(length(p))\) \\
+\(LP\)  - set of phrases containing \(p\) \\
+\(r(LP)\) - number of elements of \(LP\) \\
+
 \subsection{Measure implementation}
+\begin{lstlisting}
+double Cvalue::rankUsingTable(
+                    TupleId pTupleId, 
+                    ContingencyTable const& pContingencyTable) const
+{
+    double LP = 0.0, LPsum = 0.0;
+    for(int i = 1; i < pContingencyTable.size() - 1;i++)
+    {
+        LPsum += pContingencyTable[i].observed;
+        if(pContingencyTable[i].observed > 0)
+            LP += 1.0;
+    }
+    double l = log(pContingencyTable.tupleSize());
+
+    if(LP == 0)
+    {
+        return (l * pContingencyTable[0].observed);
+    }
+    else
+    {
+        return (l * (pContingencyTable[0].observed - (LPsum/LP)));
+    }
+}
+\end{lstlisting}
 
 \subsection{Quality evaluation}

@@ -24,15 +24,16 @@
 \usepackage{pdfpages}
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx} %Times New Roman
+\renewcommand{\ttdefault}{pcr} % Using Courier font
 % \usepackage{fullpage}
 % \usepackage{placeins} %for floats position barrier
 % \usepackage{float}
 
 %tables
+\usepackage{tabularx}
 % \usepackage{caption} 
 % \usepackage{multirow, supertabular}
 % \usepackage{array}
-\usepackage{tabularx}
 % \usepackage{makecell}
 % \usepackage{hhline}
 % \usepackage{changepage}
@@ -47,9 +48,24 @@
 % \usepackage{graphicx}
 % \usepackage{subcaption}
 
-%math
+%math & code
 \usepackage{amsmath}
-
+\usepackage{listings}
+\lstset{
+	language=C++,
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=TBLR,
+	xleftmargin=\parindent,
+	numbers=left,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!50!black},
+	commentstyle=\itshape\color{purple!50!black},
+	identifierstyle=\color{blue!70!black},
+	stringstyle=\color{orange},
+}
+  
 \title{Web-Based System for the Extraction of Collocations from Corpora of Polish Texts Equipped with Mechanism for Tunning on Training Data.}
 \author{Igor Danielewicz\\ \and Supervisor: dr inż. Michał Przewoźniczek}
 
