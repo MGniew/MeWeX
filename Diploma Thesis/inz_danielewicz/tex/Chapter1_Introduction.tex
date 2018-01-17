@@ -19,7 +19,7 @@ it assumes the same definition as in Michał Wendelberger thesis, for which purp
     % niekompozycyjne terminy ogólne. Mogą być one zarówno ciągłe, w szyku przemiennym, jak i
     % ustalonym.
 \end{quote}
-This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish MWE dictionary (lexicon). 
+This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish MWE "dictionary (lexicon)". 
 
 \section{Methods for extraction of collocations} \label{extraction_method}
 Automatic extraction of collocations is a very hard task. First of all precise specification of collocation is required.
@@ -228,13 +228,13 @@ so there is possibility, that those functions are incorrectly implemented. Error
 so it can preclude improving further stages. That way it is important to start with checking correctness of the implementation 
 at the beggining.
 
-\subsection{Implement new association measures}
+\subsection{Implement new association measure}
 MeWeX was implemented in 2014 and natural language processing is a branch of science developing rapidly nowadays, 
 so from that time new association measures may were invented. Task for the author of this tesis is to carefully examine recently written literature 
 in search of newly proposed association measures which would be suitable for rating MWE. If some measure will satisfy those condition it should 
 be implemented and the last step would be to verify efficiency of that measure.
 
-\subsection{Imlement new mechanism for training feature set for classifiers}
+\subsection{Imlement algorithm for training weigths vector for vector association measure}
 In MeWeX we can evaluate candidates for collocation using not only single association measure, but also aggregated score from more than one measure. 
 In that case vector of measures is created and each measure has assigned weigth. Currently in MeWeX there are implemented few simple algorithms 
 based on machine learning which trains vector of weigths. For purpose of this thesis new algorithm should be found and implemented.

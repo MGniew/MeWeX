@@ -1,9 +1,9 @@
-\chapter{New association measures}
+\chapter{New association measure}
 
 
 \section{Termopl}
 Natural Language Processing is developing very quickly nowadays, but extraction of collocations is still quite low advanced field. 
-In recent years "many" papers or books have been published in this topic, but most of them describes method for extraction of MWE in english 
+In recent years "many" papers and books have been published in this topic, but most of them describes method for extraction of MWE in english 
 and since this task is strongly language dependent, polish literature about this subject is much more valuable for this thesis.
 In 2016 Małgorzata Marciniak, Agnieszka Mykowiecka and Piotr Rychlik from Institute of Computer Science PAS published paper about their application 
 for polish terminology extraction. Method that they use for that task is very similar to described in section \ref{extraction_method}. 
@@ -23,9 +23,17 @@ Extending availble list of association measures by this new function can improve
 
 \subsection{Motivation}
 MeWeX contains many association measure which base on frequency, expected frequency, order, number of relation etc. 
-and using vector association measure it can 
+and using vector association measure it can make an advantage of all those features at once. That leads to assumption that adding new measure, 
+which "punktuje/values" properties not considered before, should increase quality of result. C-value base on frequency and length of phrase, 
+but also it takes into account number of different contexts it takes. This property is not covered by any other already implemented function.
+Measure W Order is quite similar, but this one checks only number of other relations in which given tuples occured, 
+while C-value also accounts tuples which contains given phrase and measures also frequency.
 
 \subsection{Measure description}
+Most significant factor in C-value is frequency of given phrase what is a common "practice" in association measures. 
+Longer tuples are less frequent, so multipling by logarithm of tuple length reduces that disadvantage. 
+The most distinctive part from other measures is substracting frequencies of all tuples containig given phrase divided by number of those tuples. 
+This part decreases score for candidates which occure often in different "context".
 \[ 
     C{\text -}value(p) = \begin{cases}
         l(p) * (freq(p) - \frac{1}{r(LP)}\sum_{lp \in LP}{freq(lp)} & \text{if } r(LP) > 0\\
@@ -38,7 +46,50 @@ Where: \\
 \(LP\)  - set of phrases containing \(p\) \\
 \(r(LP)\) - number of elements of \(LP\) \\
 
+This function was modified in relation to the one used in TermoPL. In original measure, function \(l(p) = ln(length(p)) + C\) 
+contained also constant, because it was based on assumption that length of \(p\) can be equal to 1. This constant was removed 
+from formula as it became redundant for MWE.
+
 \subsection{Measure implementation}
+Expanded structure and modular architecture of MeWeX made simple further extensions of code. To implement new association 
+it was neccesary to create new class that inherits class \(AssociationFunction\).
+\begin{lstlisting}
+#include "AssociationFunction.h"
+
+namespace function
+{
+    namespace association
+    {
+
+class Cvalue : public AssociationFunction
+{
+public:
+    virtual AssociationMeasurePtrS copy() const override;
+
+    virtual double rankUsingTable(
+        TupleId 				pTupleId,
+        ContingencyTable const& pContingencyTable) const override;
+
+    virtual std::string	name() const override;
+};
+
+    }
+}
+\end{lstlisting}
+Then, to make it possible to choose that measure in other modules or programs, name of that function had to be added to the mapping,
+that maps name to specific function.
+\begin{lstlisting}
+Creators::FunctionMapping const AssociationFunctionCreators::MAPPING(
+{
+    ...
+
+    {"c_value",				&Cvalue},
+    {"cval",				&Cvalue},
+
+    ...
+});
+\end{lstlisting}
+And last step was to implement the function itself.
 \begin{lstlisting}
 double Cvalue::rankUsingTable(
                     TupleId pTupleId, 
@@ -65,3 +116,4 @@ double Cvalue::rankUsingTable(
 \end{lstlisting}
 
 \subsection{Quality evaluation}
+Quality of this measure, method and setup for verification is described in chapter \ref{verification}.

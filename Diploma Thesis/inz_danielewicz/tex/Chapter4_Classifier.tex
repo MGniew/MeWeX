@@ -1,13 +1,192 @@
-\chapter{Imlement/Improve mechanism for training feature set for classifiers}
+\chapter{Imlement algorithm for training weigths vector for vector association measure}
 
 \section{Algorithms implemented in MeWeX}
+MeWeX contains several algorithms which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by 
+Michał Wendelberger.
 
-\subsection{Hill Climbing}
 
-\subsection{Evolutionary algorithm}
+% Wagi rankingów to parametry algorytmu kombinacji, które powinny zostać wyznaczone eks-
+% perymentalnie, na przykład poprzez ich optymalizację. Prezentowane oprogramowanie umożli-
+% wia wykorzystanie do tego celu pięciu różnych algorytmów heurystycznych i metaheurystycz-
+% nych implementacji Łukasza Kłyka [13]. Utworzony przez niego Optimizer został przystoso-
+% wany przez autora niniejszej pracy do działania z opisywanym MWeXtractorem. Łukasz Kłyk
+% zaimplementował następujące algorytmy w swoim oprogramowaniu:
+% 1.
+% 2.
+% 3.
+% 4.
+% 5.
+% Algorytm ewolucyjny;
+% Hill climbing;
+% Random Search;
+% Tabu Search;
+% Symulowane wyżarzanie.
+% Nazwy wspomnianych algorytmów heurystycznych i metaheurystycznych dokładnie określa-
+% ją, jakie są to algorytmy, jednak poza dwoma wyjątkami – symulowanym wyżarzaniem i algoryt-
+% mem ewolucyjnym. Pierwszy z nich nie precyzuje schematu chłodzenia, ale domyślnie w opro-
+% gramowaniu zaimplementowanym przez Łukasza Kłyka stosowana jest funkcja T (k) = 0.3 k
+% [13, str. 36]. Przypadek algorytmu ewolucyjnego wymaga dłuższego opisu, ponieważ pojęcie to
+% jest znacznie szersze od nazw pozostałych metod.
 
-\section{Algorithms found in literature}
 
-\section{Comparision}
+\begin{itemize}
+    \item \textbf{Evolutionary Algorithm} - P
+ 
+    \item \textbf{Hill Climbing} - It cr
+ 
+    \item \textbf{Tabu Search} - Thi
+ 
+    \item \textbf{Random Search} - Pro
+ 
+    \item \textbf{Simulated Annealing} - This   
+\end{itemize}
 
-\section{Implementation}
+\section{Particle Swarm Optimization}
+
+\subsection{Description}
+Particle Swarm Optimization is an algorithm for optimization of a problem. It iteratively try to improve a candidate solution 
+accordingly to a given measure of quality. PSO have population of particles called swarm and solves problem by moving those particles 
+through the search space using formula...
+
+\subsection{Motivation}
+
+\subsection{Implementation}
+
+\subsection{Improvements}
+
+
+
+
+
+
+
+\begin{lstlisting}
+Point start()
+{
+    Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
+
+    StepCounter<ArgumentsType, StepType> step(this->mCallPoliciesArguments);
+    Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
+
+    std::vector<Particle> swarm;
+    swarm.resize(this->mCallPoliciesArguments.getSwarmSize());
+    massMutation(swarm, this->mBest);
+
+    mpEvaluator->evaluate(this->mBest);
+    this->mNumberOfEvaluations++;
+
+    double sumVelocity;
+
+    while(!step.isFinished())
+    {
+        sumVelocity = 0.0;
+        for(auto& particle : swarm)
+        {
+            particle.move(this->mBest);
+            mpEvaluator->evaluate(particle);
+            if(particle.getLocalBest().getEvaluationPerformance().isGreater(particle.getEvaluationPerformance()))
+            {
+                particle.setLocalBest(particle);
+            }
+            if(particle.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
+            {
+                this->mBest = particle;
+            }
+            sumVelocity += particle.getVelocityLengthSquared();
+            // report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
+        }
+        if((sumVelocity / (double)swarm.size()) < 0.01)
+            massMutation(swarm, this->mBest);
+        this->mNumberOfEvaluations++;
+        report.reportStep(step.getCurrentStep(), this->mBest);
+        step.increase();
+    }
+    report.reportSummary(this->mNumberOfEvaluations, timer.getTime(), this->mBest);
+
+    return this->mBest;
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}
+void massMutation(std::vector<Particle>& swarm, const Point& mBest)
+{
+    Particle particle(mBest);
+    for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
+    {
+        particle.setRandomParameters();
+        mpEvaluator->evaluate(particle);
+        particle.setLocalBest(particle);
+        swarm[i] = particle;
+    }
+}
+\end{lstlisting}
+
+
+
+\begin{lstlisting}
+#include "../Point.h"
+
+
+namespace machine_learning
+{
+	namespace heuristic_optimization
+	{
+		namespace particle_swarm_optimization
+		{
+
+
+class Particle : public Point
+{
+public:
+    Particle(void);
+    ~Particle(void);
+
+    Particle(const Point& rPoint);
+    Particle(const Particle& rPoint);
+    Particle& operator=(Particle rParticle);
+    //bool isEqual(const Point& rPoint);
+    void addParameter(const BaseParameter& rParameter);
+    void setLocalBest(const Point& rPoint);
+    const Point& getLocalBest() const;
+    double getVelocityLengthSquared() const;
+    void move(const Point& rBest);
+    void setRandomParameters(void);
+    std::string toString(void) const;
+
+private:
+    std::vector<BaseParameter*> mVelocity;
+    Point* mBest;
+}; // class Particle
+
+
+		}
+	} // namespace particle_swarm_optimization
+} // namespace Optimizer
+\end{lstlisting}
+
+
+
+
+
+\begin{lstlisting}
+void Particle::move(const Point& rBest)
+{
+    double c1 = 1.0, c2 = 0.2, c3 = 0.8;
+    double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
+    for(int i = 0; i < mVelocity.size(); i++)
+    {
+        double v,mX,rX,cX;
+        auto data = mVelocity[i]->getValueAt(0);
+        mVelocity[i]->getValueAt(0).get(v);
+        mBest->getParameterAt(i).getValueAt(0).get(mX);
+        mParameters[i]->getValueAt(0).get(cX);
+        rBest.getParameterAt(i).getValueAt(0).get(rX);
+        v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
+        data.set(v);
+        mVelocity[i]->setValueAt(0, data);
+        data.set(cX + v);
+        mParameters[i]->setValueAt(0, data);
+    }
+}
+\end{lstlisting}
