@@ -35,333 +35,257 @@ Michał Wendelberger.
 \section{Particle Swarm Optimization}
 
 \subsection{Description}
-Particle Swarm Optimization is an algorithm for optimization of a problem. It iteratively tries to improve a candidate solution 
-accordingly to a given measure of quality. PSO have population of particles called swarm and solves problem by moving those particles 
-through the search space using formula that involves particle velocity, local best solution and global best solution.
+Particle Swarm Optimization is an algorithm for optimization of a problem. It tries to improve a candidate solution 
+accordingly to a given measure of quality. PSO have population of particles called swarm and solves problem by iteratively moving those particles 
+through the search space using formula that involves particle velocity, local best solution and global best solution. 
+
+Algorithm starts with placing all particles in search space choosing random uniformly distributed positions for them and initializing its velocity to 0. 
+Then for first particle solution is evaluated, next it assigns its starting position as a local and global best position. 
+This step is repeated for all particles in the swarm, but global best position is changed only when new one achieves higher score. 
+From that point all steps are performed in a loop till stop condition will not be satisfied. For every paricle, at first 
+velocity is updated, then its position is changed by the velocity vector and quality of new position is evaluated. 
+If new score is is higher than local or global best, then they are updated accordingly. When algorithm reaches stop conition 
+then position of global best solution is returned as a result.
+In the figure \ref{pso_flowchart} there is presented flow chart of Particle Swarm Optimization.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/pso_flowchart.png}
+    \caption{Flow chart of Particle Swarm Optimization}
+    \label{pso_flowchart}
+\end{figure}
+
+Particles move toward local and global maxima making swarm more dense in surroundings of best known positions. 
+That property entail swarm for searching better solutions.
+Below there is formula for updating velocity of the particles.
+\[ 
+    V \gets \omega V + \omega _{p} r _{p} (p - x) + \omega _{g} r _{g} (g - x)
+\]
+Where: \\
+\(V\)  - velocity of given particle, it is vector of size equal to number of dimensions in search space \\
+\(r _{p}, r _{g}\) - random numbers from interval \((0,1)\) \\
+\(\omega, \omega _{p}, \omega _{g}\) - parameters, chosen by the user, which controls behaviour of the PSO \\
+\(x\)  - position of given particle \\
+\(p\)  - position of best solution achieved by given particle \\
+\(g\)  - position of global best solution achieved by the swarm \\
+
+One of the factor for calculating new velocity is its previous value. Preserving partially old velocity makes particle behavior 
+like it would have momentum, smoothing its movement. Particle aims toward global and local best, but force of those both factors is randomized.
+New velocity is composed from three vectors and strength of influence for each of them can be adjusted by changing value 
+of corresponding \(\omega\) parameter. By modifing those parameters it is possible to control behavior of the swarm, for example 
+by reducing momentum or increasing importance of local maxima.
+
+Particle Swarm Optimization is quite simple algorithm, but it can achieve good result. Its simplicity allows easy modification and adjusting 
+algorithm for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
+Disadvantage of this algorithm is that it has tendency to fall in the local maxima. Next problem is that for high dimensional search spaces 
+swarm has to be more populated what greatly increases computational time. 
 
 \subsection{Motivation}
+One of the method to increase efficiency of the MeWeX was to improve selection of weigths for aggregators. 
+Implementing new algorithm Particle Swarm Optimization was reasonable solution taking into account its simplicity 
+connected with good efficacy. Susceptibility on modifications and easy adjustment of parameters make it also a good choice.
 
 \subsection{Implementation}
-Expanded structure and modular architecture of MeWeX made simple further extensions of code. 
-% To make possible using new algorithm in the same way as already implemented 
-% Implementation of PSO 
-
-\subsection{Improvements}
-
-
-
-
-
+Expanded structure and modular architecture of MeWeX made simple further extensions of code. Class diagram presented on figure \ref{img_pso_class}
+presents the structure of implemented algorithm.
+\begin{figure}[ht]
+\centering
+    \includegraphics[scale=0.5]{img/pso_imp_plot1.png}
+    \caption{Plot of PSO algorithm }
+    \label{img_pso_class}
+\end{figure}
 
 
+To make possible using new algorithm in the same way as already implemented few steps was neccesary to perform.
+At first, class \(ParticleSwarmOptimization\) had to be created base on implementation of other machine learning algorithms. 
+It does not need to inherit any other class, but it has to be template class, with the same set of template parameters like in other classes. 
+Next requirement is that it must define constructor \textit{ParticleSwarmOptimization(const Point\& rStartPoint, Evaluator* pEvaluator, const ArgumentsType\& rArgs)} 
+and fuction \(Point\ start()\) which executes whole algorithm and returns best found solution.
+Next step was to implement two classes, one which inherits by \(BaseCallPoliciesArguments\) and defines parameters that can be passed by user, 
+and second which inherits by \(BaseReport\) and specifies format of creating report of training, which is written to file during algorithm work.
+Then, those classes had to be added to \(EvaluatorWrapper\) which is responsible for running chosen algorithm, 
+passing arguments from user and creating report. Code below shows modification of that class, where PSO was added.
 \begin{lstlisting}
-Point start()
-{
-    Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
-
-    StepCounter<ArgumentsType, StepType> step(this->mCallPoliciesArguments);
-    Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
-
-    std::vector<Particle> swarm;
-    swarm.resize(this->mCallPoliciesArguments.getSwarmSize());
-    massMutation(swarm, this->mBest);
-
-    mpEvaluator->evaluate(this->mBest);
-    this->mNumberOfEvaluations++;
-
-    double sumVelocity;
-
-    while(!step.isFinished())
-    {
-        sumVelocity = 0.0;
-        for(auto& particle : swarm)
-        {
-            particle.move(this->mBest);
-            mpEvaluator->evaluate(particle);
-            if(particle.getLocalBest().getEvaluationPerformance().isGreater(particle.getEvaluationPerformance()))
-            {
-                particle.setLocalBest(particle);
-            }
-            if(particle.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
-            {
-                this->mBest = particle;
-            }
-            sumVelocity += particle.getVelocityLengthSquared();
-            // report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
-        }
-        if((sumVelocity / (double)swarm.size()) < 0.01)
-            massMutation(swarm, this->mBest);
-        this->mNumberOfEvaluations++;
-        report.reportStep(step.getCurrentStep(), this->mBest);
-        step.increase();
-    }
-    report.reportSummary(this->mNumberOfEvaluations, timer.getTime(), this->mBest);
-
-    return this->mBest;
-}
-\end{lstlisting}
-
-
-
-
-\begin{lstlisting}
-namespace machine_learning
-{
-    namespace heuristic_optimization
-    {
-        namespace particle_swarm_optimization
-        {
-
-template<typename ArgumentsType,
-            typename StepType,
-            template<typename ArgumentsType, typename StepType> class StepCounter,
-            typename TimeType,
-            template<typename ArgumentsType, typename TimeType> class Timer,
-            template<typename ArgumentsType, typename TimeType, typename StepType> class Report>
-class ParticleSwarmOptimization
+class EvaluatorWrapper
 {
 public:
-    /**
-    * Creates algorithm object with given arguments.
-    *
-    * @param[in] rStartPoint First, based point.
-    * @param[in] pEvaluator Provides a mechanism to evaluate the points.
-    * @param[in] rArgs The argument object. Contains the arguments for a call policy.
-    */
-    ParticleSwarmOptimization(const Point& rStartPoint, Evaluator* pEvaluator, const ArgumentsType& rArgs)
+
+        ...
+
+    typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
+
+    enum MethodType
     {
-        this->mCallPoliciesArguments = rArgs;
-        this->mNumberOfEvaluations = 0;
+        ...
 
-        this->mBest = rStartPoint;
-        this->mpEvaluator = pEvaluator;
-    }
+        PSO,  // Particle Swarm Optimization
+        EMPTY
+    };
+        ...
 
-    /**
-    * An object destructor.
-    */
-    ~ParticleSwarmOptimization(void) {}
+    EvaluatorWrapper(
+        EvaluatorPtrR const&	pEvaluator,
+        MethodType              pMethodType,
+        Point const&	        pStartPoint,
+        PSOCallPolicy const& 	pPolicy);
 
-    void massMutation(std::vector<Particle>& swarm, const Point& mBest)
-    {
-        Particle particle(mBest);
-        for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
-        {
-            particle.setRandomParameters();
-            mpEvaluator->evaluate(particle);
-            particle.setLocalBest(particle);
-            swarm[i] = particle;
-        }
-    }
-
-    /**
-    * Solves the optimization problem. Result of optimization is saved in a file.
-    */
-    Point start()
-    {
-        Timer<ArgumentsType, TimeType> timer(this->mCallPoliciesArguments);
-
-        StepCounter<ArgumentsType, StepType> step(this->mCallPoliciesArguments);
-        Report<ArgumentsType, TimeType, StepType> report(this->mCallPoliciesArguments);
-
-        std::vector<Particle> swarm;
-        swarm.resize(this->mCallPoliciesArguments.getSwarmSize());
-        massMutation(swarm, this->mBest);
-
-        mpEvaluator->evaluate(this->mBest);
-        this->mNumberOfEvaluations++;
-
-        double sumVelocity;
-
-        while(!step.isFinished())
-        {
-            sumVelocity = 0.0;
-            for(auto& particle : swarm)
-            {
-                particle.move(this->mBest);
-                mpEvaluator->evaluate(particle);
-                if(particle.getLocalBest().getEvaluationPerformance().isGreater(particle.getEvaluationPerformance()))
-                {
-                    particle.setLocalBest(particle);
-                }
-                if(particle.getEvaluationPerformance().isGreater(this->mBest.getEvaluationPerformance()))
-                {
-                    this->mBest = particle;
-                }
-                sumVelocity += particle.getVelocityLengthSquared();
-                // report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
-            }
-            if((sumVelocity / (double)swarm.size()) < 0.01)
-                massMutation(swarm, this->mBest);
-            this->mNumberOfEvaluations++;
-            report.reportStep(step.getCurrentStep(), this->mBest);
-            step.increase();
-        }
-        report.reportSummary(this->mNumberOfEvaluations, timer.getTime(), this->mBest);
-
-        return this->mBest;
-    }
+        ...
+    
+    void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
 
 private:
-    ParticleSwarmOptimization(void){}
-
-    Point mBest;
-    Evaluator* mpEvaluator;
-    int mNumberOfEvaluations;
-    ArgumentsType mCallPoliciesArguments;
-}; // class ParticleSwarmOptimization
-
-
-        }
-    } // namespace particle_swarm_optimization
-} // namespace Optimizer
-\end{lstlisting}
-
-
-
-\begin{lstlisting}
-#include "../BaseCallPoliciesArguments.h"
-#include "../Exception/Exception.h"
-
-namespace machine_learning
-{
-    namespace heuristic_optimization
-    {
-        namespace particle_swarm_optimization
-        {
-
-class CallPoliciesArgumentsPSO : public BaseCallPoliciesArguments
-{
-public:
-    /**
-    * Creates object with default values.
-    */
-    CallPoliciesArgumentsPSO(void);
-
-    /**
-    * The object destructor.
-    */
-    ~CallPoliciesArgumentsPSO(void);
-
-    /**
-    * Returns neighbourhood size.
-    *
-    * @return The neighbourhood size.
-    */
-    unsigned int getNeighbourhood(void) const;
-
-    /**
-    * Returns a value of the radius.
-    *
-    * @return The value of the radius.
-    */
-    unsigned int getSwarmSize(void) const;
-
-    /**
-    * Reads the characteristic parameters from a .ini <a href="optimizer.cfg">file</a>
-    *
-    * @param[in] rFileName The config file name.
-    *
-    * @see BaseCallPoliciesArguments
-    */
-    void readFromFile(const std::string& rFileName);
-
-private:
-    unsigned int mSwarmSize;
-    unsigned int mNeighbourhood;
-
-    static const std::string SECTION;
-    static const std::string STEPS_KEY;
-    static const std::string SWARM_SIZE_KEY;
-    static const std::string NEIGHBOURHOOD_KEY;
-}; // class CallPoliciesArgumentsPSO
-
-
-        }
-    } // namespace particle_swarm_optimization
-} // namespace Optimizer
+        ...
+    
+    PSOCallPolicy mPSOCPA;
+};
 \end{lstlisting}
     
+% \begin{lstlisting}
+%         ...
+
+% EvaluatorWrapper::EvaluatorWrapper(
+%     EvaluatorPtrR const&	pEvaluator,
+%     MethodType 			pMethodType,
+%     Point const&		pStartPoint,
+%     PSOCallPolicy const& 	pPolicy)
+% :
+%     mMethodType(pMethodType),
+%     mStartPoint(pStartPoint),
+%     mEvaluator(pEvaluator),
+%     mPSOCPA(pPolicy)
+% {}
+
+% auto EvaluatorWrapper::parseMethodType(std::string const& pMethod) -> MethodType
+% {
+%     if(boost::iequals(pMethod, "RS"))
+%     {
+%         return RS;
+%     }    
+    
+%         ...
+        
+%     else if(boost::iequals(pMethod, "PSO"))
+%     {
+%         return PSO;
+%     }
+%         ...
+
+% void EvaluatorWrapper::setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy)
+% {
+%     mPSOCPA = pPolicy;
+% }
+
+% auto EvaluatorWrapper::start() -> Point
+% {
+%         ...
+
+% typedef particle_swarm_optimization::ParticleSwarmOptimization<
+%             particle_swarm_optimization::CallPoliciesArgumentsPSO,
+%             unsigned int,
+%             Step,
+%             time_t,
+%             Timer,
+%             particle_swarm_optimization::ReportPSO> PSOAlgorithm;
+
+%         ...
+
+% switch(mMethodType)
+% {
+%         ...
+        
+%     case PSO:
+%     {
+%         return PSOAlgorithm(mStartPoint, mEvaluator, mPSOCPA).start();
+%     }
+%     break;
+
+%         ...
+% \end{lstlisting}
+Last step is to implement algorithm itself, but it needs a class that represents particle and MeWeX machine learning module implements only class \(Point\).
+Class \(Particle\) was created by author of this thesis by inheriting class \(Point\), adding velocity vector and best local position and defining 
+function \(void\ move(const\ Point\&\ rBest)\).
+% \begin{lstlisting}
+% void Particle::move(const Point& rBest)
+% {
+%     double c1 = 1.0, c2 = 0.2, c3 = 0.8;
+%     double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
+%     for(int i = 0; i < mVelocity.size(); i++)
+%     {
+%         double v,mX,rX,cX;
+%         auto data = mVelocity[i]->getValueAt(0);
+%         mVelocity[i]->getValueAt(0).get(v);
+%         mBest->getParameterAt(i).getValueAt(0).get(mX);
+%         mParameters[i]->getValueAt(0).get(cX);
+%         rBest.getParameterAt(i).getValueAt(0).get(rX);
+%         v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
+%         data.set(v);
+%         mVelocity[i]->setValueAt(0, data);
+%         data.set(cX + v);
+%         mParameters[i]->setValueAt(0, data);
+%     }
+% }
+% \end{lstlisting}
+Having implemented class \(Particle\) it was possible to write fuction \(Point\ start()\) which executes algorithm. 
+
+
+
+\subsection{Improvements}
+Initial investigation of algorithm work showed that algorithm improves the score at early stage of work, but then it finds local maximum 
+and stops seeking for better solutions. It was caused by the situation where all particles reached the position between 
+local and global best solution, so their velocity lowered to values close to zero. Figure \ref{img_pso_imp_plot1} shows the quality of solution 
+during algorithm work, where it is visible how swarm has fallen in local maximum and make no progress.
+\begin{figure}[ht]
+\centering
+	\includegraphics[scale=0.5]{img/pso_imp_plot1.png}
+	\caption{Plot of PSO algorithm }
+	\label{img_pso_imp_plot1}
+\end{figure}
+
+To prevent that issue author of this thesis proposed a function which reallocates all particles when algorithm encounter that problem. 
+To detect when swarm stopped search, it calculates sum of velocity vector length of all particles. 
+If that sum drops below some specified value, function, which places all particle in random position is called. 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{img/pso_imp_plot2.png}
+	\caption{Plot of PSO algorithm }
+	\label{img_pso_imp_plot2}
+\end{figure}
+
+Second problem with PSO was that search space had a lot of dimensions, and by reason of long computation time to evaluate single particle solution, 
+size of the swarm was limited. This caused that only small part of search space was explored. Solution of that problem, 
+proposed by the author of this thesis was to change the distribution of starting positions. Instead of uniform distribution, positions was randomized 
+with more problability beeing close to edge. This distibution is presented on figure \ref{img_pso_imp_dist}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{img/pso_imp_plot2.png}
+	\caption{Probability distribution for selecting particle position}
+	\label{img_pso_imp_dist}
+\end{figure}
+
+For creation of that probability distribution there was used class, provided by C++11 Standard Library, 
+\textit{template< class RealType = double > class normal\_distribution;} which produces random numbers with normal probability
+with specified mean and standard deviation. Method, which converts normal distribution to the shown on the plot in the figure \ref{img_pso_imp_dist} 
+is shown below.
 
 \begin{lstlisting}
-void massMutation(std::vector<Particle>& swarm, const Point& mBest)
+std::normal_distribution<double> Random::normal(0.5, 0.1);
+std::mt19937_64 Random::generator(time(nullptr));
+
+double Random::random_inv_normal(void)
 {
-    Particle particle(mBest);
-    for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
+    double val = normal(generator);
+    if(val < 0.5)
     {
-        particle.setRandomParameters();
-        mpEvaluator->evaluate(particle);
-        particle.setLocalBest(particle);
-        swarm[i] = particle;
+        val += 0.5;
+        if(val < 0)
+            val = 0;
     }
-}
-\end{lstlisting}
-
-
-
-\begin{lstlisting}
-#include "../Point.h"
-
-
-namespace machine_learning
-{
-	namespace heuristic_optimization
-	{
-		namespace particle_swarm_optimization
-		{
-
-
-class Particle : public Point
-{
-public:
-    Particle(void);
-    ~Particle(void);
-
-    Particle(const Point& rPoint);
-    Particle(const Particle& rPoint);
-    Particle& operator=(Particle rParticle);
-    //bool isEqual(const Point& rPoint);
-    void addParameter(const BaseParameter& rParameter);
-    void setLocalBest(const Point& rPoint);
-    const Point& getLocalBest() const;
-    double getVelocityLengthSquared() const;
-    void move(const Point& rBest);
-    void setRandomParameters(void);
-    std::string toString(void) const;
-
-private:
-    std::vector<BaseParameter*> mVelocity;
-    Point* mBest;
-}; // class Particle
-
-
-		}
-	} // namespace particle_swarm_optimization
-} // namespace Optimizer
-\end{lstlisting}
-
-
-
-
-
-\begin{lstlisting}
-void Particle::move(const Point& rBest)
-{
-    double c1 = 1.0, c2 = 0.2, c3 = 0.8;
-    double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
-    for(int i = 0; i < mVelocity.size(); i++)
+    else
     {
-        double v,mX,rX,cX;
-        auto data = mVelocity[i]->getValueAt(0);
-        mVelocity[i]->getValueAt(0).get(v);
-        mBest->getParameterAt(i).getValueAt(0).get(mX);
-        mParameters[i]->getValueAt(0).get(cX);
-        rBest.getParameterAt(i).getValueAt(0).get(rX);
-        v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
-        data.set(v);
-        mVelocity[i]->setValueAt(0, data);
-        data.set(cX + v);
-        mParameters[i]->setValueAt(0, data);
+        val -= 0.5;
+        if(val > 1)
+            val = 1;
     }
+    return val;
 }
 \end{lstlisting}
