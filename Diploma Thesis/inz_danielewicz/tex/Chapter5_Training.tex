@@ -2,13 +2,36 @@
 
 \section{Dataset}
 During tuning weigths vector 
-\subsection{NKJP Manually annotated subcorpus}
+All association measures base on statistical data, so in order to obtain reliable results large dataset should be provided.
+Machine learning algorithms also need vast and differentiated resources to produce satisfactory result.
+Below there are described datasets and its sources which was used for purpose of this thesis.
+
+\subsection{Manually annotated subcorpus of NKJP}
+Manually annotated subcorpus of NKJP is a part of the National Corpus of Polish, which is a initiative of four institutions: 
+Institute of Computer Science at the Polish Academy of Sciences, Institute of Polish Language at the Polish Academy of Sciences, 
+Polish Scientific Publishers PWN, and the Department of Computational and Corpus Linguistics at the University of Łódź.
+It contains one milion tokens and was manually morfosyntactically "and semantically" annotated by lexicographers. 
+Similarly to the main corpus of NKJP it contains text from diverse sources like classic literature, daily newspapers, 
+specialist periodicals and journals, transcripts of conversations, and a variety of short-lived and internet texts. 
+Manual annotation guarantee correctness of data and it is relatively large what makes it valuable choice for training data.
 
 \subsection{kgr10 Corpus}
+"It contains 40 000 000 000 tokens". Enormous size of this corpus caused computation time to process such amount of information 
+long enough to make it impossible to perform tuning weigths and verification of the results on whole corpus. 
+That was motivation to utilize only part of that resource. To preserve variety of text, new subcorpus was prepared by randomly picking 
+10\% of sentences and dropping rest. Then it was automatically annotated by "Morphodita (add cite)".
 
 \subsection{PLWordNet}
+Wordnet is a "lexically-semantic" web, which nodes are lexical units and edges are semantic relations connecting those units.
+PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continously developed, 
+for now it contains 170000 synsets, 244000 lexical units oraz 670000 semantic relations. Author of this thesis decided to use that resource 
+as a source of proper collocations. They were obtained as a set of wccl operators, while MeWeX accepts only MWE listed in file one per line, 
+so they had to be preprocessed.
 
 \subsection{Set of relations}
+First stage of collocation extraction, selecting candidates, requires set of relations, to reduce number of candidates only to syntactically reasonable. 
+These relations has to be in form of WCCL operators. They can specify size of the tuple, part of speech and other properties of member "words", 
+order ot tuple or even ... Set used for purpose of this thesis was taken from re
 
 \section{Methods used for training}
 
