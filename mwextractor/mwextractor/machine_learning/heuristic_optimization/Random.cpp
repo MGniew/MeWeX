@@ -18,21 +18,18 @@ double Random::random(void)
 
 double Random::random_inv_normal(void)
 {
-	double val = normal(generator);
-	if(val < 0)
-	{
-		val += 0.5;
-		if(val < -0.5)
-			val = -0.5;
-	}
-	else
-	{
-		val -= 0.5;
-		if(val > 0.5)
-			val = 0.5;
-	}
-    return val + 0.5;
-}
-
-	}
+    double val = normal(generator);
+    if(val < 0.5)
+    {
+        val += 0.5;
+        if(val < 0)
+            val = 0;
+    }
+    else
+    {
+        val -= 0.5;
+        if(val > 1)
+            val = 1;
+    }
+    return val;
 }
