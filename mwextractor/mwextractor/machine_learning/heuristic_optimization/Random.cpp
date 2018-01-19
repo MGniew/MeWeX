@@ -33,3 +33,6 @@ double Random::random_inv_normal(void)
     }
     return val;
 }
+
+	}
+}
