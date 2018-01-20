@@ -1,0 +1,4773 @@
+<?xml version='1.0' encoding='utf-8'?>
+<units_description tagset='nkjp'>
+  <mwegroup type='fix' name='AdjSubstAdjFix' class='subst'>
+       <condition>
+            and(
+             inter(base[0],$s:A1),
+             inter(class[0],{adj}),
+             inter(base[1],$s:S),
+             inter(class[1],{subst,ger,depr}),
+             inter(base[2],$s:A2),
+             inter(class[2],{adj}),
+             //agrpp(0,1,{nmb,gnd,cas}),
+             agr(0,2,{nmb,gnd,cas}),
+             setvar($Pos1, 0),  
+             setvar($Pos2, 1),  
+             setvar($Pos3, 2)
+           
+            )
+        </condition>
+    <instances>
+      <MWE base='skalarna wielkość fizyczna'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>skalarny</var>
+        <var name='S'>wielkość</var>
+        <var name='A2'>fizyczny</var>
+      </MWE>
+      <MWE base='tlenowy aparat oddechowy'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>tlenowy</var>
+        <var name='S'>aparat</var>
+        <var name='A2'>oddechowy</var>
+      </MWE>
+      <MWE base='wektorowa wielkość fizyczna'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>wektorowy</var>
+        <var name='S'>wielkość</var>
+        <var name='A2'>fizyczny</var>
+      </MWE>
+      <MWE base='zasadnicza szkoła zawodowa'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>zasadniczy</var>
+        <var name='S'>szkoła</var>
+        <var name='A2'>zawodowy</var>
+      </MWE>
+    </instances>
+    <!--AdjSubstAdjFix;s:A1,s:S,s:A2-->
+  </mwegroup>
+  <mwegroup type='flex' name='SubstAdjAdjFlex' class='subst'>
+    <condition>
+            //zespół wokalny ($A1) męski ($A2)
+            or(
+             and(
+              inter(base[0],$s:S),
+              inter(class[0],{subst,ger,depr}),
+              inter(base[1],$s:A1),
+              inter(class[1],{adj}),
+              inter(base[2],$s:A2),
+              inter(class[2],{adj}),
+              agr(0,2,{nmb,gnd,cas}),  
+              setvar($Pos1, 1),  
+              setvar($Pos2, 0),  
+              setvar($Pos3, 2)
+             ),//and
+             and(
+              inter(base[0],$s:A1),
+              inter(class[0],{adj}),
+              inter(base[1],$s:S),
+              inter(class[1],{subst,ger,depr}),
+              inter(base[2],$s:A2),
+              inter(class[2],{adj}),
+              agr(0,2,{nmb,gnd,cas}),  
+              setvar($Pos1, 0),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 2)
+             ),
+             and(
+              inter(base[0],$s:A2),
+              inter(class[0],{adj}),
+              inter(base[1],$s:S),
+              inter(class[1],{subst,ger,depr}),
+              inter(base[2],$s:A1),
+              inter(class[2],{adj}),
+              agr(0,2,{nmb,gnd,cas}),  
+              setvar($Pos1, 2),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 0)
+             )
+            )//or
+        </condition>
+    <instances>
+      <MWE base='owczarek nizinny polski'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>nizinny</var>
+        <var name='S'>owczarek</var>
+        <var name='A2'>polski</var>
+      </MWE>
+      <MWE base='sól spożywcza jodowana'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>spożywczy</var>
+        <var name='S'>sól</var>
+        <var name='A2'>jodowany</var>
+      </MWE>
+      <MWE base='układ nerwowy współczulny'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>nerwowy</var>
+        <var name='S'>układ</var>
+        <var name='A2'>współczulny</var>
+      </MWE>
+      <MWE base='zespół wokalny męski'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>wokalny</var>
+        <var name='S'>zespół</var>
+        <var name='A2'>męski</var>
+      </MWE>
+      <MWE base='zespół wokalny żeński'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='A1'>wokalny</var>
+        <var name='S'>zespół</var>
+        <var name='A2'>żeński</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjAdjFlex;s:A1,s:S,s:A2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdjSubstGenSgFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:S),
+             inter(class[0],{subst,ger,depr}),
+             inter(nmb[0],{sg}),
+             inter(base[1],$s:A),
+             inter(class[1],{adj}),
+             inter(base[2],$s:GenS),
+             inter(class[2],{subst,ger,depr}),
+             inter(cas[2],{gen}),
+             agrpp(1,2,{cas,nmb,gnd}),  
+              setvar($Pos1, 0),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 2)
+               
+            )
+        </condition>
+    <instances>
+      <MWE base='gaz elektronowy Fermiego'>
+        <head>inter(base[0],["gaz"])</head>
+        <var name='S'>gaz</var>
+        <var name='A'>elektronowy</var>
+        <var name='GenS'>fermi</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjSubstGenSgFix;s:S,s:A,s:GenS-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSubstGen1SubstGen2PlFix' class='subst'>
+    <condition>
+            //wieża ($S) kontroli ($GenS1) lotów ($s:GenS2)
+            and(
+             inter(base[0],$s:S),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:GenS1),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{gen}),
+             inter(nmb[1],{sg}),
+             inter(base[2],$s:GenS2),
+             inter(class[2],{subst,ger,depr}),
+             inter(cas[2],{gen}),
+             inter(nmb[2],{pl}),  
+             setvar($Pos1, 0),  
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+      <MWE base='Prezes Rady Ministrów'>
+        <head>inter(base[0],["prezes"])</head>
+        <var name='S'>prezes</var>
+        <var name='GenS1'>rada</var>
+        <var name='GenS2'>minister</var>
+      </MWE>
+      <MWE base='szef Rady Ministrów'>
+        <head>inter(base[0],["szef"])</head>
+        <var name='S'>szef</var>
+        <var name='GenS1'>rada</var>
+        <var name='GenS2'>minister</var>
+      </MWE>
+      <MWE base='wieża kontroli lotów'>
+        <head>inter(base[0],["wieża"])</head>
+        <var name='S'>wieża</var>
+        <var name='GenS1'>kontrola</var>
+        <var name='GenS2'>lot</var>
+      </MWE>
+    </instances>
+    <!--SubstSubstGen1SubstGen2PlFix;s:S,s:GenS1,s:GenS2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSubstGen1SubstGen2SgFix' class='subst'>
+    <condition>
+            //placówka służby zdrowia
+            and(
+             inter(base[0],$s:S),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:GenS1),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{gen}),
+             inter(nmb[1],{sg}),
+             inter(base[2],$s:GenS2),
+             inter(class[2],{subst,ger,depr}),
+             inter(cas[2],{gen}),
+             inter(nmb[2],{sg}),  
+              setvar($Pos1, 0),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+      <MWE base='pancernik obrony wybrzeża'>
+        <head>inter(base[0],["pancernik"])</head>
+        <var name='S'>pancernik</var>
+        <var name='GenS1'>obrona</var>
+        <var name='GenS2'>wybrzeże</var>
+      </MWE>
+      <MWE base='placówka służby zdrowia'>
+        <head>inter(base[0],["placówka"])</head>
+        <var name='S'>placówka</var>
+        <var name='GenS1'>służba</var>
+        <var name='GenS2'>zdrowie</var>
+      </MWE>
+      <MWE base='produkty przemiany materii'>
+        <head>inter(base[0],["produkt"])</head>
+        <var name='S'>produkt</var>
+        <var name='GenS1'>przemiana</var>
+        <var name='GenS2'>materia</var>
+      </MWE>
+      <MWE base='wino marki wino'>
+        <head>inter(base[0], ["wino"])</head>
+        <var name='S'>wino</var>
+        <var name='GenS1'>marka</var>
+        <var name='GenS2'>wino</var>
+      </MWE>
+    </instances>
+    <!--SubstSubstGen1SubstGen2SgFix;s:S,s:GenS1,s:GenS2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstConjSubstFix' class='subst'>
+    <condition>
+            //dzień i noc
+            and(
+             inter(base[0],$s:S1),
+             inter(base[1],$s:Conj),
+             inter(base[2],$s:S2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{conj}),
+             inter(class[2],{subst,ger,depr}),
+             agrpp(0,2,{cas,nmb}),  
+              setvar($Pos1, 0),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+      <MWE base='dzień i noc'>
+        <head>inter(base[0],["dzień"])</head>
+        <var name='S1'>dzień</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>noc</var>
+      </MWE>
+      <MWE base='imię i nazwisko'>
+        <head>inter(base[0],["imię"])</head>
+        <var name='S1'>imię</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>nazwisko</var>
+      </MWE>
+      <MWE base='matka i ojciec'>
+        <head>inter(base[0],["matka"])</head>
+        <var name='S1'>matka</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>ojciec</var>
+      </MWE>
+      <MWE base='mąż i żona'>
+        <head>inter(base[0],["mąż"])</head>
+        <var name='S1'>mąż</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>żona</var>
+      </MWE>
+      <MWE base='pan i władca'>
+        <head>inter(base[0],["pan"])</head>
+        <var name='S1'>pan</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>władca</var>
+      </MWE>
+    </instances>
+    <!--SubstConjSubstFix;s:S1,s:Conj,s:S2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstInterpSubstPlFix' class='subst'>
+    <condition>
+            //śmichy, chichy
+            and(
+             inter(base[0],$s:S1),
+             inter(nmb[0],{pl}),
+             inter(base[1],$s:I),
+             inter(base[2],$s:S2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{interp}),
+             inter(class[2],{subst,ger,depr}),
+             agrpp(0,2,{cas,nmb}),  
+              setvar($Pos1, 0),  
+              setvar($Pos2, 1),  
+              setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+    </instances>
+    <!--SubstInterpSubstPlFix;s:S1,s:I,s:S2-->
+  </mwegroup>
+  <mwegroup type='fix' name='Subst3CordFix' class='subst'>
+    <condition>
+            //brud, smród i ubóstwo
+            and(
+             inter(base[0],$s:S1),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:C1),
+             inter(class[1],{conj,interp}),
+             inter(base[2],$s:S2),
+             inter(class[2],{subst,ger,depr}),
+             inter(base[3],$s:C2),
+             inter(class[3],{conj,interp}),
+             inter(base[4],$s:S3),
+             inter(class[4],{subst,ger,depr}),
+             inter(cas[0],cas[2]),
+             inter(cas[0],cas[4]),
+             inter(cas[2],cas[4])
+            )
+        </condition>
+    <instances>
+    </instances>
+    <!--Subst3CordFix;s:S1,s:C1,s:S2,s:C2,s:S3-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSubstGenSgAdjFix' class='subst'>
+    <condition>
+            //generator prądu elektrycznego
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:GenS),
+             inter(base[2],$s:A),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{gen}),
+             inter(nmb[1],{sg}),
+             inter(class[2],{adj}),
+             agrpp(1,2,{cas,nmb,gnd})
+            )
+        </condition>
+    <instances>
+      <MWE base='bakterie kwasu chlebowego'>
+        <head>inter(base[0],["bakteria"])</head>
+        <var name='S'>bakteria</var>
+        <var name='GenS'>kwas</var>
+        <var name='A'>chlebowy</var>
+      </MWE>
+      <MWE base='bezwodnik kwasu kumarowego'>
+        <head>inter(base[0],["bezwodnik"])</head>
+        <var name='S'>bezwodnik</var>
+        <var name='GenS'>kwas</var>
+        <var name='A'>kumarowy</var>
+      </MWE>
+      <MWE base='bezwodnik kwasu octowego'>
+        <head>inter(base[0],["bezwodnik"])</head>
+        <var name='S'>bezwodnik</var>
+        <var name='GenS'>kwas</var>
+        <var name='A'>octowy</var>
+      </MWE>
+      <MWE base='bezwodnik kwasu organicznego'>
+        <head>inter(base[0],["bezwodnik"])</head>
+        <var name='S'>bezwodnik</var>
+        <var name='GenS'>kwas</var>
+        <var name='A'>organiczny</var>
+      </MWE>
+      <MWE base='bilet komunikacji miejskiej'>
+        <head>inter(base[0],["bilet"])</head>
+        <var name='S'>bilet</var>
+        <var name='GenS'>komunikacja</var>
+        <var name='A'>miejski</var>
+      </MWE>
+      <MWE base='dzień Sądu Ostatecznego'>
+        <head>inter(base[0],["dzień"])</head>
+        <var name='S'>dzień</var>
+        <var name='GenS'>sąd</var>
+        <var name='A'>ostateczny</var>
+      </MWE>
+      <MWE base='generator prądu elektrycznego'>
+        <head>inter(base[0],["generator"])</head>
+        <var name='S'>generator</var>
+        <var name='GenS'>prąd</var>
+        <var name='A'>elektryczny</var>
+      </MWE>
+      <MWE base='kopalnia węgla brunatnego'>
+        <head>inter(base[0],["kopalnia"])</head>
+        <var name='S'>kopalnia</var>
+        <var name='GenS'>węgiel</var>
+        <var name='A'>brunatny</var>
+      </MWE>
+      <MWE base='kopalnia węgla kamiennego'>
+        <head>inter(base[0],["kopalnia"])</head>
+        <var name='S'>kopalnia</var>
+        <var name='GenS'>węgiel</var>
+        <var name='A'>kamienny</var>
+      </MWE>
+      <MWE base='łopata wirnika nośnego'>
+        <head>inter(base[0],["łopata"])</head>
+        <var name='S'>łopata</var>
+        <var name='GenS'>wirnik</var>
+        <var name='A'>nośny</var>
+      </MWE>
+      <MWE base='ministerstwo obrony narodowej'>
+        <head>inter(base[0],["ministerstwo"])</head>
+        <var name='S'>ministerstwo</var>
+        <var name='GenS'>obrona</var>
+        <var name='A'>narodowy</var>
+      </MWE>
+      <MWE base='morfem czasu przeszłego'>
+        <head>inter(base[0],["morfem"])</head>
+        <var name='S'>morfem</var>
+        <var name='GenS'>czas</var>
+        <var name='A'>przeszły</var>
+      </MWE>
+      <MWE base='morfem czasu teraźniejszego'>
+        <head>inter(base[0],["morfem"])</head>
+        <var name='S'>morfem</var>
+        <var name='GenS'>czas</var>
+        <var name='A'>teraźniejszy</var>
+      </MWE>
+      <MWE base='morfem trybu przypuszczającego'>
+        <head>inter(base[0],["morfem"])</head>
+        <var name='S'>morfem</var>
+        <var name='GenS'>tryb</var>
+        <var name='A'>przypuszczać</var>
+      </MWE>
+      <MWE base='sprzęt gospodarstwa domowego'>
+        <head>inter(base[0],["sprzęt"])</head>
+        <var name='S'>sprzęt</var>
+        <var name='GenS'>gospodarstwo</var>
+        <var name='A'>domowy</var>
+      </MWE>
+      <MWE base='utrwalacz władzy ludowej'>
+        <head>inter(base[0],["utrwalacz"])</head>
+        <var name='S'>utrwalacz</var>
+        <var name='GenS'>władza</var>
+        <var name='A'>ludowy</var>
+      </MWE>
+      <MWE base='zakład pracy chronionej'>
+        <head>inter(base[0],["zakład"])</head>
+        <var name='S'>zakład</var>
+        <var name='GenS'>praca</var>
+        <var name='A'>chronić</var>
+      </MWE>
+    </instances>
+    <!--SubstSubstGenSgAdjFix;S,GenS,A-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdjSubstGen2PlFix' class='subst'>
+    <condition>
+            //pylica krzemowa płuc
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:A),
+             inter(base[2],$s:GenS),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adj}),
+             inter(class[2],{subst,ger,depr}),
+             agrpp(0,1,{nmb,gnd,cas}),
+             inter(cas[2],{gen}),
+             inter(nmb[2],{pl})
+            )
+        </condition>
+    <instances>
+      <MWE base='pas przybrzeżny wód'>
+        <head>inter(base[0],["pas"])</head>
+        <var name='S'>przybrzeżny</var>
+        <var name='A'>pas</var>
+        <var name='GenS'>woda</var>
+      </MWE>
+      <MWE base='pylica krzemowa płuc'>
+        <head>inter(base[0],["pylica"])</head>
+        <var name='S'>krzemowy</var>
+        <var name='A'>pylica</var>
+        <var name='GenS'>płuco</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjSubstGen2PlFix;S,A,GenS-->
+  </mwegroup>
+  <mwegroup type='fix' name='AdjSubstSubstGen2SgFix' class='subst'>
+    <condition>
+            //równikowy pas ciszy
+            and(
+             inter(base[0],$s:A),
+             inter(base[1],$s:S),
+             inter(base[2],$s:GenS),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{adj}),
+             inter(class[1],{subst,ger,depr}),
+             inter(class[2],{subst,ger,depr}),
+             agrpp(0,1,{nmb,gnd,cas}),
+             inter(cas[2],{gen}),
+             inter(nmb[2],{sg})
+            )
+        </condition>
+    <instances>
+      <MWE base='biologiczny okres półtrwania'>
+        <head>inter(base[0],["okres"])</head>
+        <var name='A'>biologiczny</var>
+        <var name='S'>okres</var>
+        <var name='GenS'>półtrwanie</var>
+      </MWE>
+      <MWE base='druga strona medalu'>
+        <head>inter(base[0],["strona"])</head>
+        <var name='A'>drugi</var>
+        <var name='S'>strona</var>
+        <var name='GenS'>medal</var>
+      </MWE>
+      <MWE base='krzyżowy ogień pytań'>
+        <head>inter(base[0],["ogień"])</head>
+        <var name='A'>krzyżowy</var>
+        <var name='S'>ogień</var>
+        <var name='GenS'>pytanie</var>
+      </MWE>
+      <MWE base='lekki kawałek chleba'>
+        <head>inter(base[0],["kawałek"])</head>
+        <var name='A'>lekki</var>
+        <var name='S'>kawałek</var>
+        <var name='GenS'>chleb</var>
+      </MWE>
+      <MWE base='ligowy system rozgrywek'>
+        <head>inter(base[0],["system"])</head>
+        <var name='A'>ligowy</var>
+        <var name='S'>system</var>
+        <var name='GenS'>rozgrywka</var>
+      </MWE>
+      <MWE base='najnowszy krzyk mody'>
+        <head>inter(base[0],["krzyk"])</head>
+        <var name='A'>nowy</var>
+        <var name='S'>krzyk</var>
+        <var name='GenS'>moda</var>
+      </MWE>
+      <MWE base='najstarszy zawód świata'>
+        <head>inter(base[0],["zawód"])</head>
+        <var name='A'>stary</var>
+        <var name='S'>zawód</var>
+        <var name='GenS'>świat</var>
+      </MWE>
+      <MWE base='nowa droga życia'>
+        <head>inter(base[0],["droga"])</head>
+        <var name='A'>nowy</var>
+        <var name='S'>droga</var>
+        <var name='GenS'>życie</var>
+      </MWE>
+      <MWE base='ostatni krzyk mody'>
+        <head>inter(base[0],["krzyk"])</head>
+        <var name='A'>ostatni</var>
+        <var name='S'>krzyk</var>
+        <var name='GenS'>moda</var>
+      </MWE>
+      <MWE base='równikowy pas ciszy'>
+        <head>inter(base[0],["pas"])</head>
+        <var name='A'>równikowy</var>
+        <var name='S'>pas</var>
+        <var name='GenS'>cisza</var>
+      </MWE>
+      <MWE base='zielone płuca Polski'>
+        <head>inter(base[0],["płuco"])</head>
+        <var name='A'>zielony</var>
+        <var name='S'>płuco</var>
+        <var name='GenS'>polska</var>
+      </MWE>
+    </instances>
+    <!--AdjSubstSubstGen2SgFix;A,S,GenS-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdvPactSgFix' class='subst'>
+    <condition>
+            //ruch jednostajnie przyśpieszony
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:Adv),
+             inter(base[2],$s:P),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adv}),
+             inter(class[2],{pact,ppas}),
+             inter(nmb[0],{sg}),
+             agrpp(0,2,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='ruch jednostajnie opóźniony'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='Adv'>jednostajnie</var>
+        <var name='P'>opóźnić</var>
+      </MWE>
+      <MWE base='ruch jednostajnie przyśpieszony'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='Adv'>jednostajnie</var>
+        <var name='P'>przyspieszyć</var>
+      </MWE>
+    </instances>
+    <!--SubstAdvPactSgFix;S,Adv,P-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdvAdjPlusTwoFix' class='subst'>
+    <condition>
+            //ruch jednostajnie przyśpieszony po okręgu
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:Adv),
+             inter(base[2],$s:P),
+             inter(orth[3],$s:T4),
+             inter(orth[4],$s:T5),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adv}),
+             inter(class[2],{adj,pact,ppas}),
+             agrpp(0,2,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='ruch jednostajnie przyśpieszony po okręgu'>
+        <head>inter(base[0],["ruch"])</head>
+        <var name='S'>ruch</var>
+        <var name='Adv'>jednostajnie</var>
+        <var name='P'>przyśpieszony</var>
+        <var name='!B4'>po</var>
+        <var name='!B5'>okręg</var>
+        <var name='!T1'>ruch</var>
+        <var name='!T2'>jednostajnie</var>
+        <var name='!T3'>przyśpieszony</var>
+        <var name='T4'>po</var>
+        <var name='T5'>okręgu</var>
+      </MWE>
+    </instances>
+    <!--SubstAdvAdjPlusTwoFix;S,Adv,P,!B4,!B5,!T1,!T2,!T3,T4,T5-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdvPactAdjSgFix' class='subst'>
+    <condition>
+            //ruch jednostajnie przyśpieszony prostoliniowy
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:Adv),
+             inter(base[2],$s:P),
+             inter(base[3],$s:A),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adv}),
+             inter(class[2],{pact,ppas}),
+             inter(class[3],{adj}),
+             inter(nmb[0],{sg}),
+             agrpp(0,2,{nmb,gnd,cas}),
+             agrpp(0,3,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='ruch jednostajnie opóźniony prostoliniowy'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='Adv'>jednostajnie</var>
+        <var name='P'>opóźnić</var>
+        <var name='A'>prostoliniowy</var>
+      </MWE>
+      <MWE base='ruch jednostajnie przyśpieszony prostoliniowy'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='Adv'>jednostajnie</var>
+        <var name='P'>przyśpieszyć</var>
+        <var name='A'>prostoliniowy</var>
+      </MWE>
+    </instances>
+    <!--SubstAdvPactAdjSgFix;S,Adv,P,A-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdjAdjSgFix' class='subst'>
+    <condition>
+            //ruch jednostajny prostoliniowy
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:A1),
+             inter(base[2],$s:A2),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adj}),
+             inter(class[2],{adj}),
+             inter(nmb[0],{sg}),
+             agrpp(0,1,{nmb,gnd,cas}),
+             agrpp(0,2,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='ruch jednostajny krzywoliniowy'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='A1'>jednostajny</var>
+        <var name='A2'>krzywoliniowy</var>
+      </MWE>
+      <MWE base='ruch jednostajny prostoliniowy'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ruch</var>
+        <var name='A1'>jednostajny</var>
+        <var name='A2'>prostoliniowy</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjAdjSgFix;S,A1,A2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPactAdjFix' class='subst'>
+    <condition>
+            //sól warzona próżniowa
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:P),
+             inter(base[2],$s:A),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{pact,ppas}),
+             inter(class[2],{adj}),
+             agrpp(0,1,{nmb,gnd,cas}),
+             agrpp(0,2,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='sól warzona próżniowa'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>sól</var>
+        <var name='P'>warzyć</var>
+        <var name='A'>próżniowy</var>
+      </MWE>
+    </instances>
+    <!--SubstPactAdjFix;S,P,A-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPactPlusOneFix' class='subst'>
+    <condition>
+            //grupa trzymająca władzę
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:P),
+             inter(orth[2],$s:T3),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{pact,ppas}),
+             agrpp(0,1,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='dziura zabita dechami'>
+        <head>inter(base[0],["dziura"])</head>
+        <var name='S'>dziura</var>
+        <var name='P'>zabić</var>
+        <var name='!L1'>decha</var>
+        <var name='!T1'>dziura</var>
+        <var name='!T2'>zabita</var>
+        <var name='T3'>dechami</var>
+      </MWE>
+      <MWE base='grupa trzymająca władzę'>
+        <head>inter(base[0],["grupa"])</head>
+        <var name='S'>grupa</var>
+        <var name='P'>trzymać</var>
+        <var name='!L1'>władza</var>
+        <var name='!T1'>grupa</var>
+        <var name='!T2'>trzymająca</var>
+        <var name='T3'>władzę</var>
+      </MWE>
+      <MWE base='wiocha zabita dechami'>
+        <head>inter(base[0],["wiocha"])</head>
+        <var name='S'>wiocha</var>
+        <var name='P'>zabić</var>
+        <var name='!L1'>decha</var>
+        <var name='!T1'>wiocha</var>
+        <var name='!T2'>zabita</var>
+        <var name='T3'>dechami</var>
+      </MWE>
+    </instances>
+    <!--SubstPactPlusOneFix;S,P,!L1,T1,!T2,T3-->
+  </mwegroup>
+  <mwegroup type='fix' name='NumNumSubstAgrFix' class='subst'>
+    <condition>
+            //dwadzieścia cztery godziny
+            and(
+             inter(base[0],$s:N1),
+             inter(class[0],{num}),
+             inter(base[1],$s:N2),
+             inter(class[1],{num}),
+             inter(base[2],$s:S),
+             inter(class[2],{subst,ger,depr}),
+             agrpp(1,2,{nmb,gnd}),
+             agrpp(0,2,{nmb,gnd,cas}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+      <MWE base='dwadzieścia cztery godziny'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='N1'>dwadzieścia</var>
+        <var name='N2'>cztery</var>
+        <var name='S'>godzina</var>
+      </MWE>
+    </instances>
+    <!--NumNumSubstAgrFix;N1,N2,S-->
+  </mwegroup>
+  <mwegroup type='flex' name='AdjAdvFlex' class='subst'>
+    <condition>
+            //upośledzony umysłowo // uwaga: czy tutaj nie ma było problemu ze zmiennymi wcześniej (kolejność), patrz tez:  #AdjAdvclass("umysłowo","upośledzony")
+            or(
+             and(
+              inter(base[0],$s:S),
+              inter(base[1],$s:Adv),
+              inter(class[0],{adj}),
+              inter(class[1],{adv}),
+              setvar($Pos1, 0),
+              setvar($Pos2, 1)
+             ),//and
+             and(
+              inter(base[1],$s:S),
+              inter(base[0],$s:Adv),
+              inter(class[1],{adj}),
+              inter(class[0],{adv}),
+              setvar($Pos1, 1),
+              setvar($Pos2, 0)
+             )
+            )//or
+        </condition>
+    <instances>
+      <MWE base='upośledzony umysłowo'>
+        <head>in(class[0],{adj})</head>
+        <var name='S'>umysłowo</var>
+        <var name='Adv'>upośledzony</var>
+      </MWE>
+    </instances>
+    <!--AdjAdvFlex;S,Adv-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdjSubstGen2SgFix' class='subst'>
+    <condition>
+            //urzędnik wysokiego szczebla
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:A1),
+             inter(base[2],$s:GenS),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{adj}),
+             inter(class[2],{subst,ger,depr}),
+             inter(nmb[2],{sg}),
+             agrpp(1,2,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='miejsce wiecznego spoczynku'>
+        <head>inter(base[0],["miejsce"])</head>
+        <var name='S'>wieczny</var>
+        <var name='A1'>miejsce</var>
+        <var name='GenS'>spoczynek</var>
+      </MWE>
+      <MWE base='poczucie własnej godności'>
+        <head>inter(base[0],["poczucie"])</head>
+        <var name='S'>własny</var>
+        <var name='A1'>poczucie</var>
+        <var name='GenS'>godność</var>
+      </MWE>
+      <MWE base='silnik wewnętrznego spalania'>
+        <head>inter(base[0],["silnik"])</head>
+        <var name='S'>wewnętrzny</var>
+        <var name='A1'>silnik</var>
+        <var name='GenS'>spalanie</var>
+      </MWE>
+      <MWE base='teatr jednego aktora'>
+        <head>inter(base[0],["teatr"])</head>
+        <var name='S'>jeden</var>
+        <var name='A1'>teatr</var>
+        <var name='GenS'>aktor</var>
+      </MWE>
+      <MWE base='trasa szybkiego ruchu'>
+        <head>inter(base[0],["trasa"])</head>
+        <var name='S'>szybki</var>
+        <var name='A1'>trasa</var>
+        <var name='GenS'>ruch</var>
+      </MWE>
+      <MWE base='urzędnik wysokiego szczebla'>
+        <head>inter(base[0],["urzędnik"])</head>
+        <var name='S'>wysoki</var>
+        <var name='A1'>urzędnik</var>
+        <var name='GenS'>szczebel</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjSubstGen2SgFix;S,A1,GenS-->
+  </mwegroup>
+  <mwegroup type='flex' name='Adj1Subst1SgSubstGen2PlAdj2Flex' class='subst'>
+    <condition>
+            //okresowy układ pierwiastków chemicznych
+            or(
+             and(
+              inter(base[0],$s:A1),
+              inter(base[1],$s:S),
+              inter(base[2],$s:GenS),
+              inter(base[3],$s:A2),
+              setvar($Pos1, 0),
+              setvar($Pos2, 1),
+              setvar($Pos3, 2),
+              setvar($Pos4, 3),
+              inter(class[0],{adj}),
+              inter(class[1],{subst,ger,depr}),
+              inter(class[2],{subst,ger,depr}),
+              inter(class[3],{adj}),
+              inter(nmb[1],{sg}),
+              agrpp(0,1,{nmb,gnd,cas}),
+              inter(nmb[2],{pl}),
+              agrpp(2,3,{nmb,gnd,cas})
+             ),//and
+             and(
+              inter(base[1],$s:A1),
+              inter(base[0],$s:S),
+              inter(base[2],$s:GenS),
+              inter(base[3],$s:A2),
+              setvar($Pos1, 1),
+              setvar($Pos2, 0),
+              setvar($Pos3, 2),
+              setvar($Pos4, 3),
+              inter(class[1],{adj}),
+              inter(class[0],{subst,ger,depr}),
+              inter(class[2],{subst,ger,depr}),
+              inter(class[3],{adj}),
+              inter(nmb[0],{sg}),
+              agrpp(0,1,{nmb,gnd,cas}),
+              inter(nmb[2],{pl}),
+              agrpp(2,3,{nmb,gnd,cas})
+             )
+            )//or
+        </condition>
+    <instances>
+      <MWE base='okresowy układ pierwiastków chemicznych'>
+        <head>inter(base[0],["układ"])</head>
+        <var name='A1'>okresowy</var>
+        <var name='S'>układ</var>
+        <var name='GenS'>pierwiastek</var>
+        <var name='A2'>chemiczny</var>
+      </MWE>
+    </instances>
+    <!--Adj1Subst1SgSubstGen2PlAdj2Flex;A1,S,GenS,A2-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSubstGen1SubstGen2AdjFix' class='subst'>
+    <condition>
+            //glin potasu siarczanu dwunastowodnego
+            and(
+             inter(base[0],$s:S),
+             inter(base[1],$s:GenS1),
+             inter(base[2],$s:GenS2),
+             inter(base[3],$s:A),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             inter(class[0],{subst,ger,depr}),
+             inter(class[1],{subst,ger,depr}),
+             inter(class[2],{subst,ger,depr}),
+             inter(class[3],{adj}),
+             inter(cas[1],{gen}),
+             inter(nmb[1],{sg}),
+             inter(cas[2],{gen}),
+             inter(nmb[2],{sg}),
+             agrpp(2,3,{nmb,gnd,cas})
+            )
+        </condition>
+    <instances>
+      <MWE base='glin potasu siarczanu dwunastowodnego'>
+        <head>inter(base[0],["glin"])</head>
+        <var name='S'>glin</var>
+        <var name='GenS1'>potas</var>
+        <var name='GenS2'>siarczan</var>
+        <var name='A'>dwunastowodny</var>
+      </MWE>
+    </instances>
+    <!--SubstSubstGen1SubstGen2AdjFix;S,GenS1,GenS2,A-->
+  </mwegroup>
+  <mwegroup type='fix' name='SubstAdjCordAdjFix' class='subst'>
+    <condition>
+            //ambasador nadzwyczajny i pełnomocny
+            and(
+             inter(base[0],$s:S),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:A1),
+             inter(class[1],{adj}),
+             inter(base[2],$s:C),
+             inter(class[2],{conj}),
+             inter(base[3],$s:A2),
+             inter(class[3],{adj}),
+             agrpp(0,1,{cas,nmb,gnd}),
+             agrpp(0,3,{cas,nmb,gnd}),
+             agrpp(1,3,{cas,nmb,gnd}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )
+        </condition>
+    <instances>
+      <MWE base='ambasador nadzwyczajny i pełnomocny'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='S'>ambasador</var>
+        <var name='A1'>nadzwyczajny</var>
+        <var name='C'>i</var>
+        <var name='A2'>pełnomocny</var>
+      </MWE>
+    </instances>
+    <!--SubstAdjCordAdjFix;S,A1,C,A2-->
+  </mwegroup>
+  <mwegroup type='fix' name='NPCordSubstAdjFix' class='subst'>
+    <condition>
+            //cztery kąty a piec piąty
+            and(
+             inter(base[0],$s:N),
+             inter(class[1],{num}),
+             inter(base[1],$s:S1),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{nom}),
+             inter(base[2],$s:C),
+             inter(class[2],{conj}),
+             inter(base[3],$s:S2),
+             inter(class[3],{subst,ger,depr}),
+             inter(cas[3],cas[1]),
+             inter(base[4],$s:A2),
+             inter(class[4],{adj}),
+             agrpp(3,4,{cas,nmb,gnd}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )
+        </condition>
+    <instances>
+    </instances>
+    <!--NPCordSubstAdjFix;N,S1,C,S2,A2-->
+  </mwegroup>
+  <mwegroup type='fix' name='TwoFix' class='subst'>
+    <condition>
+            //hot dog
+            and(
+             inter(orth[0],$s:T1),
+             inter(orth[1],$s:T2),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1)
+            )
+        </condition>
+    <instances>
+      <MWE base='aj waj'>
+        <head>inter(base[0],["aj"])</head>
+        <var name='!L1'>aj</var>
+        <var name='!L2'>waj</var>
+        <var name='T1'>aj</var>
+        <var name='T2'>waj</var>
+      </MWE>
+      <MWE base='alma mater'>
+        <head>inter(base[0],["alma"])</head>
+        <var name='!L1'>alma</var>
+        <var name='!L2'>mater</var>
+        <var name='T1'>alma</var>
+        <var name='T2'>mater</var>
+      </MWE>
+      <MWE base='alter ego'>
+        <head>inter(base[0],["alter"])</head>
+        <var name='!L1'>alter</var>
+        <var name='!L2'>ego</var>
+        <var name='T1'>alter</var>
+        <var name='T2'>ego</var>
+      </MWE>
+      <MWE base='bardzo dobry'>
+        <head>inter(base[0],["bardzo"])</head>
+        <var name='!L1'>bardzo</var>
+        <var name='!L2'>dobry</var>
+        <var name='T1'>bardzo</var>
+        <var name='T2'>dobry</var>
+      </MWE>
+      <MWE base='bar micwa'>
+        <head>inter(base[0],["bar"])</head>
+        <var name='!L1'>bar</var>
+        <var name='!L2'>micwa</var>
+        <var name='T1'>bar</var>
+        <var name='T2'>micwa</var>
+      </MWE>
+      <MWE base='bieda szyby'>
+        <head>inter(base[0],["szyb"])</head>
+        <var name='!L1'>bieda</var>
+        <var name='!L2'>szyb</var>
+        <var name='T1'>bieda</var>
+        <var name='T2'>szyby</var>
+      </MWE>
+      <MWE base='big band'>
+        <head>inter(base[0],["big"])</head>
+        <var name='!L1'>big</var>
+        <var name='!L2'>band</var>
+        <var name='T1'>big</var>
+        <var name='T2'>band</var>
+      </MWE>
+      <MWE base='big-beat'>
+        <head>inter(base[0],["big"])</head>
+        <var name='!L1'>big</var>
+        <var name='!L2'>beat</var>
+        <var name='T1'>big</var>
+        <var name='T2'>beat</var>
+      </MWE>
+      <MWE base='biznes class'>
+        <head>inter(base[0],["biznes"])</head>
+        <var name='!L1'>biznes</var>
+        <var name='!L2'>class</var>
+        <var name='T1'>biznes</var>
+        <var name='T2'>class</var>
+      </MWE>
+      <MWE base='blue box'>
+        <head>inter(base[0],["blue"])</head>
+        <var name='!L1'>blue</var>
+        <var name='!L2'>box</var>
+        <var name='T1'>blue</var>
+        <var name='T2'>box</var>
+      </MWE>
+      <MWE base='body building'>
+        <head>inter(base[0],["body"])</head>
+        <var name='!L1'>body</var>
+        <var name='!L2'>building</var>
+        <var name='T1'>body</var>
+        <var name='T2'>building</var>
+      </MWE>
+      <MWE base='boeuf Strogonow'>
+        <head>inter(base[0],["boeuf"])</head>
+        <var name='!L1'>boeuf</var>
+        <var name='!L2'>strogonow</var>
+        <var name='T1'>boeuf</var>
+        <var name='T2'>Strogonow</var>
+      </MWE>
+      <MWE base='bossa nova'>
+        <head>inter(base[0],["bossa"])</head>
+        <var name='!L1'>bossa</var>
+        <var name='!L2'>nova</var>
+        <var name='T1'>bossa</var>
+        <var name='T2'>nova</var>
+      </MWE>
+      <MWE base='boys band'>
+        <head>inter(base[0],["boys"])</head>
+        <var name='!L1'>boys</var>
+        <var name='!L2'>band</var>
+        <var name='T1'>boys</var>
+        <var name='T2'>band</var>
+      </MWE>
+      <MWE base='brown sugar'>
+        <head>inter(base[0],["brown"])</head>
+        <var name='!L1'>brown</var>
+        <var name='!L2'>sugar</var>
+        <var name='T1'>brown</var>
+        <var name='T2'>sugar</var>
+      </MWE>
+      <MWE base='business class'>
+        <head>inter(base[0],["class"])</head>
+        <var name='!L1'>business</var>
+        <var name='!L2'>class</var>
+        <var name='T1'>business</var>
+        <var name='T2'>class</var>
+      </MWE>
+      <MWE base='by-pass'>
+        <head>inter(base[0],["by"])</head>
+        <var name='!L1'>by</var>
+        <var name='!L2'>pass</var>
+        <var name='T1'>by</var>
+        <var name='T2'>pass</var>
+      </MWE>
+      <MWE base='cha-cha'>
+        <head>inter(base[0],["cha"])</head>
+        <var name='!L1'>cha</var>
+        <var name='!L2'>cha</var>
+        <var name='T1'>cha</var>
+        <var name='T2'>cha</var>
+      </MWE>
+      <MWE base='cza-cza'>
+        <head>inter(base[0],["cza"])</head>
+        <var name='!L1'>cza</var>
+        <var name='!L2'>cza</var>
+        <var name='T1'>cza</var>
+        <var name='T2'>cza</var>
+      </MWE>
+      <MWE base='disc jockey'>
+        <head>inter(base[0],["disc"])</head>
+        <var name='!L1'>disc</var>
+        <var name='!L2'>jockey</var>
+        <var name='T1'>disc</var>
+        <var name='T2'>jockey</var>
+      </MWE>
+      <MWE base='dusza człowiek'>
+        <head>inter(base[0],["dusza"])</head>
+        <var name='!L1'>dusza</var>
+        <var name='!L2'>człowiek</var>
+        <var name='T1'>dusza</var>
+        <var name='T2'>człowiek</var>
+      </MWE>
+      <MWE base='fast food'>
+        <head>inter(base[0],["fast"])</head>
+        <var name='!L1'>fast</var>
+        <var name='!L2'>food</var>
+        <var name='T1'>fast</var>
+        <var name='T2'>food</var>
+      </MWE>
+      <MWE base='first lady'>
+        <head>inter(base[0],["first"])</head>
+        <var name='!L1'>first</var>
+        <var name='!L2'>lady</var>
+        <var name='T1'>first</var>
+        <var name='T2'>lady</var>
+      </MWE>
+      <MWE base='Hare Kriszna'>
+        <head>inter(base[0],["Kriszna"])</head>
+        <var name='!L1'>hare</var>
+        <var name='!L2'>Kriszna</var>
+        <var name='T1'>Hare</var>
+        <var name='T2'>Kriszna</var>
+      </MWE>
+      <MWE base='Hare Kryszna'>
+        <head>inter(base[0],["Kryszna"])</head>
+        <var name='!L1'>hare</var>
+        <var name='!L2'>Kryszna</var>
+        <var name='T1'>Hare</var>
+        <var name='T2'>Kryszna</var>
+      </MWE>
+      <MWE base='heavy metal'>
+        <head>inter(base[0],["heavy"])</head>
+        <var name='!L1'>heavy</var>
+        <var name='!L2'>metal</var>
+        <var name='T1'>heavy</var>
+        <var name='T2'>metal</var>
+      </MWE>
+      <MWE base='hip hop'>
+        <head>inter(base[0],["hop"])</head>
+        <var name='!L1'>hip</var>
+        <var name='!L2'>hop</var>
+        <var name='T1'>hip</var>
+        <var name='T2'>hop</var>
+      </MWE>
+      <MWE base='hokus pokus'>
+        <head>inter(base[0],["hokus"])</head>
+        <var name='!L1'>hokus</var>
+        <var name='!L2'>pokus</var>
+        <var name='T1'>hokus</var>
+        <var name='T2'>pokus</var>
+      </MWE>
+      <MWE base='homo sapiens'>
+        <head>inter(base[0],["homo"])</head>
+        <var name='!L1'>homo</var>
+        <var name='!L2'>sapiens</var>
+        <var name='T1'>homo</var>
+        <var name='T2'>sapiens</var>
+      </MWE>
+      <MWE base='homo sovieticus'>
+        <head>inter(base[0],["homo"])</head>
+        <var name='!L1'>homo</var>
+        <var name='!L2'>sovieticus</var>
+        <var name='T1'>homo</var>
+        <var name='T2'>sovieticus</var>
+      </MWE>
+      <MWE base='kick boxing'>
+        <head>inter(base[0],["boxing"])</head>
+        <var name='!L1'>kick</var>
+        <var name='!L2'>boxing</var>
+        <var name='T1'>kick</var>
+        <var name='T2'>boxing</var>
+      </MWE>
+      <MWE base='klituś bajduś'>
+        <head>inter(base[0],["klituś"])</head>
+        <var name='!L1'>klituś</var>
+        <var name='!L2'>bajduś</var>
+        <var name='T1'>klituś</var>
+        <var name='T2'>bajduś</var>
+      </MWE>
+      <MWE base='lelum polelum'>
+        <head>inter(base[0],["lelum"])</head>
+        <var name='!L1'>lelum</var>
+        <var name='!L2'>polelum</var>
+        <var name='T1'>lelum</var>
+        <var name='T2'>polelum</var>
+      </MWE>
+      <MWE base='lucky looser'>
+        <head>inter(base[0],["lucky"])</head>
+        <var name='!L1'>lucky</var>
+        <var name='!L2'>looser</var>
+        <var name='T1'>lucky</var>
+        <var name='T2'>looser</var>
+      </MWE>
+      <MWE base='lucky luzer'>
+        <head>inter(base[0],["lucky"])</head>
+        <var name='!L1'>lucky</var>
+        <var name='!L2'>luzer</var>
+        <var name='T1'>lucky</var>
+        <var name='T2'>luzer</var>
+      </MWE>
+      <MWE base='na poziomie'>
+        <head>inter(base[0], ["na"])</head>
+        <var name='!L1'>na</var>
+        <var name='!L2'>poziomie</var>
+        <var name='T1'>na</var>
+        <var name='T2'>poziomie</var>
+      </MWE>
+      <MWE base='native speaker'>
+        <head>inter(base[0],["native"])</head>
+        <var name='!L1'>native</var>
+        <var name='!L2'>speaker</var>
+        <var name='T1'>native</var>
+        <var name='T2'>speaker</var>
+      </MWE>
+      <MWE base='reality show'>
+        <head>inter(base[0],["reality"])</head>
+        <var name='!L1'>reality</var>
+        <var name='!L2'>show</var>
+        <var name='T1'>reality</var>
+        <var name='T2'>show</var>
+      </MWE>
+      <MWE base='talk show'>
+        <head>inter(base[0],["talk"])</head>
+        <var name='!L1'>talk</var>
+        <var name='!L2'>show</var>
+        <var name='T1'>talk</var>
+        <var name='T2'>show</var>
+      </MWE>
+      <MWE base='votum separatum'>
+        <head>inter(base[0],["votum"])</head>
+        <var name='!L1'>votum</var>
+        <var name='!L2'>separatum</var>
+        <var name='T1'>votum</var>
+        <var name='T2'>separatum</var>
+      </MWE>
+      <MWE base='yacht club'>
+        <head>inter(base[0],["Yacht"])</head>
+        <var name='!L1'>yacht</var>
+        <var name='!L2'>club</var>
+        <var name='T1'>yacht</var>
+        <var name='T2'>club</var>
+      </MWE>
+    </instances>
+    <!--TwoFix;!L1,!L2,T1,T2-->
+  </mwegroup>
+  <mwegroup type='fix' name='NPAgr0-1PlusOneFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:Cn1),
+             inter(base[1],$s:Cn2),
+             agrpp(0,1,{cas,gnd,nmb}),
+             inter(orth[2],$s:T3),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <instances>
+      <MWE base='białe ciałko krwi'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(1,begin,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>biały</var>
+        <var name='Cn2'>ciałko</var>
+        <var name='!L1'>krew</var>
+        <var name='!T1'>białe</var>
+        <var name='!T2'>ciałko</var>
+        <var name='T3'>krwi</var>
+      </MWE>
+      <MWE base='ciężki kawałek chleba'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>ciężki</var>
+        <var name='Cn2'>kawałek</var>
+        <var name='!L1'>chleb</var>
+        <var name='!T1'>ciężki</var>
+        <var name='!T2'>kawałek</var>
+        <var name='T3'>chleba</var>
+      </MWE>
+      <MWE base='czerwone ciałko krwi'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>czerwony</var>
+        <var name='Cn2'>ciałko</var>
+        <var name='!L1'>krew</var>
+        <var name='!T1'>czerwone</var>
+        <var name='!T2'>ciałko</var>
+        <var name='T3'>krwi</var>
+      </MWE>
+      <MWE base='głos nieznoszący sprzeciwu'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>głos</var>
+        <var name='Cn2'>znosić</var>
+        <var name='!L1'>sprzeciw</var>
+        <var name='!T1'>głos</var>
+        <var name='!T2'>nieznoszący</var>
+        <var name='T3'>sprzeciwu</var>
+      </MWE>
+      <MWE base='gra niewarta świeczki'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>gra</var>
+        <var name='Cn2'>niewart</var>
+        <var name='!L1'>świeczka</var>
+        <var name='!T1'>gra</var>
+        <var name='!T2'>niewarta</var>
+        <var name='T3'>świeczki</var>
+      </MWE>
+      <MWE base='gra warta świeczki'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>gra</var>
+        <var name='Cn2'>wart</var>
+        <var name='!L1'>świeczka</var>
+        <var name='!T1'>gra</var>
+        <var name='!T2'>warta</var>
+        <var name='T3'>świeczki</var>
+      </MWE>
+      <MWE base='osobowe źródło informacji'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>osobowy</var>
+        <var name='Cn2'>źródło</var>
+        <var name='!L1'>informacja</var>
+        <var name='!T1'>osobowe</var>
+        <var name='!T2'>źródło</var>
+        <var name='T3'>informacji</var>
+      </MWE>
+      <MWE base='stały fragment gry'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>stały</var>
+        <var name='Cn2'>fragment</var>
+        <var name='!L1'>gra</var>
+        <var name='!T1'>stały</var>
+        <var name='!T2'>fragment</var>
+        <var name='T3'>gry</var>
+      </MWE>
+      <MWE base='ton nieznoszący sprzeciwu'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>ton</var>
+        <var name='Cn2'>znosić</var>
+        <var name='!L1'>sprzeciw</var>
+        <var name='!T1'>ton</var>
+        <var name='!T2'>nieznoszący</var>
+        <var name='T3'>sprzeciwu</var>
+      </MWE>
+      <MWE base='twardy kawałek chleba'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>twardy</var>
+        <var name='Cn2'>kawałek</var>
+        <var name='!L1'>chleb</var>
+        <var name='!T1'>twardy</var>
+        <var name='!T2'>kawałek</var>
+        <var name='T3'>chleba</var>
+      </MWE>
+      <MWE base='zapluty karzeł reakcji'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>zapluć</var>
+        <var name='Cn2'>karzeł</var>
+        <var name='!L1'>reakcja</var>
+        <var name='!T1'>zapluty</var>
+        <var name='!T2'>karzeł</var>
+        <var name='T3'>reakcji</var>
+      </MWE>
+      <MWE base='zwykła zjadaczka chleba'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>zwykły</var>
+        <var name='Cn2'>zjadaczka</var>
+        <var name='!L1'>chleb</var>
+        <var name='!T1'>zwykła</var>
+        <var name='!T2'>zjadaczka</var>
+        <var name='T3'>chleba</var>
+      </MWE>
+      <MWE base='zwykły zjadacz chleba'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>zwykły</var>
+        <var name='Cn2'>zjadacz</var>
+        <var name='!L1'>chleb</var>
+        <var name='!T1'>zwykły</var>
+        <var name='!T2'>zjadacz</var>
+        <var name='T3'>chleba</var>
+      </MWE>
+    </instances>
+    <!--NPAgr0-1PlusOneFix;Cn1,Cn2,!L1,!T1,!T2,T3-->
+  </mwegroup>
+  <mwegroup type='fix' name='NPAgr0-1PlusTwoFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:Cn1),
+             inter(base[1],$s:Cn2),
+             agrpp(0,1,{cas,gnd,nmb}),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)			
+            )
+        </condition>
+    <!--NPAgr0-1PlusTwoFix;s:Cn1,s:Cn2,!s:L1,!s:L2,!s:T1,!s:T2,s:T3,s:T4-->
+    <instances>
+      <MWE base='aktywna polityka na rynku pracy'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,begin,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>aktywny</var>
+        <var name='Cn2'>polityka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>rynek pracy</var>
+        <var name='!T1'>aktywna</var>
+        <var name='!T2'>polityka</var>
+        <var name='T3'>na</var>
+        <var name='T4'>rynku pracy</var>
+      </MWE>
+      <MWE base='ciężki orzech do zgryzienia'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>ciężki</var>
+        <var name='Cn2'>orzech</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>zgryźć</var>
+        <var name='!T1'>ciężki</var>
+        <var name='!T2'>orzech</var>
+        <var name='T3'>do</var>
+        <var name='T4'>zgryzienia</var>
+      </MWE>
+      <MWE base='dziesiąta woda po kisielu'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>dziesiąty</var>
+        <var name='Cn2'>woda</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>kisiel</var>
+        <var name='!T1'>dziesiąta</var>
+        <var name='!T2'>woda</var>
+        <var name='T3'>po</var>
+        <var name='T4'>kisielu</var>
+      </MWE>
+      <MWE base='jazda figurowa na lodzie'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>jazda</var>
+        <var name='Cn2'>figurowy</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>lód</var>
+        <var name='!T1'>jazda</var>
+        <var name='!T2'>figurowa</var>
+        <var name='T3'>na</var>
+        <var name='T4'>lodzie</var>
+      </MWE>
+      <MWE base='jednoosobowa spółka skarbu państwa'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>jednoosobowy</var>
+        <var name='Cn2'>spółka</var>
+        <var name='!L1'>skarb</var>
+        <var name='!L2'>państwo</var>
+        <var name='!T1'>jednoosobowa</var>
+        <var name='!T2'>spółka</var>
+        <var name='T3'>skarbu</var>
+        <var name='T4'>państwa</var>
+      </MWE>
+      <MWE base='kura znosząca złote jaja'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>kura</var>
+        <var name='Cn2'>znosić</var>
+        <var name='!L1'>złoty</var>
+        <var name='!L2'>jajo</var>
+        <var name='!T1'>kura</var>
+        <var name='!T2'>znosząca</var>
+        <var name='T3'>złote</var>
+        <var name='T4'>jaja</var>
+      </MWE>
+      <MWE base='kura znosząca złote jajka'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>kura</var>
+        <var name='Cn2'>znosić</var>
+        <var name='!L1'>złoty</var>
+        <var name='!L2'>jajko</var>
+        <var name='!T1'>kura</var>
+        <var name='!T2'>znosząca</var>
+        <var name='T3'>złote</var>
+        <var name='T4'>jajka</var>
+      </MWE>
+      <MWE base='pasywna polityka na rynku pracy'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>pasywny</var>
+        <var name='Cn2'>polityka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>rynek pracy</var>
+        <var name='!T1'>pasywna</var>
+        <var name='!T2'>polityka</var>
+        <var name='T3'>na</var>
+        <var name='T4'>rynku pracy</var>
+      </MWE>
+      <MWE base='przeciążeniowy zespół goleni prawej'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>przeciążeniowy</var>
+        <var name='Cn2'>zespół</var>
+        <var name='!L1'>goleń</var>
+        <var name='!L2'>prawy</var>
+        <var name='!T1'>przeciążeniowy</var>
+        <var name='!T2'>zespół</var>
+        <var name='T3'>goleni</var>
+        <var name='T4'>prawej</var>
+      </MWE>
+      <MWE base='ruch jednostajny po okręgu'>
+        <head>inter(base[0],["ruch"])</head>
+        <var name='Cn1'>ruch</var>
+        <var name='Cn2'>jednostajny</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>okręg</var>
+        <var name='!T1'>ruch</var>
+        <var name='!T2'>jednostajny</var>
+        <var name='T3'>po</var>
+        <var name='T4'>okręgu</var>
+      </MWE>
+      <MWE base='trzecia planeta od Słońca'>
+        <head>inter(base[0],["planeta"])</head>
+        <var name='Cn1'>trzeci</var>
+        <var name='Cn2'>planeta</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>słońce</var>
+        <var name='!T1'>trzecia</var>
+        <var name='!T2'>planeta</var>
+        <var name='T3'>od</var>
+        <var name='T4'>Słońca</var>
+      </MWE>
+      <MWE base='twardy orzech do zgryzienia'>
+        <head>and(in(class[0],{subst,ger,depr}), not(llook(-1,-2,$S,in(class[$S],{subst,ger,depr}))) )</head>
+        <var name='Cn1'>twardy</var>
+        <var name='Cn2'>orzech</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>zgryźć</var>
+        <var name='!T1'>twardy</var>
+        <var name='!T2'>orzech</var>
+        <var name='T3'>do</var>
+        <var name='T4'>zgryzienia</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstNPAgrNmb0-NPFix' class='subst'>
+    <condition>
+            and( 
+             inter(base[0],$s:S),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:Cn1),
+             inter(class[1],{adj,pact,ppas,num,subst,ger,depr}),
+             inter(base[2],$s:Cn2),  
+             inter(class[2],{adj,pact,ppas,num,subst,ger,depr}),
+             agrpp(1,2,{cas,gnd,nmb}),
+             inter(nmb[0],nmb[1]),
+             setvar($Pos1, 0), 
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <!--SubstNPAgrNmb0-NPFix;s:S,s:Cn1,s:Cn2-->
+    <instances>
+      <MWE base='autonomiczny układ nerwowy'>
+        <head>inter(base[0],["autonomiczny"])</head>
+        <var name='S'>autonomiczny</var>
+        <var name='Cn1'>układ</var>
+        <var name='Cn2'>nerwowy</var>
+      </MWE>
+      <MWE base='bierne prawo wyborcze'>
+        <head>inter(base[0],["bierny"])</head>
+        <var name='S'>bierny</var>
+        <var name='Cn1'>prawo</var>
+        <var name='Cn2'>wyborczy</var>
+      </MWE>
+      <MWE base='człowiek małego serca'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='S'>człowiek</var>
+        <var name='Cn1'>mały</var>
+        <var name='Cn2'>serce</var>
+      </MWE>
+      <MWE base='człowiek wielkiego serca'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='S'>człowiek</var>
+        <var name='Cn1'>wielki</var>
+        <var name='Cn2'>serce</var>
+      </MWE>
+      <MWE base='naturalny zbiornik wodny'>
+        <head>inter(base[0],["naturalny"])</head>
+        <var name='S'>naturalny</var>
+        <var name='Cn1'>zbiornik</var>
+        <var name='Cn2'>wodny</var>
+      </MWE>
+      <MWE base='niezidentyfikowany obiekt latający'>
+        <head>inter(base[0],["zidentyfikować"])</head>
+        <var name='S'>zidentyfikować</var>
+        <var name='Cn1'>obiekt</var>
+        <var name='Cn2'>latać</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusOneFix' class='subst'>
+    <condition>
+            and( 
+             inter(base[0],$s:SH),  	
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             setvar($Pos1, 0), 
+             setvar($Pos2, 1)
+            )
+        </condition>
+    <!--SubstPlusOneFix;s:SH,!s:L1,!s:T1,s:T2-->
+    <instances>
+      <MWE base='ciężar netto'>
+        <head>inter(base[0],["ciężar"])</head>
+        <var name='SH'>ciężar</var>
+        <var name='!L1'>netto</var>
+        <var name='!T1'>ciężar</var>
+        <var name='T2'>netto</var>
+      </MWE>
+      <MWE base='dowód wprost'>
+        <head>inter(base[0],["dowód"])</head>
+        <var name='SH'>dowód</var>
+        <var name='!L1'>wprost</var>
+        <var name='!T1'>dowód</var>
+        <var name='T2'>wprost</var>
+      </MWE>
+      <MWE base="komedia dell'arte">
+        <head>inter(base[0],["komedia"])</head>
+        <var name='SH'>komedia</var>
+        <var name='!L1'>dell'arte</var>
+        <var name='!T1'>komedia</var>
+        <var name='T2'>dell'arte</var>
+      </MWE>
+      <MWE base='papuga żako'>
+        <head>inter(base[0],["papuga"])</head>
+        <var name='SH'>papuga</var>
+        <var name='!L1'>żako</var>
+        <var name='!T1'>papuga</var>
+        <var name='T2'>żako</var>
+      </MWE>
+      <MWE base='skok wzwyż'>
+        <head>in(class[0],{subst,ger,depr})</head>
+        <var name='SH'>skok</var>
+        <var name='!L1'>wzwyż</var>
+        <var name='!T1'>skok</var>
+        <var name='T2'>wzwyż</var>
+      </MWE>
+      <MWE base='żuk kolorado'>
+        <head>inter(base[0],["żuk"])</head>
+        <var name='SH'>żuk</var>
+        <var name='!L1'>kolorado</var>
+        <var name='!T1'>żuk</var>
+        <var name='T2'>kolorado</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusTwoFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )	
+        </condition>
+    <!--SubstPlusTwoFix;s:SH,!s:L1,!s:L2, !s:T1,s:T2,s:T3-->
+    <instances>
+      <MWE base='achy i ochy'>
+        <head>inter(base[0],["achy"])</head>
+        <var name='SH'>achy</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>ochy</var>
+        <var name='!T1'>achy</var>
+        <var name='T2'>i</var>
+        <var name='T3'>ochy</var>
+      </MWE>
+      <MWE base='akademia ku czci'>
+        <head>inter(base[0],["akademia"])</head>
+        <var name='SH'>akademia</var>
+        <var name='!L1'>ku</var>
+        <var name='!L2'>cześć</var>
+        <var name='!T1'>akademia</var>
+        <var name='T2'>ku</var>
+        <var name='T3'>czci</var>
+      </MWE>
+      <MWE base='anse i niuanse'>
+        <head>inter(base[0],["ansa"])</head>
+        <var name='SH'>ansa</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>niuans</var>
+        <var name='!T1'>anse</var>
+        <var name='T2'>i</var>
+        <var name='T3'>niuanse</var>
+      </MWE>
+      <MWE base='artykuł pierwszej potrzeby'>
+        <head>inter(base[0],["artykuł"])</head>
+        <var name='SH'>artykuł</var>
+        <var name='!L1'>pierwsza</var>
+        <var name='!L2'>potrzeba</var>
+        <var name='!T1'>artykuł</var>
+        <var name='T2'>pierwszej</var>
+        <var name='T3'>potrzeby</var>
+      </MWE>
+      <MWE base='baba z magla'>
+        <head>inter(base[0],["baba"])</head>
+        <var name='SH'>baba</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>magiel</var>
+        <var name='!T1'>baba</var>
+        <var name='T2'>z</var>
+        <var name='T3'>magla</var>
+      </MWE>
+      <MWE base='bieda z nędzą'>
+        <head>inter(base[0],["bieda"])</head>
+        <var name='SH'>bieda</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>nędza</var>
+        <var name='!T1'>bieda</var>
+        <var name='T2'>z</var>
+        <var name='T3'>nędzą</var>
+      </MWE>
+      <MWE base='bieg na przełaj'>
+        <head>inter(base[0],["bieg"])</head>
+        <var name='SH'>bieg</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>przełaj</var>
+        <var name='!T1'>bieg</var>
+        <var name='T2'>na</var>
+        <var name='T3'>przełaj</var>
+      </MWE>
+      <MWE base='bieg przez płotki'>
+        <head>inter(base[0],["bieg"])</head>
+        <var name='SH'>bieg</var>
+        <var name='!L1'>przez</var>
+        <var name='!L2'>płotek</var>
+        <var name='!T1'>bieg</var>
+        <var name='T2'>przez</var>
+        <var name='T3'>płotki</var>
+      </MWE>
+      <MWE base='blaski i cienie'>
+        <head>inter(base[0],["blask"])</head>
+        <var name='SH'>blask</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>cień</var>
+        <var name='!T1'>blaski</var>
+        <var name='T2'>i</var>
+        <var name='T3'>cienie</var>
+      </MWE>
+      <MWE base='błysk w oku'>
+        <head>inter(base[0],["błysk"])</head>
+        <var name='SH'>błysk</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>oko</var>
+        <var name='!T1'>błysk</var>
+        <var name='T2'>w</var>
+        <var name='T3'>oku</var>
+      </MWE>
+      <MWE base='brylant czystej wody'>
+        <head>inter(base[0],["brylant"])</head>
+        <var name='SH'>brylant</var>
+        <var name='!L1'>czysta</var>
+        <var name='!L2'>woda</var>
+        <var name='!T1'>brylant</var>
+        <var name='T2'>czystej</var>
+        <var name='T3'>wody</var>
+      </MWE>
+      <MWE base='bujda na resorach'>
+        <head>inter(base[0],["bujda"])</head>
+        <var name='SH'>bujda</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>resor</var>
+        <var name='!T1'>bujda</var>
+        <var name='T2'>na</var>
+        <var name='T3'>resorach</var>
+      </MWE>
+      <MWE base='chłopcy z lasu'>
+        <head>inter(base[0],["chłopiec"])</head>
+        <var name='SH'>chłopiec</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>las</var>
+        <var name='!T1'>chłopcy</var>
+        <var name='T2'>z</var>
+        <var name='T3'>lasu</var>
+      </MWE>
+      <MWE base='chłopiec do bicia'>
+        <head>inter(base[0],["chłopiec"])</head>
+        <var name='SH'>chłopiec</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>bić</var>
+        <var name='!T1'>chłopiec</var>
+        <var name='T2'>do</var>
+        <var name='T3'>bicia</var>
+      </MWE>
+      <MWE base='chłopiec do butów'>
+        <head>inter(base[0],["chłopiec"])</head>
+        <var name='SH'>chłopiec</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>but</var>
+        <var name='!T1'>chłopiec</var>
+        <var name='T2'>do</var>
+        <var name='T3'>butów</var>
+      </MWE>
+      <MWE base='chłopiec na posyłki'>
+        <head>inter(base[0],["chłopiec"])</head>
+        <var name='SH'>chłopiec</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>posyłka</var>
+        <var name='!T1'>chłopiec</var>
+        <var name='T2'>na</var>
+        <var name='T3'>posyłki</var>
+      </MWE>
+      <MWE base='chłopiec z lasu'>
+        <head>inter(base[0],["chłopiec"])</head>
+        <var name='SH'>chłopiec</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>las</var>
+        <var name='!T1'>chłopiec</var>
+        <var name='T2'>z</var>
+        <var name='T3'>lasu</var>
+      </MWE>
+      <MWE base='chłop na schwał'>
+        <head>inter(base[0],["chłop"])</head>
+        <var name='SH'>chłop</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>schwał</var>
+        <var name='!T1'>chłop</var>
+        <var name='T2'>na</var>
+        <var name='T3'>schwał</var>
+      </MWE>
+      <MWE base='chory z urojenia'>
+        <head>inter(base[0],["chory"])</head>
+        <var name='SH'>chory</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>urojenie</var>
+        <var name='!T1'>chory</var>
+        <var name='T2'>z</var>
+        <var name='T3'>urojenia</var>
+      </MWE>
+      <MWE base='chwyt poniżej pasa'>
+        <head>inter(base[0],["chwyt"])</head>
+        <var name='SH'>chwyt</var>
+        <var name='!L1'>poniżej</var>
+        <var name='!L2'>pas</var>
+        <var name='!T1'>chwyt</var>
+        <var name='T2'>poniżej</var>
+        <var name='T3'>pasa</var>
+      </MWE>
+      <MWE base='cios poniżej pasa'>
+        <head>inter(base[0],["cios"])</head>
+        <var name='SH'>cios</var>
+        <var name='!L1'>poniżej</var>
+        <var name='!L2'>pas</var>
+        <var name='!T1'>cios</var>
+        <var name='T2'>poniżej</var>
+        <var name='T3'>pasa</var>
+      </MWE>
+      <MWE base='cios w plecy'>
+        <head>inter(base[0],["cios"])</head>
+        <var name='SH'>cios</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>plecy</var>
+        <var name='!T1'>cios</var>
+        <var name='T2'>w</var>
+        <var name='T3'>plecy</var>
+      </MWE>
+      <MWE base='cisza i spokój'>
+        <head>inter(base[0],["cisza"])</head>
+        <var name='SH'>cisza</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>spokój</var>
+        <var name='!T1'>cisza</var>
+        <var name='T2'>i</var>
+        <var name='T3'>spokój</var>
+      </MWE>
+      <MWE base='cisza na morzu'>
+        <head>inter(base[0],["cisza"])</head>
+        <var name='SH'>cisza</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>morze</var>
+        <var name='!T1'>cisza</var>
+        <var name='T2'>na</var>
+        <var name='T3'>morzu</var>
+      </MWE>
+      <MWE base='cisza przed burzą'>
+        <head>inter(base[0],["cisza"])</head>
+        <var name='SH'>cisza</var>
+        <var name='!L1'>przed</var>
+        <var name='!L2'>burza</var>
+        <var name='!T1'>cisza</var>
+        <var name='T2'>przed</var>
+        <var name='T3'>burzą</var>
+      </MWE>
+      <MWE base='cisza w eterze'>
+        <head>inter(base[0],["cisza"])</head>
+        <var name='SH'>cisza</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>eter</var>
+        <var name='!T1'>cisza</var>
+        <var name='T2'>w</var>
+        <var name='T3'>eterze</var>
+      </MWE>
+      <MWE base='coś na ząb'>
+        <head>inter(base[0],["coś"])</head>
+        <var name='SH'>coś</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>ząb</var>
+        <var name='!T1'>coś</var>
+        <var name='T2'>na</var>
+        <var name='T3'>ząb</var>
+      </MWE>
+      <MWE base='cuda na kiju'>
+        <head>inter(base[0],["cuda"])</head>
+        <var name='SH'>cuda</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>kij</var>
+        <var name='!T1'>cuda</var>
+        <var name='T2'>na</var>
+        <var name='T3'>kiju</var>
+      </MWE>
+      <MWE base='czek bez pokrycia'>
+        <head>inter(base[0],["czek"])</head>
+        <var name='SH'>czek</var>
+        <var name='!L1'>bez</var>
+        <var name='!L2'>pokrycie</var>
+        <var name='!T1'>czek</var>
+        <var name='T2'>bez</var>
+        <var name='T3'>pokrycia</var>
+      </MWE>
+      <MWE base='człowiek do wynajęcia'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='SH'>człowiek</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>wynajęcie</var>
+        <var name='!T1'>człowiek</var>
+        <var name='T2'>do</var>
+        <var name='T3'>wynajęcia</var>
+      </MWE>
+      <MWE base='człowiek starej daty'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='SH'>człowiek</var>
+        <var name='!L1'>stary</var>
+        <var name='!L2'>data</var>
+        <var name='!T1'>człowiek</var>
+        <var name='T2'>starej</var>
+        <var name='T3'>daty</var>
+      </MWE>
+      <MWE base='człowiek wielkiego kalibru'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='SH'>człowiek</var>
+        <var name='!L1'>wielki</var>
+        <var name='!L2'>kaliber</var>
+        <var name='!T1'>człowiek</var>
+        <var name='T2'>wielkiego</var>
+        <var name='T3'>kalibru</var>
+      </MWE>
+      <MWE base='dach nad głową'>
+        <head>inter(base[0],["dach"])</head>
+        <var name='SH'>dach</var>
+        <var name='!L1'>nad</var>
+        <var name='!L2'>głowa</var>
+        <var name='!T1'>dach</var>
+        <var name='T2'>nad</var>
+        <var name='T3'>głową</var>
+      </MWE>
+      <MWE base='dama do towarzystwa'>
+        <head>inter(base[0],["dama"])</head>
+        <var name='SH'>dama</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>towarzystwo</var>
+        <var name='!T1'>dama</var>
+        <var name='T2'>do</var>
+        <var name='T3'>towarzystwa</var>
+      </MWE>
+      <MWE base='dno i wodorosty'>
+        <head>inter(base[0],["dno"])</head>
+        <var name='SH'>dno</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>wodorost</var>
+        <var name='!T1'>dno</var>
+        <var name='T2'>i</var>
+        <var name='T3'>wodorosty</var>
+      </MWE>
+      <MWE base='docent z ustępu'>
+        <head>inter(base[0],["docent"])</head>
+        <var name='SH'>docent</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>ustęp</var>
+        <var name='!T1'>docent</var>
+        <var name='T2'>z</var>
+        <var name='T3'>ustępu</var>
+      </MWE>
+      <MWE base='doktorat honoris causa'>
+        <head>inter(base[0],["doktorat"])</head>
+        <var name='SH'>doktorat</var>
+        <var name='!L1'>honoris</var>
+        <var name='!L2'>causa</var>
+        <var name='!T1'>doktorat</var>
+        <var name='T2'>honoris</var>
+        <var name='T3'>causa</var>
+      </MWE>
+      <MWE base='dole i niedole'>
+        <head>inter(base[0],["dola"])</head>
+        <var name='SH'>dola</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>niedola</var>
+        <var name='!T1'>dole</var>
+        <var name='T2'>i</var>
+        <var name='T3'>niedole</var>
+      </MWE>
+      <MWE base='domek z kart'>
+        <head>inter(base[0],["domek"])</head>
+        <var name='SH'>domek</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>karta</var>
+        <var name='!T1'>domek</var>
+        <var name='T2'>z</var>
+        <var name='T3'>kart</var>
+      </MWE>
+      <MWE base='dom na działce'>
+        <head>inter(base[0],["dom"])</head>
+        <var name='SH'>dom</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>działka</var>
+        <var name='!T1'>dom</var>
+        <var name='T2'>na</var>
+        <var name='T3'>działce</var>
+      </MWE>
+      <MWE base='dowód nie wprost'>
+        <head>inter(base[0],["dowód"])</head>
+        <var name='SH'>dowód</var>
+        <var name='!L1'>nie</var>
+        <var name='!L2'>wprost</var>
+        <var name='!T1'>dowód</var>
+        <var name='T2'>nie</var>
+        <var name='T3'>wprost</var>
+      </MWE>
+      <MWE base='dziadek do orzechów'>
+        <head>inter(base[0],["dziadek"])</head>
+        <var name='SH'>dziadek</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>orzech</var>
+        <var name='!T1'>dziadek</var>
+        <var name='T2'>do</var>
+        <var name='T3'>orzechów</var>
+      </MWE>
+      <MWE base='dziewczyna na posyłki'>
+        <head>inter(base[0],["dziewczyna"])</head>
+        <var name='SH'>dziewczyna</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>posyłka</var>
+        <var name='!T1'>dziewczyna</var>
+        <var name='T2'>na</var>
+        <var name='T3'>posyłki</var>
+      </MWE>
+      <MWE base='dziewczyna z przeszłością'>
+        <head>inter(base[0],["dziewczyna"])</head>
+        <var name='SH'>dziewczyna</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>przeszłość</var>
+        <var name='!T1'>dziewczyna</var>
+        <var name='T2'>z</var>
+        <var name='T3'>przeszłością</var>
+      </MWE>
+      <MWE base='dziewczyna z sąsiedztwa'>
+        <head>inter(base[0],["dziewczyna"])</head>
+        <var name='SH'>dziewczyna</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>sąsiedztwo</var>
+        <var name='!T1'>dziewczyna</var>
+        <var name='T2'>z</var>
+        <var name='T3'>sąsiedztwa</var>
+      </MWE>
+      <MWE base='figa z makiem'>
+        <head>inter(base[0],["figa"])</head>
+        <var name='SH'>figa</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>mak</var>
+        <var name='!T1'>figa</var>
+        <var name='T2'>z</var>
+        <var name='T3'>makiem</var>
+      </MWE>
+      <MWE base='film dla dorosłych'>
+        <head>inter(base[0],["film"])</head>
+        <var name='SH'>film</var>
+        <var name='!L1'>dla</var>
+        <var name='!L2'>dorosły</var>
+        <var name='!T1'>film</var>
+        <var name='T2'>dla</var>
+        <var name='T3'>dorosłych</var>
+      </MWE>
+      <MWE base='gaz do dechy'>
+        <head>inter(base[0],["gaz"])</head>
+        <var name='SH'>gaz</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>decha</var>
+        <var name='!T1'>gaz</var>
+        <var name='T2'>do</var>
+        <var name='T3'>dechy</var>
+      </MWE>
+      <MWE base='głupiec do kwadratu'>
+        <head>inter(base[0],["głupiec"])</head>
+        <var name='SH'>głupiec</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>kwadrat</var>
+        <var name='!T1'>głupiec</var>
+        <var name='T2'>do</var>
+        <var name='T3'>kwadratu</var>
+      </MWE>
+      <MWE base='góry i doliny'>
+        <head>inter(base[0],["góra"])</head>
+        <var name='SH'>góra</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>dolina</var>
+        <var name='!T1'>góry</var>
+        <var name='T2'>i</var>
+        <var name='T3'>doliny</var>
+      </MWE>
+      <MWE base='góry i doły'>
+        <head>inter(base[0],["góra"])</head>
+        <var name='SH'>góra</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>dół</var>
+        <var name='!T1'>góry</var>
+        <var name='T2'>i</var>
+        <var name='T3'>doły</var>
+      </MWE>
+      <MWE base='gracz w karty'>
+        <head>inter(base[0],["gracz"])</head>
+        <var name='SH'>gracz</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>karta</var>
+        <var name='!T1'>gracz</var>
+        <var name='T2'>w</var>
+        <var name='T3'>karty</var>
+      </MWE>
+      <MWE base='gra w ciemno'>
+        <head>inter(base[0],["gra"])</head>
+        <var name='SH'>gra</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>ciemno</var>
+        <var name='!T1'>gra</var>
+        <var name='T2'>w</var>
+        <var name='T3'>ciemno</var>
+      </MWE>
+      <MWE base='gra w karty'>
+        <head>inter(base[0],["gra"])</head>
+        <var name='SH'>gra</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>karta</var>
+        <var name='!T1'>gra</var>
+        <var name='T2'>w</var>
+        <var name='T3'>karta</var>
+      </MWE>
+      <MWE base='Grób Nieznanego Żołnierza'>
+        <head>inter(base[0],["grób"])</head>
+        <var name='SH'>grób</var>
+        <var name='!L1'>nieznany</var>
+        <var name='!L2'>żołnierz</var>
+        <var name='!T1'>Grób</var>
+        <var name='T2'>Nieznanego</var>
+        <var name='T3'>Żołnierza</var>
+      </MWE>
+      <MWE base='groch z kapustą'>
+        <head>inter(base[0],["groch"])</head>
+        <var name='SH'>groch</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>kapusta</var>
+        <var name='!T1'>groch</var>
+        <var name='T2'>z</var>
+        <var name='T3'>kapustą</var>
+      </MWE>
+      <MWE base='gruszki na wierzbie'>
+        <head>inter(base[0],["gruszka"])</head>
+        <var name='SH'>gruszka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>wierzba</var>
+        <var name='!T1'>gruszki</var>
+        <var name='T2'>na</var>
+        <var name='T3'>wierzbie</var>
+      </MWE>
+      <MWE base='guzik z pętelką'>
+        <head>inter(base[0],["guzik"])</head>
+        <var name='SH'>guzik</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>pętelka</var>
+        <var name='!T1'>guzik</var>
+        <var name='T2'>z</var>
+        <var name='T3'>pętelką</var>
+      </MWE>
+      <MWE base='hokej na trawie'>
+        <head>inter(base[0],["hokej"])</head>
+        <var name='SH'>hokej</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>trawa</var>
+        <var name='!T1'>hokej</var>
+        <var name='T2'>na</var>
+        <var name='T3'>trawie</var>
+      </MWE>
+      <MWE base='homo sapiens neanderthalensis'>
+        <head>inter(base[0],["homo"])</head>
+        <var name='SH'>homo</var>
+        <var name='!L1'>sapiens</var>
+        <var name='!L2'>neanderthalensis</var>
+        <var name='!T1'>homo</var>
+        <var name='T2'>sapiens</var>
+        <var name='T3'>neanderthalensis</var>
+      </MWE>
+      <MWE base='jajko na miękko'>
+        <head>inter(base[0],["jajko"])</head>
+        <var name='SH'>jajko</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>miękko</var>
+        <var name='!T1'>jajko</var>
+        <var name='T2'>na</var>
+        <var name='T3'>miękko</var>
+      </MWE>
+      <MWE base='jajko na twardo'>
+        <head>inter(base[0],["jajko"])</head>
+        <var name='SH'>jajko</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>twardo</var>
+        <var name='!T1'>jajko</var>
+        <var name='T2'>na</var>
+        <var name='T3'>twardo</var>
+      </MWE>
+      <MWE base='jajko po wiedeńsku'>
+        <head>inter(base[0],["jajko"])</head>
+        <var name='SH'>jajko</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>wiedeński</var>
+        <var name='!T1'>jajko</var>
+        <var name='T2'>po</var>
+        <var name='T3'>wiedeńsku</var>
+      </MWE>
+      <MWE base='jajko w koszulce'>
+        <head>inter(base[0],["jajko"])</head>
+        <var name='SH'>jajko</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>koszulka</var>
+        <var name='!T1'>jajko</var>
+        <var name='T2'>w</var>
+        <var name='T3'>koszulce</var>
+      </MWE>
+      <MWE base='jazda na nartach'>
+        <head>inter(base[0],["dziewczyna"])</head>
+        <var name='SH'>jazda</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>narta</var>
+        <var name='!T1'>jazda</var>
+        <var name='T2'>na</var>
+        <var name='T3'>nartach</var>
+      </MWE>
+      <MWE base='języczek u wagi'>
+        <head>inter(base[0],["języczek"])</head>
+        <var name='SH'>języczek</var>
+        <var name='!L1'>u</var>
+        <var name='!L2'>waga</var>
+        <var name='!T1'>języczek</var>
+        <var name='T2'>u</var>
+        <var name='T3'>wagi</var>
+      </MWE>
+      <MWE base='kartofle w mundurkach'>
+        <head>inter(base[0],["kartofel"])</head>
+        <var name='SH'>kartofel</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>mundurek</var>
+        <var name='!T1'>kartofle</var>
+        <var name='T2'>w</var>
+        <var name='T3'>mundurkach</var>
+      </MWE>
+      <MWE base='kaszka z mlekiem'>
+        <head>inter(base[0],["kaszka"])</head>
+        <var name='SH'>kaszka</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>mleko</var>
+        <var name='!T1'>kaszka</var>
+        <var name='T2'>z</var>
+        <var name='T3'>mlekiem</var>
+      </MWE>
+      <MWE base='kawa po turecku'>
+        <head>inter(base[0],["kawa"])</head>
+        <var name='SH'>kawa</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>turecki</var>
+        <var name='!T1'>kawa</var>
+        <var name='T2'>po</var>
+        <var name='T3'>turecku</var>
+      </MWE>
+      <MWE base='kino non stop'>
+        <head>inter(base[0],["kino"])</head>
+        <var name='SH'>kino</var>
+        <var name='!L1'>non</var>
+        <var name='!L2'>stop</var>
+        <var name='!T1'>kino</var>
+        <var name='T2'>non</var>
+        <var name='T3'>stop</var>
+      </MWE>
+      <MWE base='kobieta z przeszłością'>
+        <head>inter(base[0],["kobieta"])</head>
+        <var name='SH'>kobieta</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>przeszłość</var>
+        <var name='!T1'>kobieta</var>
+        <var name='T2'>z</var>
+        <var name='T3'>przeszłością</var>
+      </MWE>
+      <MWE base='kolega po fachu'>
+        <head>inter(base[0],["kolega"])</head>
+        <var name='SH'>kolega</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>fach</var>
+        <var name='!T1'>kolega</var>
+        <var name='T2'>po</var>
+        <var name='T3'>fachu</var>
+      </MWE>
+      <MWE base='kolega po piórze'>
+        <head>inter(base[0],["kolega"])</head>
+        <var name='SH'>kolega</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>pióro</var>
+        <var name='!T1'>kolega</var>
+        <var name='T2'>po</var>
+        <var name='T3'>piórze</var>
+      </MWE>
+      <MWE base='koleżanka po fachu'>
+        <head>inter(base[0],["koleżanka"])</head>
+        <var name='SH'>koleżanka</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>fach</var>
+        <var name='!T1'>koleżanka</var>
+        <var name='T2'>po</var>
+        <var name='T3'>fachu</var>
+      </MWE>
+      <MWE base='koleżanka po piórze'>
+        <head>inter(base[0],["koleżanka"])</head>
+        <var name='SH'>koleżanka</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>pióro</var>
+        <var name='!T1'>koleżanka</var>
+        <var name='T2'>po</var>
+        <var name='T3'>piórze</var>
+      </MWE>
+      <MWE base='kółko i krzyżyk'>
+        <head>inter(base[0],["kółko"])</head>
+        <var name='SH'>kółko</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>krzyżyk</var>
+        <var name='!T1'>kółko</var>
+        <var name='T2'>i</var>
+        <var name='T3'>krzyżyk</var>
+      </MWE>
+      <MWE base="komedia dell' arte">
+        <head>inter(base[0],["komedia"])</head>
+        <var name='SH'>komedia</var>
+        <var name='!L1'>dell'</var>
+        <var name='!L2'>arte</var>
+        <var name='!T1'>komedia</var>
+        <var name='T2'>dell'</var>
+        <var name='T3'>arte</var>
+      </MWE>
+      <MWE base='kraj nad Wisłą'>
+        <head>inter(base[0],["kraj"])</head>
+        <var name='SH'>kraj</var>
+        <var name='!L1'>nad</var>
+        <var name='!L2'>wisła</var>
+        <var name='!T1'>kraj</var>
+        <var name='T2'>nad</var>
+        <var name='T3'>Wisłą</var>
+      </MWE>
+      <MWE base='kręgi pod oczami'>
+        <head>inter(base[0],["krąg"])</head>
+        <var name='SH'>krąg</var>
+        <var name='!L1'>pod</var>
+        <var name='!L2'>oko</var>
+        <var name='!T1'>kręgi</var>
+        <var name='T2'>pod</var>
+        <var name='T3'>oczami</var>
+      </MWE>
+      <MWE base='krew z mlekiem'>
+        <head>inter(base[0],["krew"])</head>
+        <var name='SH'>krew</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>mleko</var>
+        <var name='!T1'>krew</var>
+        <var name='T2'>z</var>
+        <var name='T3'>mlekiem</var>
+      </MWE>
+      <MWE base='kropla w morzu'>
+        <head>inter(base[0],["kropla"])</head>
+        <var name='SH'>kropla</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>morze</var>
+        <var name='!T1'>kropla</var>
+        <var name='T2'>w</var>
+        <var name='T3'>morzu</var>
+      </MWE>
+      <MWE base='kula u nogi'>
+        <head>inter(base[0],["kula"])</head>
+        <var name='SH'>kula</var>
+        <var name='!L1'>u</var>
+        <var name='!L2'>noga</var>
+        <var name='!T1'>kula</var>
+        <var name='T2'>u</var>
+        <var name='T3'>nogi</var>
+      </MWE>
+      <MWE base='lary i penaty'>
+        <head>inter(base[0],["lary"])</head>
+        <var name='SH'>lary</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>penaty</var>
+        <var name='!T1'>lary</var>
+        <var name='T2'>i</var>
+        <var name='T3'>penaty</var>
+      </MWE>
+      <MWE base='liczba w działaniu'>
+        <head>inter(base[0],["liczba"])</head>
+        <var name='SH'>liczba</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>działanie</var>
+        <var name='!T1'>liczba</var>
+        <var name='T2'>w</var>
+        <var name='T3'>działaniu</var>
+      </MWE>
+      <MWE base='łyżka do butów'>
+        <head>inter(base[0],["łyżka"])</head>
+        <var name='SH'>łyżka</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>but</var>
+        <var name='!T1'>łyżka</var>
+        <var name='T2'>do</var>
+        <var name='T3'>butów</var>
+      </MWE>
+      <MWE base='manna z nieba'>
+        <head>inter(base[0],["manna"])</head>
+        <var name='SH'>manna</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>niebo</var>
+        <var name='!T1'>manna</var>
+        <var name='T2'>z</var>
+        <var name='T3'>nieba</var>
+      </MWE>
+      <MWE base='maszyna do pisania'>
+        <head>inter(base[0],["maszyna"])</head>
+        <var name='SH'>maszyna</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>pisać</var>
+        <var name='!T1'>maszyna</var>
+        <var name='T2'>do</var>
+        <var name='T3'>pisania</var>
+      </MWE>
+      <MWE base='miłość do ojczyzny'>
+        <head>inter(base[0],["miłość"])</head>
+        <var name='SH'>miłość</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>ojczyzna</var>
+        <var name='!T1'>miłość</var>
+        <var name='T2'>do</var>
+        <var name='T3'>ojczyzny</var>
+      </MWE>
+      <MWE base='motyle w brzuchu'>
+        <head>inter(base[0],["motyl"])</head>
+        <var name='SH'>motyl</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>brzuch</var>
+        <var name='!T1'>motyle</var>
+        <var name='T2'>w</var>
+        <var name='T3'>brzuchu</var>
+      </MWE>
+      <MWE base='mydło i powidło'>
+        <head>inter(base[0],["mydło"])</head>
+        <var name='SH'>mydło</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>powidło</var>
+        <var name='!T1'>mydło</var>
+        <var name='T2'>i</var>
+        <var name='T3'>powidło</var>
+      </MWE>
+      <MWE base='narzędzie do szycia'>
+        <head>inter(base[0],["narzędzie"])</head>
+        <var name='SH'>narzędzie</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>szycie</var>
+        <var name='!T1'>narzędzie</var>
+        <var name='T2'>do</var>
+        <var name='T3'>szycia</var>
+      </MWE>
+      <MWE base='nauka o materii'>
+        <head>inter(base[0],["nauka"])</head>
+        <var name='SH'>nauka</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>materia</var>
+        <var name='!T1'>nauka</var>
+        <var name='T2'>o</var>
+        <var name='T3'>materii</var>
+      </MWE>
+      <MWE base='nauka o roślinach'>
+        <head>inter(base[0],["nauka"])</head>
+        <var name='SH'>nauka</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>roślina</var>
+        <var name='!T1'>nauka</var>
+        <var name='T2'>o</var>
+        <var name='T3'>roślinach</var>
+      </MWE>
+      <MWE base='nauka o zdrowiu'>
+        <head>inter(base[0],["nauka"])</head>
+        <var name='SH'>nauka</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>zdrowie</var>
+        <var name='!T1'>nauka</var>
+        <var name='T2'>o</var>
+        <var name='T3'>zdrowiu</var>
+      </MWE>
+      <MWE base='niebo a ziemia'>
+        <head>inter(base[0],["niebo"])</head>
+        <var name='SH'>niebo</var>
+        <var name='!L1'>a</var>
+        <var name='!L2'>ziemia</var>
+        <var name='!T1'>niebo</var>
+        <var name='T2'>a</var>
+        <var name='T3'>ziemia</var>
+      </MWE>
+      <MWE base='niebo i ziemia'>
+        <head>inter(base[0],["niebo"])</head>
+        <var name='SH'>niebo</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>ziemia</var>
+        <var name='!T1'>niebo</var>
+        <var name='T2'>i</var>
+        <var name='T3'>ziemia</var>
+      </MWE>
+      <MWE base='niezgodność z normą'>
+        <head>inter(base[0],["niezgodność"])</head>
+        <var name='SH'>niezgodność</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>norma</var>
+        <var name='!T1'>niezgodność</var>
+        <var name='T2'>z</var>
+        <var name='T3'>normą</var>
+      </MWE>
+      <MWE base='niezgodność z prawdą'>
+        <head>inter(base[0],["niezgodność"])</head>
+        <var name='SH'>niezgodność</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>prawda</var>
+        <var name='!T1'>niezgodność</var>
+        <var name='T2'>z</var>
+        <var name='T3'>prawdą</var>
+      </MWE>
+      <MWE base='nogi w iks'>
+        <head>inter(base[0],["noga"])</head>
+        <var name='SH'>noga</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>iks</var>
+        <var name='!T1'>nogi</var>
+        <var name='T2'>w</var>
+        <var name='T3'>iks</var>
+      </MWE>
+      <MWE base='orka na ugorze'>
+        <head>inter(base[0],["orka"])</head>
+        <var name='SH'>orka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>ugór</var>
+        <var name='!T1'>orka</var>
+        <var name='T2'>na</var>
+        <var name='T3'>ugorze</var>
+      </MWE>
+      <MWE base='orzeł i reszka'>
+        <head>inter(base[0],["orzeł"])</head>
+        <var name='SH'>orzeł</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>reszka</var>
+        <var name='!T1'>orzeł</var>
+        <var name='T2'>i</var>
+        <var name='T3'>reszka</var>
+      </MWE>
+      <MWE base='pic na wodę'>
+        <head>inter(base[0],["pic"])</head>
+        <var name='SH'>pic</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>woda</var>
+        <var name='!T1'>pic</var>
+        <var name='T2'>na</var>
+        <var name='T3'>wodę</var>
+      </MWE>
+      <MWE base='pieprzenie w bambus'>
+        <head>inter(base[0],["pieprzyć"])</head>
+        <var name='SH'>pieprzyć</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>bambus</var>
+        <var name='!T1'>pieprzenie</var>
+        <var name='T2'>w</var>
+        <var name='T3'>bambus</var>
+      </MWE>
+      <MWE base='podatek od przedsiębiorstw'>
+        <head>inter(base[0],["podatek"])</head>
+        <var name='SH'>podatek</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>przedsiębiorstwo</var>
+        <var name='!T1'>podatek</var>
+        <var name='T2'>od</var>
+        <var name='T3'>przedsiębiorstw</var>
+      </MWE>
+      <MWE base='pogoda dla bogaczy'>
+        <head>inter(base[0],["pogoda"])</head>
+        <var name='SH'>pogoda</var>
+        <var name='!L1'>dla</var>
+        <var name='!L2'>bogacz</var>
+        <var name='!T1'>pogoda</var>
+        <var name='T2'>dla</var>
+        <var name='T3'>bogaczy</var>
+      </MWE>
+      <MWE base='pogoda jak drut'>
+        <head>inter(base[0],["pogoda"])</head>
+        <var name='SH'>pogoda</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>drut</var>
+        <var name='!T1'>pogoda</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>drut</var>
+      </MWE>
+      <MWE base='pogoda pod psem'>
+        <head>inter(base[0],["pogoda"])</head>
+        <var name='SH'>pogoda</var>
+        <var name='!L1'>pod</var>
+        <var name='!L2'>pies</var>
+        <var name='!T1'>pogoda</var>
+        <var name='T2'>pod</var>
+        <var name='T3'>psem</var>
+      </MWE>
+      <MWE base='polowanie na czarownice'>
+        <head>inter(base[0],["polować"])</head>
+        <var name='SH'>polować</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>czarownica</var>
+        <var name='!T1'>polowanie</var>
+        <var name='T2'>na</var>
+        <var name='T3'>czarownice</var>
+      </MWE>
+      <MWE base='pomieszanie z poplątaniem'>
+        <head>inter(base[0],["pomieszać"])</head>
+        <var name='SH'>pomieszać</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>poplątać</var>
+        <var name='!T1'>pomieszanie</var>
+        <var name='T2'>z</var>
+        <var name='T3'>poplątaniem</var>
+      </MWE>
+      <MWE base='prośby i groźby'>
+        <head>inter(base[0],["prośba"])</head>
+        <var name='SH'>prośba</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>groźba</var>
+        <var name='!T1'>prośby</var>
+        <var name='T2'>i</var>
+        <var name='T3'>groźby</var>
+      </MWE>
+      <MWE base='przejście dla pieszych'>
+        <head>inter(base[0],["przejście"])</head>
+        <var name='SH'>przejście</var>
+        <var name='!L1'>dla</var>
+        <var name='!L2'>pieszy</var>
+        <var name='!T1'>przejście</var>
+        <var name='T2'>dla</var>
+        <var name='T3'>pieszych</var>
+      </MWE>
+      <MWE base='przerwa w życiorysie'>
+        <head>inter(base[0],["przerwa"])</head>
+        <var name='SH'>przerwa</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>życiorys</var>
+        <var name='!T1'>przerwa</var>
+        <var name='T2'>w</var>
+        <var name='T3'>życiorysie</var>
+      </MWE>
+      <MWE base='przybory do pisania'>
+        <head>inter(base[0],["przybór"])</head>
+        <var name='SH'>przybór</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>pisać</var>
+        <var name='!T1'>przybory</var>
+        <var name='T2'>do</var>
+        <var name='T3'>pisania</var>
+      </MWE>
+      <MWE base='przyjaciółka od serca'>
+        <head>inter(base[0],["przyjaciółka"])</head>
+        <var name='SH'>przyjaciółka</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>serce</var>
+        <var name='!T1'>przyjaciółka</var>
+        <var name='T2'>od</var>
+        <var name='T3'>serca</var>
+      </MWE>
+      <MWE base='przyjście na świat'>
+        <head>inter(base[0],["przyjście"])</head>
+        <var name='SH'>przyjście</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>świat</var>
+        <var name='!T1'>przyjście</var>
+        <var name='T2'>na</var>
+        <var name='T3'>świat</var>
+      </MWE>
+      <MWE base='radość przez łzy'>
+        <head>inter(base[0],["radość"])</head>
+        <var name='SH'>radość</var>
+        <var name='!L1'>przez</var>
+        <var name='!L2'>łza</var>
+        <var name='!T1'>radość</var>
+        <var name='T2'>przez</var>
+        <var name='T3'>łzy</var>
+      </MWE>
+      <MWE base='randka w ciemno'>
+        <head>inter(base[0],["randka"])</head>
+        <var name='SH'>randka</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>ciemno</var>
+        <var name='!T1'>randka</var>
+        <var name='T2'>w</var>
+        <var name='T3'>ciemno</var>
+      </MWE>
+      <MWE base='rekwizyt do gry'>
+        <head>inter(base[0],["rekwizyt"])</head>
+        <var name='SH'>rekwizyt</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>gra</var>
+        <var name='!T1'>rekwizyt</var>
+        <var name='T2'>do</var>
+        <var name='T3'>gry</var>
+      </MWE>
+      <MWE base='ruch po okręgu'>
+        <head>inter(base[0],["ruch"])</head>
+        <var name='SH'>ruch</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>okrąg</var>
+        <var name='!T1'>ruch</var>
+        <var name='T2'>po</var>
+        <var name='T3'>okręgu</var>
+      </MWE>
+      <MWE base='ruja i porubstwo'>
+        <head>inter(base[0],["ruja"])</head>
+        <var name='SH'>ruja</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>porubstwo</var>
+        <var name='!T1'>ruja</var>
+        <var name='T2'>i</var>
+        <var name='T3'>porubstwo</var>
+      </MWE>
+      <MWE base='ścieżka ekspansji produkcji'>
+        <head>inter(base[0],["ścieżka"])</head>
+        <var name='SH'>ścieżka</var>
+        <var name='!L1'>ekspansja</var>
+        <var name='!L2'>produkcja</var>
+        <var name='!T1'>ścieżka</var>
+        <var name='T2'>ekspansji</var>
+        <var name='T3'>produkcji</var>
+      </MWE>
+      <MWE base='ścieżka ekspresji produkcji'>
+        <head>inter(base[0],["ścieżka"])</head>
+        <var name='SH'>ścieżka</var>
+        <var name='!L1'>ekspresja</var>
+        <var name='!L2'>produkcja</var>
+        <var name='!T1'>ścieżka</var>
+        <var name='T2'>ekspresji</var>
+        <var name='T3'>produkcji</var>
+      </MWE>
+      <MWE base='sen na jawie'>
+        <head>inter(base[0],["sen"])</head>
+        <var name='SH'>sen</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>jawa</var>
+        <var name='!T1'>sen</var>
+        <var name='T2'>na</var>
+        <var name='T3'>jawie</var>
+      </MWE>
+      <MWE base='serce z kamienia'>
+        <head>inter(base[0],["serce"])</head>
+        <var name='SH'>serce</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>kamień</var>
+        <var name='!T1'>serce</var>
+        <var name='T2'>z</var>
+        <var name='T3'>kamienia</var>
+      </MWE>
+      <MWE base='skoki na bungee'>
+        <head>inter(base[0],["skok"])</head>
+        <var name='SH'>skok</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>bungee</var>
+        <var name='!T1'>skok</var>
+        <var name='T2'>na</var>
+        <var name='T3'>bungee</var>
+      </MWE>
+      <MWE base='skok o tyczce'>
+        <head>inter(base[0],["skok"])</head>
+        <var name='SH'>skok</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>tyczka</var>
+        <var name='!T1'>skok</var>
+        <var name='T2'>o</var>
+        <var name='T3'>tyczce</var>
+      </MWE>
+      <MWE base='skok w bok'>
+        <head>inter(base[0],["skok"])</head>
+        <var name='SH'>skok</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>bok</var>
+        <var name='!T1'>skok</var>
+        <var name='T2'>w</var>
+        <var name='T3'>bok</var>
+      </MWE>
+      <MWE base='skok w dal'>
+        <head>inter(base[0],["skok"])</head>
+        <var name='SH'>skok</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>dal</var>
+        <var name='!T1'>skok</var>
+        <var name='T2'>w</var>
+        <var name='T3'>dal</var>
+      </MWE>
+      <MWE base='skrzynka na listy'>
+        <head>inter(base[0],["skrzynka"])</head>
+        <var name='SH'>skrzynka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>list</var>
+        <var name='!T1'>skrzynka</var>
+        <var name='T2'>na</var>
+        <var name='T3'>listy</var>
+      </MWE>
+      <MWE base='śmiech przez łzy'>
+        <head>inter(base[0],["śmiech"])</head>
+        <var name='SH'>śmiech</var>
+        <var name='!L1'>przez</var>
+        <var name='!L2'>łza</var>
+        <var name='!T1'>śmiech</var>
+        <var name='T2'>przez</var>
+        <var name='T3'>łzy</var>
+      </MWE>
+      <MWE base='sodoma i gomora'>
+        <head>inter(base[0],["sodoma"])</head>
+        <var name='SH'>sodoma</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>gomora</var>
+        <var name='!T1'>sodoma</var>
+        <var name='T2'>i</var>
+        <var name='T3'>gomora</var>
+      </MWE>
+      <MWE base='stopa redystrybucji budżetu'>
+        <head>inter(base[0],["stopa"])</head>
+        <var name='SH'>stopa</var>
+        <var name='!L1'>redystrybucja</var>
+        <var name='!L2'>budżet</var>
+        <var name='!T1'>stopa</var>
+        <var name='T2'>redystrybucji</var>
+        <var name='T3'>budżetu</var>
+      </MWE>
+      <MWE base='strategia metropolii równowagi'>
+        <head>inter(base[0],["strategia"])</head>
+        <var name='SH'>strategia</var>
+        <var name='!L1'>metropolia</var>
+        <var name='!L2'>równowaga</var>
+        <var name='!T1'>strategia</var>
+        <var name='T2'>metropolii</var>
+        <var name='T3'>równowagi</var>
+      </MWE>
+      <MWE base='strategia polityki kredytowej'>
+        <head>inter(base[0],["strategia"])</head>
+        <var name='SH'>strategia</var>
+        <var name='!L1'>polityka</var>
+        <var name='!L2'>kredytowy</var>
+        <var name='!T1'>strategia</var>
+        <var name='T2'>polityki</var>
+        <var name='T3'>kredytowej</var>
+      </MWE>
+      <MWE base='strzał w dziesiątkę'>
+        <head>inter(base[0],["strzał"])</head>
+        <var name='SH'>strzał</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>dziesiątka</var>
+        <var name='!T1'>strzał</var>
+        <var name='T2'>w</var>
+        <var name='T3'>dziesiątkę</var>
+      </MWE>
+      <MWE base='system informacji marketingowych'>
+        <head>inter(base[0],["system"])</head>
+        <var name='SH'>system</var>
+        <var name='!L1'>informacja</var>
+        <var name='!L2'>marketingowy</var>
+        <var name='!T1'>system</var>
+        <var name='T2'>informacji</var>
+        <var name='T3'>marketingowych</var>
+      </MWE>
+      <MWE base='system waluty złotej'>
+        <head>inter(base[0],["system"])</head>
+        <var name='SH'>system</var>
+        <var name='!L1'>waluta</var>
+        <var name='!L2'>złoty</var>
+        <var name='!T1'>system</var>
+        <var name='T2'>waluty</var>
+        <var name='T3'>złotej</var>
+      </MWE>
+      <MWE base='sztuka dla sztuki'>
+        <head>inter(base[0],["sztuka"])</head>
+        <var name='SH'>sztuka</var>
+        <var name='!L1'>dla</var>
+        <var name='!L2'>sztuka</var>
+        <var name='!T1'>sztuka</var>
+        <var name='T2'>dla</var>
+        <var name='T3'>sztuki</var>
+      </MWE>
+      <MWE base='teoria Harroda-Domara'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>harroda</var>
+        <var name='!L2'>domar</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>Harroda</var>
+        <var name='T3'>Domara</var>
+      </MWE>
+      <MWE base='teoria interesów grupowych'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>interes</var>
+        <var name='!L2'>grupowy</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>interesów</var>
+        <var name='T3'>grupowych</var>
+      </MWE>
+      <MWE base='teoria polityki ekonomicznej'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>polityka</var>
+        <var name='!L2'>ekonomiczny</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>polityki</var>
+        <var name='T3'>ekonomicznej</var>
+      </MWE>
+      <MWE base='teoria polityki gospodarczej'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>polityka</var>
+        <var name='!L2'>gospodarczy</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>polityki</var>
+        <var name='T3'>gospodarczej</var>
+      </MWE>
+      <MWE base='teoria procesu inflacyjnego'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>proces</var>
+        <var name='!L2'>inflacyjny</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>procesu</var>
+        <var name='T3'>inflacyjnego</var>
+      </MWE>
+      <MWE base='teoria racjonalnych oczekiwań'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>racjonalny</var>
+        <var name='!L2'>oczekiwanie</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>racjonalnych</var>
+        <var name='T3'>oczekiwań</var>
+      </MWE>
+      <MWE base='teoria regulacji publicznej'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>regulacja</var>
+        <var name='!L2'>publiczny</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>regulacji</var>
+        <var name='T3'>publicznej</var>
+      </MWE>
+      <MWE base='teoria rozwoju gospodarczego Schumpetera'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>rozwój gospodarczy</var>
+        <var name='!L2'>schumpeter</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>rozwoju gospodarczego</var>
+        <var name='T3'>Schumpetera</var>
+      </MWE>
+      <MWE base='teoria sprawiedliwości Nozicka'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>sprawiedliwość</var>
+        <var name='!L2'>nozick</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>sprawiedliwości</var>
+        <var name='T3'>Nozicka</var>
+      </MWE>
+      <MWE base='teoria sprawiedliwości Rawlsa'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>sprawiedliwość</var>
+        <var name='!L2'>rawls</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>sprawiedliwości</var>
+        <var name='T3'>Rawlsa</var>
+      </MWE>
+      <MWE base='teoria sprawiedliwości Sena'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>sprawiedliwość</var>
+        <var name='!L2'>sen</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>sprawiedliwości</var>
+        <var name='T3'>Sena</var>
+      </MWE>
+      <MWE base="twierdzenie Gibbarda-Satterwaite'a">
+        <head>inter(base[0],["twierdzenie"])</head>
+        <var name='SH'>twierdzenie</var>
+        <var name='!L1'>gibbard</var>
+        <var name='!L2'>satterwaite</var>
+        <var name='!T1'>twierdzenie</var>
+        <var name='T2'>Gibbarda</var>
+        <var name='T3'>Satterwaite'a</var>
+      </MWE>
+      <MWE base='uczony w piśmie'>
+        <head>inter(base[0],["uczony"])</head>
+        <var name='SH'>uczony</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>pismo</var>
+        <var name='!T1'>uczony</var>
+        <var name='T2'>w</var>
+        <var name='T3'>piśmie</var>
+      </MWE>
+      <MWE base='ułomność funkcjonowania rynku'>
+        <head>inter(base[0],["ułomność"])</head>
+        <var name='SH'>ułomność</var>
+        <var name='!L1'>funkcjonować</var>
+        <var name='!L2'>rynek</var>
+        <var name='!T1'>ułomność</var>
+        <var name='T2'>funkcjonowania</var>
+        <var name='T3'>rynku</var>
+      </MWE>
+      <MWE base='umowa o pracę'>
+        <head>inter(base[0],["umowa"])</head>
+        <var name='SH'>umowa</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>praca</var>
+        <var name='!T1'>umowa</var>
+        <var name='T2'>o</var>
+        <var name='T3'>pracę</var>
+      </MWE>
+      <MWE base='uszczerbek na zdrowiu'>
+        <head>inter(base[0],["uszczerbek"])</head>
+        <var name='SH'>uszczerbek</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>zdrowie</var>
+        <var name='!T1'>uszczerbek</var>
+        <var name='T2'>na</var>
+        <var name='T3'>zdrowiu</var>
+      </MWE>
+      <MWE base='warunek Marshalla-Lernera'>
+        <head>inter(base[0],["warunek"])</head>
+        <var name='SH'>warunek</var>
+        <var name='!L1'>marshall</var>
+        <var name='!L2'>lerner</var>
+        <var name='!T1'>warunek</var>
+        <var name='T2'>Marshalla</var>
+        <var name='T3'>Lernera</var>
+      </MWE>
+      <MWE base='wczasy pod gruszą'>
+        <head>inter(base[0],["wczasy"])</head>
+        <var name='SH'>wczasy</var>
+        <var name='!L1'>pod</var>
+        <var name='!L2'>grusza</var>
+        <var name='!T1'>wczasy</var>
+        <var name='T2'>pod</var>
+        <var name='T3'>gruszą</var>
+      </MWE>
+      <MWE base='weksel in blanco'>
+        <head>inter(base[0],["weksel"])</head>
+        <var name='SH'>weksel</var>
+        <var name='!L1'>in</var>
+        <var name='!L2'>blanco</var>
+        <var name='!T1'>weksel</var>
+        <var name='T2'>in</var>
+        <var name='T3'>blanco</var>
+      </MWE>
+      <MWE base='wikt i opierunek'>
+        <head>inter(base[0],["wikt"])</head>
+        <var name='SH'>wikt</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>opierunek</var>
+        <var name='!T1'>wikt</var>
+        <var name='T2'>i</var>
+        <var name='T3'>opierunek</var>
+      </MWE>
+      <MWE base='wino la patyk'>
+        <head>inter(base[0],["wino"])</head>
+        <var name='SH'>wino</var>
+        <var name='!L1'>la</var>
+        <var name='!L2'>patyk</var>
+        <var name='!T1'>wino</var>
+        <var name='T2'>la</var>
+        <var name='T3'>patyk</var>
+      </MWE>
+      <MWE base='wnioskowanie przez analogię'>
+        <head>inter(base[0],["wnioskowanie"])</head>
+        <var name='SH'>wnioskowanie</var>
+        <var name='!L1'>przez</var>
+        <var name='!L2'>analogia</var>
+        <var name='!T1'>wnioskowanie</var>
+        <var name='T2'>przez</var>
+        <var name='T3'>analogię</var>
+      </MWE>
+      <MWE base='wojna na górze'>
+        <head>inter(base[0],["wojna"])</head>
+        <var name='SH'>wojna</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>góra</var>
+        <var name='!T1'>wojna</var>
+        <var name='T2'>na</var>
+        <var name='T3'>górze</var>
+      </MWE>
+      <MWE base='worki pod oczami'>
+        <head>inter(base[0],["worek"])</head>
+        <var name='SH'>worek</var>
+        <var name='!L1'>pod</var>
+        <var name='!L2'>oko</var>
+        <var name='!T1'>worki</var>
+        <var name='T2'>pod</var>
+        <var name='T3'>oczami</var>
+      </MWE>
+      <MWE base='wydanie na świat'>
+        <head>inter(base[0],["wydanie"])</head>
+        <var name='SH'>wydanie</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>świat</var>
+        <var name='!T1'>wydanie</var>
+        <var name='T2'>na</var>
+        <var name='T3'>świat</var>
+      </MWE>
+      <MWE base='wypadek przy pracy'>
+        <head>inter(base[0],["wypadek"])</head>
+        <var name='SH'>wypadek</var>
+        <var name='!L1'>przy</var>
+        <var name='!L2'>praca</var>
+        <var name='!T1'>wypadek</var>
+        <var name='T2'>przy</var>
+        <var name='T3'>pracy</var>
+      </MWE>
+      <MWE base='wzloty i upadki'>
+        <head>inter(base[0],["wzlot"])</head>
+        <var name='SH'>wzlot</var>
+        <var name='!L1'>i</var>
+        <var name='!L2'>upadek</var>
+        <var name='!T1'>wzloty</var>
+        <var name='T2'>i</var>
+        <var name='T3'>upadki</var>
+      </MWE>
+      <MWE base='zamki na lodzie'>
+        <head>inter(base[0],["zamek"])</head>
+        <var name='SH'>zamek</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>lód</var>
+        <var name='!T1'>zamki</var>
+        <var name='T2'>na</var>
+        <var name='T3'>lodzie</var>
+      </MWE>
+      <MWE base='zamki na piasku'>
+        <head>inter(base[0],["zamek"])</head>
+        <var name='SH'>zamek</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>piasek</var>
+        <var name='!T1'>zamki</var>
+        <var name='T2'>na</var>
+        <var name='T3'>piasku</var>
+      </MWE>
+      <MWE base='zastaw na prawach'>
+        <head>inter(base[0],["zastaw"])</head>
+        <var name='SH'>zastaw</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>prawo</var>
+        <var name='!T1'>zastaw</var>
+        <var name='T2'>na</var>
+        <var name='T3'>prawach</var>
+      </MWE>
+      <MWE base='zbrodnia przeciwko ludzkości'>
+        <head>inter(base[0],["zbrodnia"])</head>
+        <var name='SH'>zbrodnia</var>
+        <var name='!L1'>przeciwko</var>
+        <var name='!L2'>ludzkość</var>
+        <var name='!T1'>zbrodnia</var>
+        <var name='T2'>przeciwko</var>
+        <var name='T3'>ludzkości</var>
+      </MWE>
+      <MWE base='życie na walizkach'>
+        <head>inter(base[0],["życie"])</head>
+        <var name='SH'>życie</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>walizka</var>
+        <var name='!T1'>życie</var>
+        <var name='T2'>na</var>
+        <var name='T3'>walizkach</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusTwoNmb3AgrFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(nmb[0],nmb[2]),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )		
+        </condition>
+    <!--SubstPlusTwoNmb3AgrFix;s:SH,!s:L1,!s:L2,!s:T1,s:T2,s:T3-->
+    <instances>
+      <MWE base='chłop jak dąb'>
+        <head>inter(base[0],["chłop"])</head>
+        <var name='SH'>chłop</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>dąb</var>
+        <var name='!T1'>chłop</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>dąb</var>
+      </MWE>
+      <MWE base='dziecko z probówki'>
+        <head>inter(base[0],["dziecko"])</head>
+        <var name='SH'>dziecko</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>probówka</var>
+        <var name='!T1'>dziecko</var>
+        <var name='T2'>z</var>
+        <var name='T3'>probówki</var>
+      </MWE>
+      <MWE base='ziemniaki w mundurkach'>
+        <head>inter(base[0],["ziemniak"])</head>
+        <var name='SH'>ziemniak</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>mundurek</var>
+        <var name='!T1'>ziemniaki</var>
+        <var name='T2'>w</var>
+        <var name='T3'>mundurkach</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusTwoAdjAgrFix' class='subst'>
+    <condition>
+            //dualizm falowo-korpuskularny
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(base[3],$s:A),
+             inter(class[3],{adj,pact,ppas}),
+             agrpp(0,3,{cas,gnd,nmb}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )		
+        </condition>
+    <!--SubstPlusTwoAdjAgrFix;s:SH,!s:L1,!s:L2,s:A,!s:T1,s:T2,s:T3,!s:T4-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AdjPlusTwoFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <!--AdjPlusTwoFix;s:SH,!s:L1,!s:L2,!s:T1,s:T2,s:T3-->
+    <instances>
+      <MWE base='blady jak papier'>
+        <head>inter(base[0],["blady"])</head>
+        <var name='SH'>blady</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>papier</var>
+        <var name='!T1'>blady</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>papier</var>
+      </MWE>
+      <MWE base='blady jak płótno'>
+        <head>inter(base[0],["blady"])</head>
+        <var name='SH'>blady</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>płótno</var>
+        <var name='!T1'>blady</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>płótno</var>
+      </MWE>
+      <MWE base='blady jak śmierć'>
+        <head>inter(base[0],["blady"])</head>
+        <var name='SH'>blady</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>śmierć</var>
+        <var name='!T1'>blady</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>śmierć</var>
+      </MWE>
+      <MWE base='brzemienny w konsekwencje'>
+        <head>inter(base[0],["brzemienny"])</head>
+        <var name='SH'>brzemienny</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>konsekwencja</var>
+        <var name='!T1'>brzemienny</var>
+        <var name='T2'>w</var>
+        <var name='T3'>konsekwencje</var>
+      </MWE>
+      <MWE base='brzemienny w skutki'>
+        <head>inter(base[0],["brzemienny"])</head>
+        <var name='SH'>brzemienny</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>skutek</var>
+        <var name='!T1'>brzemienny</var>
+        <var name='T2'>w</var>
+        <var name='T3'>skutki</var>
+      </MWE>
+      <MWE base='brzydki jak noc'>
+        <head>inter(base[0],["brzydki"])</head>
+        <var name='SH'>brzydki</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>noc</var>
+        <var name='!T1'>brzydki</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>noc</var>
+      </MWE>
+      <MWE base='dufny w siebie'>
+        <head>inter(base[0],["dufny"])</head>
+        <var name='SH'>dufny</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>siebie</var>
+        <var name='!T1'>dufny</var>
+        <var name='T2'>w</var>
+        <var name='T3'>siebie</var>
+      </MWE>
+      <MWE base='dufny w sobie'>
+        <head>inter(base[0],["dufny"])</head>
+        <var name='SH'>dufny</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>siebie</var>
+        <var name='!T1'>dufny</var>
+        <var name='T2'>w</var>
+        <var name='T3'>sobie</var>
+      </MWE>
+      <MWE base='godny lepszej sprawy'>
+        <head>inter(base[0],["godny"])</head>
+        <var name='SH'>godny</var>
+        <var name='!L1'>dobry</var>
+        <var name='!L2'>sprawa</var>
+        <var name='!T1'>godny</var>
+        <var name='T2'>lepszej</var>
+        <var name='T3'>sprawy</var>
+      </MWE>
+      <MWE base='jasny jak słońce'>
+        <head>inter(base[0],["jasny"])</head>
+        <var name='SH'>jasny</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>słońce</var>
+        <var name='!T1'>jasny</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>słońce</var>
+      </MWE>
+      <MWE base='jeden po drugim'>
+        <head>inter(base[0],["jeden"])</head>
+        <var name='SH'>jeden</var>
+        <var name='!L1'>po</var>
+        <var name='!L2'>drugi</var>
+        <var name='!T1'>jeden</var>
+        <var name='T2'>po</var>
+        <var name='T3'>drugim</var>
+      </MWE>
+      <MWE base='jeden przez drugiego'>
+        <head>inter(base[0],["jeden"])</head>
+        <var name='SH'>jeden</var>
+        <var name='!L1'>przez</var>
+        <var name='!L2'>drugi</var>
+        <var name='!T1'>jeden</var>
+        <var name='T2'>przez</var>
+        <var name='T3'>drugiego</var>
+      </MWE>
+      <MWE base='jeden za drugim'>
+        <head>inter(base[0],["jeden"])</head>
+        <var name='SH'>jeden</var>
+        <var name='!L1'>za</var>
+        <var name='!L2'>drugi</var>
+        <var name='!T1'>jeden</var>
+        <var name='T2'>za</var>
+        <var name='T3'>drugim</var>
+      </MWE>
+      <MWE base='jeden z drugim'>
+        <head>inter(base[0],["jeden"])</head>
+        <var name='SH'>jeden</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>drugi</var>
+        <var name='!T1'>jeden</var>
+        <var name='T2'>z</var>
+        <var name='T3'>drugim</var>
+      </MWE>
+      <MWE base='warty lepszej sprawy'>
+        <head>inter(base[0],["warty"])</head>
+        <var name='SH'>warty</var>
+        <var name='!L1'>dobry</var>
+        <var name='!L2'>sprawa</var>
+        <var name='!T1'>warty</var>
+        <var name='T2'>lepszej</var>
+        <var name='T3'>sprawy</var>
+      </MWE>
+      <MWE base='zadufany w sobie'>
+        <head>inter(base[0],["zadufany"])</head>
+        <var name='SH'>zadufany</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>siebie</var>
+        <var name='!T1'>zadufany</var>
+        <var name='T2'>w</var>
+        <var name='T3'>sobie</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AdjPlusTwoNmbAgrFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{adj,pact,ppas}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(nmb[0],nmb[2]),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )
+        </condition>
+    <!--AdjPlusTwoNmbAgrFix;s:SH,!s:L1,!s:L2, !s:T1,s:T2,s:T3-->
+    <instances>
+      <MWE base='biały jak gołąb'>
+        <head>inter(base[0],["biały"])</head>
+        <var name='SH'>biały</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>gołąb</var>
+        <var name='!T1'>biały</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>gołąb</var>
+      </MWE>
+      <MWE base='blady jak ściana'>
+        <head>inter(base[0],["blady"])</head>
+        <var name='SH'>blady</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>ściana</var>
+        <var name='!T1'>blady</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>ściana</var>
+      </MWE>
+      <MWE base='brzydki jak małpa'>
+        <head>inter(base[0],["brzydki"])</head>
+        <var name='SH'>brzydki</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>małpa</var>
+        <var name='!T1'>brzydki</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>małpa</var>
+      </MWE>
+      <MWE base='brzydki jak nieszczęście'>
+        <head>inter(base[0],["brzydki"])</head>
+        <var name='SH'>brzydki</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>nieszczęście</var>
+        <var name='!T1'>brzydki</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>nieszczęście</var>
+      </MWE>
+      <MWE base='chytry jak lis'>
+        <head>inter(base[0],["chytry"])</head>
+        <var name='SH'>chytry</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>lis</var>
+        <var name='!T1'>chytry</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>lis</var>
+      </MWE>
+      <MWE base='chytry jak wąż'>
+        <head>inter(base[0],["chytry"])</head>
+        <var name='SH'>chytry</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>wąż</var>
+        <var name='!T1'>chytry</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>wąż</var>
+      </MWE>
+      <MWE base='cienka jak osa'>
+        <head>inter(base[0],["cienki"])</head>
+        <var name='SH'>cienki</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>osa</var>
+        <var name='!T1'>cienka</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>osa</var>
+      </MWE>
+      <MWE base='cięty jak osa'>
+        <head>inter(base[0],["cięty"])</head>
+        <var name='SH'>cięty</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>osa</var>
+        <var name='!T1'>cięty</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>osa</var>
+      </MWE>
+      <MWE base='czerwony jak burak'>
+        <head>inter(base[0],["czerwony"])</head>
+        <var name='SH'>czerwony</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>burak</var>
+        <var name='!T1'>czerwony</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>burak</var>
+      </MWE>
+      <MWE base='dumny jak paw'>
+        <head>inter(base[0],["dumny"])</head>
+        <var name='SH'>dumny</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>paw</var>
+        <var name='!T1'>dumny</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>paw</var>
+      </MWE>
+      <MWE base='głuchy jak pień'>
+        <head>inter(base[0],["głuchy"])</head>
+        <var name='SH'>głuchy</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>pień</var>
+        <var name='!T1'>głuchy</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>pień</var>
+      </MWE>
+      <MWE base='gruby jak beczka'>
+        <head>inter(base[0],["gruby"])</head>
+        <var name='SH'>gruby</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>beczka</var>
+        <var name='!T1'>gruby</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>beczka</var>
+      </MWE>
+      <MWE base='gruby jak wieprz'>
+        <head>inter(base[0],["gruby"])</head>
+        <var name='SH'>gruby</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>wieprz</var>
+        <var name='!T1'>gruby</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>wieprz</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusThreeFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )
+        </condition>
+    <!--SubstPlusThreeFix;s:SH,!s:L1,!s:L2,!s:L3,!s:T1,s:T2,s:T3,s:T4-->
+    <instances>
+      <MWE base='aktor ze spalonego teatru'>
+        <head>inter(base[0],["aktor"])</head>
+        <var name='SH'>aktor</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>spalić</var>
+        <var name='!L3'>teatr</var>
+        <var name='!T1'>aktor</var>
+        <var name='T2'>ze</var>
+        <var name='T3'>spalonego</var>
+        <var name='T4'>teatru</var>
+      </MWE>
+      <MWE base='bajeczka dla grzecznych dzieci'>
+        <head>inter(base[0],["bajeczka"])</head>
+        <var name='SH'>bajeczka</var>
+        <var name='!L1'>dla</var>
+        <var name='!L2'>grzeczny</var>
+        <var name='!L3'>dziecko</var>
+        <var name='!T1'>bajeczka</var>
+        <var name='T2'>dla</var>
+        <var name='T3'>grzecznych</var>
+        <var name='T4'>dzieci</var>
+      </MWE>
+      <MWE base='burza w szklance wody'>
+        <head>inter(base[0],["burza"])</head>
+        <var name='SH'>burza</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>szklanka</var>
+        <var name='!L3'>woda</var>
+        <var name='!T1'>burza</var>
+        <var name='T2'>w</var>
+        <var name='T3'>szklance</var>
+        <var name='T4'>wody</var>
+      </MWE>
+      <MWE base='cisza jak makiem zasiał'>
+        <head>inter(base[0],["cisza"])</head>
+        <var name='SH'>cisza</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>mak</var>
+        <var name='!L3'>zasiać</var>
+        <var name='!T1'>cisza</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>makiem</var>
+        <var name='T4'>zasiał</var>
+      </MWE>
+      <MWE base='dama  z lekkich piasków'>
+        <head>inter(base[0],["dama"])</head>
+        <var name='SH'>dama</var>
+        <var name='!L1'> </var>
+        <var name='!L2'>z</var>
+        <var name='!L3'>lekki</var>
+        <var name='!T1'>dama</var>
+        <var name='T2'>  </var>
+        <var name='T3'>z</var>
+        <var name='T4'>lekkich</var>
+      </MWE>
+      <MWE base='elegant z morskiej pianki'>
+        <head>inter(base[0],["elegant"])</head>
+        <var name='SH'>elegant</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>morski</var>
+        <var name='!L3'>pianka</var>
+        <var name='!T1'>elegant</var>
+        <var name='T2'>z</var>
+        <var name='T3'>morskiej</var>
+        <var name='T4'>pianki</var>
+      </MWE>
+      <MWE base='głos wołającego na puszczy'>
+        <head>inter(base[0],["głos"])</head>
+        <var name='SH'>głos</var>
+        <var name='!L1'>wołać</var>
+        <var name='!L2'>na</var>
+        <var name='!L3'>puszcza</var>
+        <var name='!T1'>głos</var>
+        <var name='T2'>wołającego</var>
+        <var name='T3'>na</var>
+        <var name='T4'>puszczy</var>
+      </MWE>
+      <MWE base='kamyczek do czyjegoś ogródka'>
+        <head>inter(base[0],["kamyczek"])</head>
+        <var name='SH'>kamyczek</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>czyjś</var>
+        <var name='!L3'>ogródek</var>
+        <var name='!T1'>kamyczek</var>
+        <var name='T2'>do</var>
+        <var name='T3'>czyjegoś</var>
+        <var name='T4'>ogródka</var>
+      </MWE>
+      <MWE base='kamyk do czyjegoś ogródka'>
+        <head>inter(base[0],["kamyk"])</head>
+        <var name='SH'>kamyk</var>
+        <var name='!L1'>do</var>
+        <var name='!L2'>czyjś</var>
+        <var name='!L3'>ogródek</var>
+        <var name='!T1'>kamyk</var>
+        <var name='T2'>do</var>
+        <var name='T3'>czyjegoś</var>
+        <var name='T4'>ogródka</var>
+      </MWE>
+      <MWE base='kolos na glinianych nogach'>
+        <head>inter(base[0],["kolos"])</head>
+        <var name='SH'>kolos</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>gliniany</var>
+        <var name='!L3'>noga</var>
+        <var name='!T1'>kolos</var>
+        <var name='T2'>na</var>
+        <var name='T3'>glinianych</var>
+        <var name='T4'>nogach</var>
+      </MWE>
+      <MWE base='kwestia życia i śmierci'>
+        <head>inter(base[0],["kwestia"])</head>
+        <var name='SH'>kwestia</var>
+        <var name='!L1'>życie</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>śmierć</var>
+        <var name='!T1'>kwestia</var>
+        <var name='T2'>życia</var>
+        <var name='T3'>i</var>
+        <var name='T4'>śmierci</var>
+      </MWE>
+      <MWE base='metoda prób i błędów'>
+        <head>inter(base[0],["metoda"])</head>
+        <var name='SH'>metoda</var>
+        <var name='!L1'>próba</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>błąd</var>
+        <var name='!T1'>metoda</var>
+        <var name='T2'>prób</var>
+        <var name='T3'>i</var>
+        <var name='T4'>błędów</var>
+      </MWE>
+      <MWE base='nauka o zdrowiu zwierząt'>
+        <head>inter(base[0],["nauka"])</head>
+        <var name='SH'>nauka</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>zdrowie</var>
+        <var name='!L3'>zwierzę</var>
+        <var name='!T1'>nauka</var>
+        <var name='T2'>o</var>
+        <var name='T3'>zdrowiu</var>
+        <var name='T4'>zwierząt</var>
+      </MWE>
+      <MWE base='pani z lekkich piasków'>
+        <head>inter(base[0],["pani"])</head>
+        <var name='SH'>pani</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>lekki</var>
+        <var name='!L3'>piasek</var>
+        <var name='!T1'>pani</var>
+        <var name='T2'>z</var>
+        <var name='T3'>lekkich</var>
+        <var name='T4'>piasków</var>
+      </MWE>
+      <MWE base='pędnik o napędzie mechanicznym'>
+        <head>inter(base[0],["pędnik"])</head>
+        <var name='SH'>pędnik</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>napęd</var>
+        <var name='!L3'>mechaniczny</var>
+        <var name='!T1'>pędnik</var>
+        <var name='T2'>o</var>
+        <var name='T3'>napędzie</var>
+        <var name='T4'>mechanicznym</var>
+      </MWE>
+      <MWE base='pędnik o napędzie mięśniowym'>
+        <head>inter(base[0],["pędnik"])</head>
+        <var name='SH'>pędnik</var>
+        <var name='!L1'>o</var>
+        <var name='!L2'>napęd</var>
+        <var name='!L3'>mięśniowy</var>
+        <var name='!T1'>pędnik</var>
+        <var name='T2'>o</var>
+        <var name='T3'>napędzie</var>
+        <var name='T4'>mięśniowym</var>
+      </MWE>
+      <MWE base='podatek od dochodów osobistych'>
+        <head>inter(base[0],["podatek"])</head>
+        <var name='SH'>podatek</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>dochód</var>
+        <var name='!L3'>osobisty</var>
+        <var name='!T1'>podatek</var>
+        <var name='T2'>od</var>
+        <var name='T3'>dochódów</var>
+        <var name='T4'>osobistych</var>
+      </MWE>
+      <MWE base='rachunek zysków i strat'>
+        <head>inter(base[0],["rachunek"])</head>
+        <var name='SH'>rachunek</var>
+        <var name='!L1'>zysk</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>strata</var>
+        <var name='!T1'>rachunek</var>
+        <var name='T2'>zysków</var>
+        <var name='T3'>i</var>
+        <var name='T4'>strat</var>
+      </MWE>
+      <MWE base='ruch ze zmiennym przyśpieszeniem'>
+        <head>inter(base[0],["ruch"])</head>
+        <var name='SH'>ruch</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>zmienny</var>
+        <var name='!L3'>przyśpieszenie</var>
+        <var name='!T1'>ruch</var>
+        <var name='T2'>z</var>
+        <var name='T3'>zmiennym</var>
+        <var name='T4'>przyśpieszeniem</var>
+      </MWE>
+      <MWE base='rynek dóbr i usług'>
+        <head>inter(base[0],["rynek"])</head>
+        <var name='SH'>rynek</var>
+        <var name='!L1'>dobro</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>usługa</var>
+        <var name='!T1'>rynek</var>
+        <var name='T2'>dóbr</var>
+        <var name='T3'>i</var>
+        <var name='T4'>usług</var>
+      </MWE>
+      <MWE base='sklep za żółtymi firankami'>
+        <head>inter(base[0],["sklep"])</head>
+        <var name='SH'>sklep</var>
+        <var name='!L1'>za</var>
+        <var name='!L2'>żółty</var>
+        <var name='!L3'>firanka</var>
+        <var name='!T1'>sklep</var>
+        <var name='T2'>za</var>
+        <var name='T3'>żółtymi</var>
+        <var name='T4'>firankami</var>
+      </MWE>
+      <MWE base='specjalista od nauk społecznych'>
+        <head>inter(base[0],["specjalista"])</head>
+        <var name='SH'>specjalista</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>nauka</var>
+        <var name='!L3'>społeczny</var>
+        <var name='!T1'>specjalista</var>
+        <var name='T2'>od</var>
+        <var name='T3'>nauka</var>
+        <var name='T4'>społecznych</var>
+      </MWE>
+      <MWE base='specjalista od public relations'>
+        <head>inter(base[0],["specjalista"])</head>
+        <var name='SH'>specjalista</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>public</var>
+        <var name='!L3'>relations</var>
+        <var name='!T1'>specjalista</var>
+        <var name='T2'>od</var>
+        <var name='T3'>public</var>
+        <var name='T4'>relations</var>
+      </MWE>
+      <MWE base='swoboda wejścia i wyjścia'>
+        <head>inter(base[0],["swoboda"])</head>
+        <var name='SH'>swoboda</var>
+        <var name='!L1'>wejście</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>wyjście</var>
+        <var name='!T1'>swoboda</var>
+        <var name='T2'>wejścia</var>
+        <var name='T3'>i</var>
+        <var name='T4'>wyjścia</var>
+      </MWE>
+      <MWE base='system waluty dewizowo-złotej'>
+        <head>inter(base[0],["system"])</head>
+        <var name='SH'>system</var>
+        <var name='!L1'>waluta</var>
+        <var name='!L2'>dewizowy</var>
+        <var name='!L3'>złoty</var>
+        <var name='!T1'>system</var>
+        <var name='T2'>waluty</var>
+        <var name='T3'>dewizowo</var>
+        <var name='T4'>złotej</var>
+      </MWE>
+      <MWE base='taniec św. Wita'>
+        <head>inter(base[0], ["taniec"])</head>
+        <var name='SH'>taniec</var>
+        <var name='!L1'>św</var>
+        <var name='!L2'>.</var>
+        <var name='!L3'>wita</var>
+        <var name='!T1'>taniec</var>
+        <var name='T2'>św</var>
+        <var name='T3'>.</var>
+        <var name='T4'>Wita</var>
+      </MWE>
+      <MWE base='teoria kumulatywnych procesów okrężnych'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>kumulatywny</var>
+        <var name='!L2'>proces</var>
+        <var name='!L3'>okrężny</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>kumulatywnych</var>
+        <var name='T3'>procesów</var>
+        <var name='T4'>okrężnych</var>
+      </MWE>
+      <MWE base='transakcja z użyciem środków własnych'>
+        <head>inter(base[0],["transakcja"])</head>
+        <var name='SH'>transakcja</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>użycie</var>
+        <var name='!L3'>środki własne</var>
+        <var name='!T1'>transakcja</var>
+        <var name='T2'>z</var>
+        <var name='T3'>użyciem</var>
+        <var name='T4'>środków własnych</var>
+      </MWE>
+      <MWE base='typ spod ciemnej gwiazdy'>
+        <head>inter(base[0],["typ"])</head>
+        <var name='SH'>typ</var>
+        <var name='!L1'>spod</var>
+        <var name='!L2'>ciemna</var>
+        <var name='!L3'>gwiazda</var>
+        <var name='!T1'>typ</var>
+        <var name='T2'>spod</var>
+        <var name='T3'>ciemnej</var>
+        <var name='T4'>gwiazdy</var>
+      </MWE>
+      <MWE base='układ zjawisk sfer realnej gospodarki'>
+        <head>inter(base[0],["układ"])</head>
+        <var name='SH'>układ</var>
+        <var name='!L1'>zjawisko</var>
+        <var name='!L2'>sfera</var>
+        <var name='!L3'>realna gospodarka</var>
+        <var name='!T1'>układ</var>
+        <var name='T2'>zjawisk</var>
+        <var name='T3'>sfer</var>
+        <var name='T4'>realnej gospodarki</var>
+      </MWE>
+      <MWE base='wstąpienie w związek małżeński'>
+        <head>inter(base[0],["wstąpienie"])</head>
+        <var name='SH'>wstąpienie</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>związek</var>
+        <var name='!L3'>małżeński</var>
+        <var name='!T1'>wstąpienie</var>
+        <var name='T2'>w</var>
+        <var name='T3'>związek</var>
+        <var name='T4'>małżeński</var>
+      </MWE>
+      <MWE base='zamrożenie cen i płac'>
+        <head>inter(base[0],["zamrozić"])</head>
+        <var name='SH'>zamrozić</var>
+        <var name='!L1'>cena</var>
+        <var name='!L2'>i</var>
+        <var name='!L3'>płaca</var>
+        <var name='!T1'>zamrożenie</var>
+        <var name='T2'>cen</var>
+        <var name='T3'>i</var>
+        <var name='T4'>płac</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusThreeSubstApoFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             inter(base[4],$s:SA),
+             inter(class[4],{subst,ger,depr}),
+             agrpp(0,4,{cas,nmb}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4)
+            )		
+        </condition>
+    <!--SubstPlusThreeSubstApoFix;s:SH,!s:L1,!s:L2,!s:L3,s:SA,!s:T1,s:T2,s:T3,s:T4,!s:T5-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlPlusThreeFix' class='subst'>
+    <condition>
+            //resztki z pańskiego stołu
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(nmb[0],{pl}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )		
+        </condition>
+    <!--SubstPlPlusThreeFix;s:SH,!s:L1,!s:L2,!s:L3,!s:T1,s:T2,s:T3,s:T4-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSgPlusThreeFix' class='subst'>
+    <condition>
+            //resztki z pańskiego stołu
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(nmb[0],{sg}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )		
+        </condition>
+    <!--SubstSgPlusThreeFix;s:SH,!s:L1,!s:L2,!s:L3,!s:T1,s:T2,s:T3,s:T4-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AdjPlusThreeFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{adj,pact,ppas}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )		
+        </condition>
+    <!--AdjPlusThreeFix;s:SH,!s:L1,!s:L2,!s:L3,!s:T1,s:T2,s:T3,s:T4-->
+    <instances>
+      <MWE base='brudny jak święta ziemia'>
+        <head>inter(base[0],["brudny"])</head>
+        <var name='SH'>brudny</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>święta</var>
+        <var name='!L3'>ziemia</var>
+        <var name='!T1'>brudny</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>święta</var>
+        <var name='T4'>ziemia</var>
+      </MWE>
+      <MWE base='czarny jak święta ziemia'>
+        <head>inter(base[0],["czarny"])</head>
+        <var name='SH'>czarny</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>święty</var>
+        <var name='!L3'>ziemia</var>
+        <var name='!T1'>czarny</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>święta</var>
+        <var name='T4'>ziemia</var>
+      </MWE>
+      <MWE base='jedyny w swoim rodzaju'>
+        <head>inter(base[0],["jedyny"])</head>
+        <var name='SH'>jedyny</var>
+        <var name='!L1'>w</var>
+        <var name='!L2'>swój</var>
+        <var name='!L3'>rodzaj</var>
+        <var name='!T1'>jedyny</var>
+        <var name='T2'>w</var>
+        <var name='T3'>swoim</var>
+        <var name='T4'>rodzaju</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstPlusFourFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(orth[1],$s:T2),
+             inter(orth[2],$s:T3),
+             inter(orth[3],$s:T4),
+             inter(orth[4],$s:T5),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4)
+            )		
+        </condition>
+    <!--SubstPlusFourFix;s:H,!s:L1,!s:L2,!s:L3,!s:L4,!s:T1,s:T2,s:T3,s:T4,s:T5-->
+    <instances>
+      <MWE base='bój na śmierć i życie'>
+        <head>inter(base[0],["bój"])</head>
+        <var name='SH'>bój</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>śmierć</var>
+        <var name='!L3'>i</var>
+        <var name='!L4'>życie</var>
+        <var name='!T1'>bój</var>
+        <var name='T2'>na</var>
+        <var name='T3'>śmierć</var>
+        <var name='T4'>i</var>
+        <var name='T5'>życie</var>
+      </MWE>
+      <MWE base='ciemny jak tabaka w rogu'>
+        <head>inter(base[0],["ciemny"])</head>
+        <var name='SH'>ciemny</var>
+        <var name='!L1'>jak</var>
+        <var name='!L2'>tabaka</var>
+        <var name='!L3'>w</var>
+        <var name='!L4'>róg</var>
+        <var name='!T1'>ciemny</var>
+        <var name='T2'>jak</var>
+        <var name='T3'>tabaka</var>
+        <var name='T4'>w</var>
+        <var name='T5'>rogu</var>
+      </MWE>
+      <MWE base='opowieści z mchu i paproci'>
+        <head>inter(base[0],["opowieść"])</head>
+        <var name='SH'>opowieść</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>mech</var>
+        <var name='!L3'>i</var>
+        <var name='!L4'>paproć</var>
+        <var name='!T1'>opowieści</var>
+        <var name='T2'>z</var>
+        <var name='T3'>mchu</var>
+        <var name='T4'>i</var>
+        <var name='T5'>paproci</var>
+      </MWE>
+      <MWE base='podatek od towarów i usług'>
+        <head>inter(base[0],["podatek"])</head>
+        <var name='SH'>podatek</var>
+        <var name='!L1'>od</var>
+        <var name='!L2'>towar</var>
+        <var name='!L3'>i</var>
+        <var name='!L4'>usługa</var>
+        <var name='!T1'>podatek</var>
+        <var name='T2'>od</var>
+        <var name='T3'>towarów</var>
+        <var name='T4'>i</var>
+        <var name='T5'>usług</var>
+      </MWE>
+      <MWE base='teoria startu do samoczynnego wzrostu'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>start</var>
+        <var name='!L2'>do</var>
+        <var name='!L3'>samoczynny</var>
+        <var name='!L4'>wzrost</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>startu</var>
+        <var name='T3'>do</var>
+        <var name='T4'>samoczynnego</var>
+        <var name='T5'>wzrostu</var>
+      </MWE>
+      <MWE base='teoria szyku lotu dzikich gęsi'>
+        <head>inter(base[0],["teoria"])</head>
+        <var name='SH'>teoria</var>
+        <var name='!L1'>szyk</var>
+        <var name='!L2'>lot</var>
+        <var name='!L3'>dziki</var>
+        <var name='!L4'>gęś</var>
+        <var name='!T1'>teoria</var>
+        <var name='T2'>szyku</var>
+        <var name='T3'>lotu</var>
+        <var name='T4'>dzikich</var>
+        <var name='T5'>gęsi</var>
+      </MWE>
+      <MWE base='walka na śmierć i życie'>
+        <head>inter(base[0],["walka"])</head>
+        <var name='SH'>walka</var>
+        <var name='!L1'>na</var>
+        <var name='!L2'>śmierć</var>
+        <var name='!L3'>i</var>
+        <var name='!L4'>życie</var>
+        <var name='!T1'>walka</var>
+        <var name='T2'>na</var>
+        <var name='T3'>śmierć</var>
+        <var name='T4'>i</var>
+        <var name='T5'>życie</var>
+      </MWE>
+      <MWE base='życie z dnia na dzień'>
+        <head>inter(base[0], "życie")</head>
+        <var name='SH'>życie</var>
+        <var name='!L1'>z</var>
+        <var name='!L2'>dzień</var>
+        <var name='!L3'>na</var>
+        <var name='!L4'>dzień</var>
+        <var name='!T1'>życie</var>
+        <var name='T2'>z</var>
+        <var name='T3'>dzień</var>
+        <var name='T4'>na</var>
+        <var name='T5'>dzień</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AdjPlusSubstPlusTwoFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:AH),
+             inter(class[0],{adj,pact,ppas}),
+             inter(base[1],$s:C),
+             inter(base[2],$s:S),
+             inter(class[3],{adj,subst,ger,depr}),
+             inter(orth[3],$s:T4),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )	
+        </condition>
+    <!--AdjPlusSubstPlusTwoFix;s:AH,s:C,s:S,!s:L2,!s:T1,!s:T2,!s:T3,s:T4-->
+    <instances>
+      <MWE base='biedny jak mysz kościelna'>
+        <head>inter(base[0],["biedny"])</head>
+        <var name='AH'>biedny</var>
+        <var name='C'>jak</var>
+        <var name='S'>mysz</var>
+        <var name='!L2'>kościelny</var>
+        <var name='!T1'>biedny</var>
+        <var name='!T2'>jak</var>
+        <var name='!T3'>mysz</var>
+        <var name='T4'>kościelna</var>
+      </MWE>
+      <MWE base='brzydki jak grzech śmiertelny'>
+        <head>inter(base[0],["brzydki"])</head>
+        <var name='AH'>brzydki</var>
+        <var name='C'>jak</var>
+        <var name='S'>grzech</var>
+        <var name='!L2'>śmiertelny</var>
+        <var name='!T1'>brzydki</var>
+        <var name='!T2'>jak</var>
+        <var name='!T3'>grzech</var>
+        <var name='T4'>śmiertelny</var>
+      </MWE>
+      <MWE base='goły jak święty turecki'>
+        <head>inter(base[0],["goły"])</head>
+        <var name='AH'>goły</var>
+        <var name='C'>jak</var>
+        <var name='S'>święty</var>
+        <var name='!L2'>turecki</var>
+        <var name='!T1'>goły</var>
+        <var name='!T2'>jak</var>
+        <var name='!T3'>święty</var>
+        <var name='T4'>turecki</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AdjPlusSubstPlusFourFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:AH),
+             inter(class[0],{adj,pact,ppas}),
+             inter(base[1],$s:C),
+             inter(base[2],$s:S),
+             inter(class[2],{subst,ger,depr}),
+             inter(orth[3],$s:T4),
+             inter(orth[4],$s:T5),
+             inter(orth[5],$s:T6),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4),
+             setvar($Pos6, 5)
+            )
+        </condition>
+    <!--AdjPlusSubstPlusFourFix;s:AH,s:C,s:S,!s:L2,!s:L3,!s:L4,!s:T1,!s:T2,!s:T3,s:T4,s:T5,s:T6-->
+    <instances>
+      <MWE base='głupi jak but z lewej nogi'>
+        <head>inter(base[0],["głupi"])</head>
+        <var name='AH'>głupi</var>
+        <var name='C'>jak</var>
+        <var name='S'>but</var>
+        <var name='!L2'>z</var>
+        <var name='!L3'>lewy</var>
+        <var name='!L4'>noga</var>
+        <var name='!T1'>głupi</var>
+        <var name='!T2'>jak</var>
+        <var name='!T3'>but</var>
+        <var name='T4'>z</var>
+        <var name='T5'>lewej</var>
+        <var name='T6'>nogi</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstNPFix' class='subst'>
+    <condition>
+            //człowiek starej daty
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:PA),
+             inter(base[2],$s:S),
+             inter(class[2],{subst,ger,depr}),
+             inter(class[1],{adj,num,pact,ppas}),
+             inter(cas[2],{gen}),
+             agrpp(1,2,{cas,nmb,gnd}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )		
+        </condition>
+    <!--SubstNPFix;s:SH,s:PA,s:S-->
+    <instances>
+      <MWE base='agent obcego wywiadu'>
+        <head>inter(base[0],["agent"])</head>
+        <var name='SH'>agent</var>
+        <var name='PA'>obcy</var>
+        <var name='S'>wywiad</var>
+      </MWE>
+      <MWE base='amator kwaśnych jabłek'>
+        <head>inter(base[0],["amator"])</head>
+        <var name='SH'>amator</var>
+        <var name='PA'>kwaśny</var>
+        <var name='S'>jabłko</var>
+      </MWE>
+      <MWE base='bar szybkiej obsługi'>
+        <head>inter(base[0],["bar"])</head>
+        <var name='SH'>bar</var>
+        <var name='PA'>szybki</var>
+        <var name='S'>obsługa</var>
+      </MWE>
+      <MWE base='biuro rzeczy znalezionych'>
+        <head>inter(base[0],["biuro"])</head>
+        <var name='SH'>biuro</var>
+        <var name='PA'>rzecz</var>
+        <var name='S'>znaleźć</var>
+      </MWE>
+      <MWE base='choroba szalonych krów'>
+        <head>inter(base[0],["choroba"])</head>
+        <var name='SH'>choroba</var>
+        <var name='PA'>szalony</var>
+        <var name='S'>krowa</var>
+      </MWE>
+      <MWE base='choroba wściekłych krów'>
+        <head>inter(base[0],["choroba"])</head>
+        <var name='SH'>choroba</var>
+        <var name='PA'>wściekły</var>
+        <var name='S'>krowa</var>
+      </MWE>
+      <MWE base='cienie pod oczami'>
+        <head>inter(base[0],["cień"])</head>
+        <var name='SH'>cień</var>
+        <var name='PA'>pod</var>
+        <var name='S'>oko</var>
+      </MWE>
+      <MWE base='dziecko specjalnej troski'>
+        <head>inter(base[0],["dziecko"])</head>
+        <var name='SH'>dziecko</var>
+        <var name='PA'>specjalny</var>
+        <var name='S'>troska</var>
+      </MWE>
+      <MWE base='dzień otwartych drzwi'>
+        <head>inter(base[0],["dzień"])</head>
+        <var name='SH'>dzień</var>
+        <var name='PA'>otwarty</var>
+        <var name='S'>drzwi</var>
+      </MWE>
+      <MWE base='efekt kuli śniegowej'>
+        <head>inter(base[0],["efekt"])</head>
+        <var name='SH'>efekt</var>
+        <var name='PA'>kula</var>
+        <var name='S'>śniegowy</var>
+      </MWE>
+      <MWE base='film moralnego niepokoju'>
+        <head>inter(base[0],["film"])</head>
+        <var name='SH'>film</var>
+        <var name='PA'>moralny</var>
+        <var name='S'>niepokój</var>
+      </MWE>
+      <MWE base='grupa podwyższonego ryzyka'>
+        <head>inter(base[0],["grupa"])</head>
+        <var name='SH'>grupa</var>
+        <var name='PA'>podwyższyć</var>
+        <var name='S'>ryzyko</var>
+      </MWE>
+      <MWE base='gwiazda pierwszej wielkości'>
+        <head>inter(base[0],["gwiazda"])</head>
+        <var name='SH'>gwiazda</var>
+        <var name='PA'>pierwszy</var>
+        <var name='S'>wielkość</var>
+      </MWE>
+      <MWE base='handel żywym towarem'>
+        <head>inter(base[0],["handel"])</head>
+        <var name='SH'>handel</var>
+        <var name='PA'>żywy</var>
+        <var name='S'>towar</var>
+      </MWE>
+      <MWE base='inżynierowie dusz ludzkich'>
+        <head>inter(base[0],["inżynier"])</head>
+        <var name='SH'>inżynier</var>
+        <var name='PA'>dusza</var>
+        <var name='S'>ludzki</var>
+      </MWE>
+      <MWE base='kino moralnego niepokoju'>
+        <head>inter(base[0],["kino"])</head>
+        <var name='SH'>kino</var>
+        <var name='PA'>moralny</var>
+        <var name='S'>niepokój</var>
+      </MWE>
+      <MWE base='kobieta lekkich obyczajów'>
+        <head>inter(base[0],["kobieta"])</head>
+        <var name='SH'>kobieta</var>
+        <var name='PA'>lekki</var>
+        <var name='S'>obyczaj</var>
+      </MWE>
+      <MWE base='lekarka pierwszego kontaktu'>
+        <head>inter(base[0],["lekarka"])</head>
+        <var name='SH'>lekarka</var>
+        <var name='PA'>pierwszy</var>
+        <var name='S'>kontakt</var>
+      </MWE>
+      <MWE base='lekarz pierwszego kontaktu'>
+        <head>inter(base[0],["lekarz"])</head>
+        <var name='SH'>lekarz</var>
+        <var name='PA'>pierwszy</var>
+        <var name='S'>kontakt</var>
+      </MWE>
+      <MWE base='ludzie dobrej roboty'>
+        <head>inter(base[0],["człowiek"])</head>
+        <var name='SH'>człowiek</var>
+        <var name='PA'>dobry</var>
+        <var name='S'>robota</var>
+      </MWE>
+      <MWE base='marzenie ściętej głowy'>
+        <head>inter(base[0],["marzenie"])</head>
+        <var name='SH'>marzenie</var>
+        <var name='PA'>ściąć</var>
+        <var name='S'>głowa</var>
+      </MWE>
+      <MWE base='mąż swojej żony'>
+        <head>inter(base[0],["mąż"])</head>
+        <var name='SH'>mąż</var>
+        <var name='PA'>swój</var>
+        <var name='S'>żona</var>
+      </MWE>
+      <MWE base='opowieści dziwnej treści'>
+        <head>inter(base[0],["opowieść"])</head>
+        <var name='SH'>opowieść</var>
+        <var name='PA'>dziwny</var>
+        <var name='S'>treść</var>
+      </MWE>
+      <MWE base='pranie brudnych pieniędzy'>
+        <head>inter(base[0],["pranie"])</head>
+        <var name='SH'>brudny</var>
+        <var name='PA'>pranie</var>
+        <var name='S'>pieniądz</var>
+      </MWE>
+      <MWE base='Rzeczpospolita Obojga Narodów'>
+        <head>inter(base[0],["rzeczpospolita"])</head>
+        <var name='SH'>rzeczpospolita</var>
+        <var name='PA'>oba</var>
+        <var name='S'>naród</var>
+      </MWE>
+      <MWE base='środki masowego przekazu'>
+        <head>inter(base[0],["środek"])</head>
+        <var name='SH'>środek</var>
+        <var name='PA'>masowy</var>
+        <var name='S'>przekaz</var>
+      </MWE>
+      <MWE base='środki masowej komunikacji'>
+        <head>inter(base[0],["środek"])</head>
+        <var name='SH'>środek</var>
+        <var name='PA'>masowy</var>
+        <var name='S'>komunikacja</var>
+      </MWE>
+      <MWE base='towarzystwo wzajemnej adoracji'>
+        <head>inter(base[0],["towarzystwo"])</head>
+        <var name='SH'>towarzystwo</var>
+        <var name='PA'>wzajemny</var>
+        <var name='S'>adoracja</var>
+      </MWE>
+      <MWE base='zasada kuli śniegowej'>
+        <head>inter(base[0],["zasada"])</head>
+        <var name='SH'>zasada</var>
+        <var name='PA'>kula</var>
+        <var name='S'>śniegowy</var>
+      </MWE>
+      <MWE base='Zgromadzenie Słowa Bożego'>
+        <head>inter(base[0],["zgromadzenie"])</head>
+        <var name='SH'>zgromadzenie</var>
+        <var name='PA'>słowo</var>
+        <var name='S'>boży</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='flex' name='AdjAdjSubstBFlex' class='subst'>
+    <condition>
+            //bezinteresowna ($A1) polska ($A2) zawiść
+            and(
+             inter(class[0],{adj,pact,ppas}),
+             inter(class[1],{adj,pact,ppas}),
+             or(
+              and(
+               inter(base[0],$s:A1),
+               inter(base[1],$s:A2)
+              ),
+              and(
+               inter(base[1],$s:A1),
+               inter(base[0],$s:A2)
+              )
+             ),
+             inter(base[2],$s:S),
+             inter(class[2],{subst,ger,depr}),
+             agr(0,2,{nmb,gnd,cas}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )		
+        </condition>
+    <!--AdjAdjSubstBFlex;s:A1,s:A2,s:S-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstConjSubstSubstGenFix' class='subst'>
+    <condition>
+            //krewni i znajomi królika
+            and(
+             inter(base[0],$s:S1),
+             inter(class[0],{adj,subst,ger,depr}),
+             inter(base[1],$s:Conj),
+             inter(class[1],{conj}),
+             inter(base[2],$s:S2),
+             inter(class[2],{adj,subst,ger,depr}),
+             agrpp(0,2,{cas,nmb}),
+             inter(base[3],$s:G),
+             inter(class[3],{subst,ger,depr}),
+             inter(cas[3],{gen}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3)
+            )					
+        </condition>
+    <!--SubstConjSubstSubstGenFix;s:S1,s:Conj,s:S2,s:G-->
+    <instances>
+      <MWE base='krewni i znajomi królika'>
+        <head>inter(base[0],["krewny"])</head>
+        <var name='S1'>krewny</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>znajomy</var>
+        <var name='G'>królik</var>
+      </MWE>
+      <MWE base='płacz i zgrzytanie zębów'>
+        <head>inter(base[0],["płacz"])</head>
+        <var name='S1'>płacz</var>
+        <var name='Conj'>i</var>
+        <var name='S2'>zgrzytanie</var>
+        <var name='G'>ząb</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstSubstInstAdjAgFix' class='subst'>
+    <condition>
+            //wino patykiem pisane
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:SI),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{inst}),
+             inter(base[2],$s:A),
+             inter(class[2],{adj,pact,ppas}),
+             agrpp(0,2,{cas}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2)
+            )		
+        </condition>
+    <!--SubstSubstInstAdjAgFix;s:SH,s:SI,s:A-->
+    <instances>
+      <MWE base='wino patykiem pisane'>
+        <head>inter(base[0],["wino"])</head>
+        <var name='SH'>wino</var>
+        <var name='SI'>patyk</var>
+        <var name='A'>pisane</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='AnySubstAny2AdjFix' class='subst'>
+    <condition>
+            //ni to, ni owo
+            and(
+             inter(base[0],$s:Y1),
+             inter(base[1],$s:S),
+             inter(class[1],{subst,ger,depr}),
+             inter(base[2],$s:Y2),
+             inter(base[3],$s:Y3),
+             inter(base[4],$s:A),
+             inter(class[4],{adj,pact,ppas}),
+             agrpp(1,4,{cas,nmb}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4)
+            )		
+        </condition>
+    <!--AnySubstAny2AdjFix;s:Y1,s:S,s:Y2,s:Y3,s:A-->
+    <instances>
+    </instances>
+  </mwegroup>
+  <mwegroup type='fix' name='SubstNPInstCord2AdjAgFix' class='subst'>
+    <condition>
+            //kraina mlekiem i miodem płynąca
+            and(
+             inter(base[0],$s:SH),
+             inter(class[0],{subst,ger,depr}),
+             inter(base[1],$s:SI1),
+             inter(class[1],{subst,ger,depr}),
+             inter(cas[1],{inst}),
+             inter(base[2],$s:C),
+             inter(class[2],{conj}),
+             inter(base[3],$s:SI2),
+             inter(class[3],{subst,ger,depr}),
+             inter(cas[3],{inst}),
+             inter(base[4],$s:A),
+             inter(class[4],{adj,pact,ppas}),
+             agrpp(0,4,{cas,nmb,gnd}),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1),
+             setvar($Pos3, 2),
+             setvar($Pos4, 3),
+             setvar($Pos5, 4)
+            )	
+        </condition>
+    <!--SubstNPInstCord2AdjAgFix;s:SH,s:SI1,s:C,s:SI2,s:A-->
+    <instances>
+      <MWE base='kraina mlekiem i miodem płynąca'>
+        <head>inter(base[0],["kraina"])</head>
+        <var name='SH'>kraina</var>
+        <var name='SI1'>mleko</var>
+        <var name='C'>i</var>
+        <var name='SI2'>miód</var>
+        <var name='A'>płynąć</var>
+      </MWE>
+      <MWE base='kraj mlekiem i miodem płynący'>
+        <head>inter(base[0],["kraj"])</head>
+        <var name='SH'>kraj</var>
+        <var name='SI1'>mleko</var>
+        <var name='C'>i</var>
+        <var name='SI2'>miód</var>
+        <var name='A'>płynąć</var>
+      </MWE>
+      <MWE base='Wyspy Świętego Tomasza i Książęca'>
+        <head>inter(base[0],["wyspa"])</head>
+        <var name='SH'>wyspa</var>
+        <var name='SI1'>święty</var>
+        <var name='C'>tomasz</var>
+        <var name='SI2'>i</var>
+        <var name='A'>książęcy</var>
+      </MWE>
+    </instances>
+  </mwegroup>
+<mwegroup type='fix' name='AdjPlusOneFix' class='subst'>
+    <condition>
+            and(
+             inter(base[0],$s:AH),
+             inter(class[0],{adj,pact,ppas}),
+             inter(orth[1],$s:T2),
+             setvar($Pos1, 0),
+             setvar($Pos2, 1)
+            )
+        </condition>
+    <instances>
+      <MWE base='bliski sercu'>
+        <head>inter(base[0],["bliski"])</head>
+        <var name='AH'>bliski</var>
+        <var name='!L1'>serce</var>
+        <var name='!T1'>bliski</var>
+        <var name='T2'>sercu</var>
+      </MWE>
+      <MWE base='drogi sercu'>
+        <head>inter(base[0],["drogi"])</head>
+        <var name='AH'>drogi</var>
+        <var name='!L1'>serce</var>
+        <var name='!T1'>drogi</var>
+        <var name='T2'>sercu</var>
+      </MWE>
+      <MWE base='godny pożałowania'>
+        <head>inter(base[0],["godny"])</head>
+        <var name='AH'>godny</var>
+        <var name='!L1'>pożałowanie</var>
+        <var name='!T1'>godny</var>
+        <var name='T2'>pożałowania</var>
+      </MWE>
+      <MWE base='godny pozazdroszczenia'>
+        <head>inter(base[0],["godny"])</head>
+        <var name='AH'>godny</var>
+        <var name='!L1'>pozazdroszczenie</var>
+        <var name='!T1'>godny</var>
+        <var name='T2'>pozazdroszczenia</var>
+      </MWE>
+      <MWE base='miły sercu'>
+        <head>inter(base[0],["miły"])</head>
+        <var name='AH'>miły</var>
+        <var name='!L1'>serce</var>
+        <var name='!T1'>miły</var>
+        <var name='T2'>sercu</var>
+      </MWE>
+    </instances>
+    <!--AdjPlusOneFix;AH,!L1,!T1,T2-->
+  </mwegroup>
+</units_description>
+
