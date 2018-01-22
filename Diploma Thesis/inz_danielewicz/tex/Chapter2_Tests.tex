@@ -1,7 +1,7 @@
 \chapter{Tests}
 
 \section{Scope of unit tests}
-To ensure correctness fo the results unit tests should be performed. They cover implementation of all association measures, 
+To ensure correctness fo the results unit testsing should be performed. They cover implementation of all association measures, 
 as they were not tested before, so there exists a chance that they are incorrectly written. This should be carefuly examined, 
 because errors in that stage will propagate further making improvement of next stages pointless.
 
@@ -12,19 +12,31 @@ because errors in that stage will propagate further making improvement of next s
 \subsection{Availble test frameworks}
 There is a lot of unit test frameworks for C++. Thay vary in availble functionalties, in design, differ in their complexity and purpose, 
 some of them are heavy-duty, some are ligthweigth and simple. Few exemplary test frameworks are listed below.
+TODO
 \begin{itemize}
-    \item CppUnit
-    \item Boost.Test
-    \item CppUnitLite
-    \item NanoCppUnit
-    \item Unit++
-    \item CxxTest
+    \item \textbf{CppUnit} - test framework that allows testing of C sources as well as C++ with minimal source code modification.
+            It was started as a port of JUnit for Windows and ported to Unix. The library is released under the GNU LGP License.
+            The framework runs tests in suites. Test result output is sent to a filter, the most basic being a simple pass or fail count printed out, 
+            or more advanced filters allowing XML output compatible with continuous integration reporting systems.\footnote{https://en.wikipedia.org/wiki/CppUnit}
+    \item \textbf{Boost.Test} - this UTF provides simple writing test cases by using various testing tools. 
+            It allows to organize test cases into a test tree. Ease error detection by reporting duties and framework runtime parameters processing.
+            More precise description can be found in section \ref{test_boost}
+    \item \textbf{CppUnitLite} - this is a simple C++ testing framework developed by author of the original CppUnit. 
+            Unlike some other frameworks, this one is a barebones framework intended to be extended by its users to support their particular needs.
+            This approach makes writing individual test easy, one TEST macro which registers the test automatically.\footnote{http://wiki.c2.com/?CppUnitLite}
+    \item \textbf{Aeryn} - its design is clean, simple has no dependencies upon other libraries. Although it is primarily intended for unit testing, 
+            it is adaptable enough to handle integration testing and can be adapted for most other forms of C++ testing.
+            Aeryn requires a modern C++ compiler.\footnote{https://accu.org/index.php/journals/1326}
+    \item \textbf{CxxTest} - is a unit testing framework for C++ that is similar in spirit to JUnit, CppUnit, and xUnit. 
+            CxxTest is easy to use because it does not require precompiling a CxxTest testing library, 
+            it employs no advanced features of C++ (e.g. RTTI) and it supports a very flexible form of test discovery.\footnote{http://cxxtest.com/}
 \end{itemize}
 From those frameworks Boost.Test has been chosen. There are few reasons why this one was the choice. 
 At first Boost library is already used by MeWeX, so using this UTF instead of other does not increase number of dependencies of the project. 
-Second reason was that Boost library is the only one known to the author of this thesis, so it was also an advantage.
+Second reason was that Boost library is the only one known to the author of this thesis, so it was also an advantage. 
+Finally its capabilities are sufficient for purpose of this project while use of this framework is simple and easy.
 
-\subsection{Boost UTF}
+\subsection{Boost UTF}\label{test_boost}
 The Boost Test Library Unit Test Framework gives both a simply to use and flexible way of implementation and organization C++ unit test. 
 Writing a unit test module is simple and intuitive for begginers, but framework allows more advanced users to perform complex tests. 
 Test module gives possibility to have many small test cases and organise them into test suites. It also provide a feedback for a long test by 
@@ -33,13 +45,18 @@ it is able to build it as a standalone library. The Boost.Test keeps track of al
 provides an ability to check the test progress and generates a result report in several different formats.
 
 \section{Method of testing}
-TODO
+To test association measures at first it was neccesary to prepare contingency tables and additionally for several fuctions additionaly RankerData. 
+For purpose of generating that objects set of short CCL was used with content prepared to cover all edge cases in evaluation of tuples scores. 
+Text reading, tuples generation and creating contingency table source together with RankerData was performed directly with use of availble functions 
+and class instead of using separate program. It was performed only once and stored as a Fixture. Every function was covered by one test case which 
+compared result of function with correct result for every tuple in all prepared texts. All test cases were groupped to one test suite.
 
 \section{Result}
 Results of unit test showed that several association measures were incorrectly implemented. In some cases error lies in lacking minus like in 
 LogLikelihood, so it only reverse the score, but in other cases wrong order of operations like in WOrder makes the result completly miscalculated.
 Table \ref{tbl_test} shows the results of performed unit tests, red names indicates incorrect implementation, orange represents function, 
-which was properly written, but it uses outcome of faulty measure. In Remaining functions no errors were found.
+which was properly written, but it uses outcome of faulty measure. In remaining functions no errors were found. 
+Last step of this part was to fix those implementations which consisted errors.
 \begin{table}[t]
     \centering
     % \begin{tabular}{|l|l|}
