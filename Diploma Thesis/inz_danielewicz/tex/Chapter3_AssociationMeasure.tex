@@ -36,7 +36,7 @@ The most distinctive part from other measures is substracting frequencies of all
 This part decreases score for candidates which occure often in different context.
 \[ 
     C{\text -}value(p) = \begin{cases}
-        l(p) * (freq(p) - \frac{1}{r(LP)}\sum_{lp \in LP}{freq(lp)} & \text{if } r(LP) > 0\\
+        l(p) * (freq(p) - \frac{1}{r(LP)}\sum_{lp \in LP}{freq(lp)}) & \text{if } r(LP) > 0\\
         l(p) * freq(p)            & \text{if } r(LP) = 0\\
     \end{cases}
 \]
@@ -117,3 +117,4 @@ double Cvalue::rankUsingTable(
 
 \subsection{Quality evaluation}
 Quality of this measure, method and setup for verification is described in chapter \ref{verification}.
+TODO
