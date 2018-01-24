@@ -1,35 +1,19 @@
 \chapter{Imlement algorithm for training weigths for vector association measure}
 
-MeWeX contains several algorithms which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by 
-Michał Wendelberger.
-
-TODO
-
-% Wagi rankingów to parametry algorytmu kombinacji, które powinny zostać wyznaczone eks-
-% perymentalnie, na przykład poprzez ich optymalizację. Prezentowane oprogramowanie umożli-
-% wia wykorzystanie do tego celu pięciu różnych algorytmów heurystycznych i metaheurystycz-
-% nych implementacji Łukasza Kłyka [13]. Utworzony przez niego Optimizer został przystoso-
-% wany przez autora niniejszej pracy do działania z opisywanym MWeXtractorem. Łukasz Kłyk
-% zaimplementował następujące algorytmy w swoim oprogramowaniu:
-
-% Nazwy wspomnianych algorytmów heurystycznych i metaheurystycznych dokładnie określa-
-% ją, jakie są to algorytmy, jednak poza dwoma wyjątkami – symulowanym wyżarzaniem i algoryt-
-% mem ewolucyjnym. Pierwszy z nich nie precyzuje schematu chłodzenia, ale domyślnie w opro-
-% gramowaniu zaimplementowanym przez Łukasza Kłyka stosowana jest funkcja T (k) = 0.3 k
-% [13, str. 36]. Przypadek algorytmu ewolucyjnego wymaga dłuższego opisu, ponieważ pojęcie to
-% jest znacznie szersze od nazw pozostałych metod.
-
-
+Different association measures evaluate their scores basing on different statistics like frequency of the tuple, 
+expected frequency, frequency of subtuples, size of tuple etc, so to improve quality of the results MeWeX uses 
+aggregators of the association measures. This feature allows to join properties of many measures in order to achieve 
+better score. Influence on final result of each measure can be controlled by vector of weigths. Proper adjustment 
+of weigths values is crucial. It can be done with use of machine learning algorithms, which can tune vector of weigths 
+in order to maximize correctness of the result. MeWeX contains several heuristic and metaheuristic algorithms, 
+which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by Michał Wendelberger to work with the rest of the system.
 \begin{itemize}
-    \item \textbf{Evolutionary Algorithm} - Description
- 
-    \item \textbf{Hill Climbing} - Description
- 
-    \item \textbf{Tabu Search} - Description
- 
-    \item \textbf{Random Search} - Description
- 
-    \item \textbf{Simulated Annealing} - Description 
+    \setlength\itemsep{0em}
+    \item Evolutionary Algorithm 
+    \item Hill Climbing 
+    \item Tabu Search 
+    \item Random Search 
+    \item Simulated Annealing
 \end{itemize}
 
 \section{Particle Swarm Optimization}\label{pso_def}
@@ -71,7 +55,7 @@ One of the factor for calculating new velocity is its previous value. Preserving
 like it would have momentum, smoothing its movement. Particle aims toward global and local best, but force of those both factors is randomized.
 New velocity is composed from three vectors and strength of influence for each of them can be adjusted by changing value 
 of corresponding \(\omega\) parameter. By modifing those parameters it is possible to control behavior of the swarm, for example 
-by reducing momentum or increasing importance of local maxima. TODO
+by reducing momentum or increasing importance of local maxima.
 
 Particle Swarm Optimization is quite simple algorithm, but it can achieve good result. Its simplicity allows easy modification and adjusting 
 algorithm for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
