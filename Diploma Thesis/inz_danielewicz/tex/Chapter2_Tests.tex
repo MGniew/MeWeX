@@ -1,15 +1,9 @@
 \chapter{Tests}
-
-\section{Scope of unit tests}
 To ensure correctness fo the results unit testsing should be performed. They cover implementation of all association measures, 
 as they were not tested before, so there exists a chance that they are incorrectly written. This should be carefuly examined, 
 because errors in that stage will propagate further making improvement of next stages pointless.
 
-
-
-\section{Used technology}
-
-\subsection{Availble test frameworks}
+\section{Availble test frameworks}
 There is a lot of unit test frameworks for C++. Thay vary in availble functionalties, in design, differ in their complexity and purpose, 
 some of them are heavy-duty, some are ligthweigth and simple. Few exemplary test frameworks are listed below.
 TODO
@@ -20,7 +14,7 @@ TODO
             or more advanced filters allowing XML output compatible with continuous integration reporting systems.\footnote{https://en.wikipedia.org/wiki/CppUnit}
     \item \textbf{Boost.Test} - this UTF provides simple writing test cases by using various testing tools. 
             It allows to organize test cases into a test tree. Ease error detection by reporting duties and framework runtime parameters processing.
-            More precise description can be found in section \ref{test_boost}
+            More precise description can be found in section \ref{test_boost}.
     \item \textbf{CppUnitLite} - this is a simple C++ testing framework developed by author of the original CppUnit. 
             Unlike some other frameworks, this one is a barebones framework intended to be extended by its users to support their particular needs.
             This approach makes writing individual test easy, one TEST macro which registers the test automatically.\footnote{http://wiki.c2.com/?CppUnitLite}
@@ -36,9 +30,9 @@ At first Boost library is already used by MeWeX, so using this UTF instead of ot
 Second reason was that Boost library is the only one known to the author of this thesis, so it was also an advantage. 
 Finally its capabilities are sufficient for purpose of this project while use of this framework is simple and easy.
 
-\subsection{Boost UTF}\label{test_boost}
+\subsection{Used technology}\label{test_boost}
 The Boost Test Library Unit Test Framework gives both a simply to use and flexible way of implementation and organization C++ unit test. 
-Writing a unit test module is simple and intuitive for begginers, but framework allows more advanced users to perform complex tests. 
+Writing a unit test module is simple and intuitive for begginers, but framework allows more advanced users to perform complex tests \cite{boost}. 
 Test module gives possibility to have many small test cases and organise them into test suites. It also provide a feedback for a long test by 
 showing the test progress during its work. It does not require any additional library anf for long term usage users of a unit test framework 
 it is able to build it as a standalone library. The Boost.Test keeps track of all passed/failed testing tools assertions, 

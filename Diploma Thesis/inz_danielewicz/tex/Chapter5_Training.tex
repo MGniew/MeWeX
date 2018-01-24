@@ -18,24 +18,22 @@ Manual annotation guarantee correctness of data and it is relatively large what 
 \subsection{plWordNet Corpus 10.0}
 
 It contains over 4 bilions tokens and it is probably the largest corpus of Polish texts created in controlled way. 
-In the article \emph{Wordnet-based Evaluation of Large Distributional Models for Polish} we can find short description of 
-its content: \emph{It consists of IPI PAN Corpus, the first annotated corpus of Polish,  National Corpus of Polish, 
-Polish Wikipedia (from 2016), Rzeczpospolita Corpus -- corpus of electronic editions of a Polish newspaper from the years 1993-2003, 
-supplemented with text acquired from the Web -- only text with small percentage of words unknown to a very comprehensive morphological analyser Morfeusz 2.0 
+In the article \cite{kgr10} we can find short description of its content: \emph{It consists of IPI PAN Corpus, 
+the first annotated corpus of Polish,  National Corpus of Polish, Polish Wikipedia (from 2016), Rzeczpospolita Corpus 
+-- corpus of electronic editions of a Polish newspaper from the years 1993-2003, supplemented with text acquired from the Web 
+-- only text with small percentage of words unknown to a very comprehensive morphological analyser Morfeusz 2.0 
 were included; duplicates were automatically eliminated from the merged corpus.}
 Enormous size of this corpus caused computation time to process such amount of information 
 long enough to make it impossible to perform tuning weigths and verification of the results on whole corpus. 
 That was motivation to utilize only part of that resource. To preserve variety of text, new subcorpus was prepared by randomly picking 
-10\% of sentences and dropping rest. Then plain text was annotated by "Morphodita (add cite)" and stored in CCL format.
+10\% of sentences and dropping rest. Then plain text was annotated by the tager Morphodita\footnote{http://ws.clarin-pl.eu/morphoDiTa.shtml} and stored in CCL format.
 
 \subsection{PLWordNet}
 Wordnet is a "lexically-semantic" web, which nodes are lexical units and edges are semantic relations connecting those units.
 PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continously developed, 
-for now version plWordnet3.1 contains "170000 synsets, 244000 lexical units oraz 670000 semantic relations." Author of this thesis decided to use that resource 
+for now version plWordnet3.1 contains 198000 words, 285000 word's meanings and 670000 semantic relations." Author of this thesis decided to use that resource 
 as a source of proper collocations. They were obtained as a set of wccl operators, while MeWeX accepts only MWE listed in file one per line, 
 so they had to be preprocessed. This source provided 66853 collocations.
-TODO
-% "plWN currently contains 178 000 nouns, verbs, adjectives, and adverbs, 259 000 word senses, and over 600 000 relations and 240 000 inter-lingual relations between lexical units."
 
 \subsection{Set of relations}
 First stage of collocation extraction, selecting candidates, requires set of relations, to reduce number of candidates only to syntactically reasonable. 
@@ -189,11 +187,11 @@ Dataset used for learning was both Manually Annotated Subcorpus of NKJP and plWo
 to increase its efficiency and shorten computation time.
 
 To select proper size of the swarm, short reaserch was conducted on NKJP Subcorpus only, to analyze influence of the number of particles on 
-algortihm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly "800, 400, 200, 100" iterations, 
+algortihm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly 4000, 2000, 1000, 500 iterations, 
 to preserve the same number of particle evaluations and as a result the same computation time.
 
-TODO
+% TODO
 
 \section{Results}
 
-TODO
+% TODO

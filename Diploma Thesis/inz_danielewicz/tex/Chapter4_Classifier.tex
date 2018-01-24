@@ -1,6 +1,5 @@
 \chapter{Imlement algorithm for training weigths for vector association measure}
 
-\section{Algorithms implemented in MeWeX}
 MeWeX contains several algorithms which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by 
 Michał Wendelberger.
 
@@ -33,9 +32,8 @@ TODO
     \item \textbf{Simulated Annealing} - Description 
 \end{itemize}
 
-\section{Particle Swarm Optimization}
+\section{Particle Swarm Optimization}\label{pso_def}
 
-\subsection{Description}
 Particle Swarm Optimization is an algorithm for optimization of a problem. It tries to improve a candidate solution 
 accordingly to a given measure of quality. PSO have population of particles called swarm and solves problem by iteratively moving those particles 
 through the search space using formula that involves particle velocity, local best solution and global best solution. 
@@ -73,7 +71,7 @@ One of the factor for calculating new velocity is its previous value. Preserving
 like it would have momentum, smoothing its movement. Particle aims toward global and local best, but force of those both factors is randomized.
 New velocity is composed from three vectors and strength of influence for each of them can be adjusted by changing value 
 of corresponding \(\omega\) parameter. By modifing those parameters it is possible to control behavior of the swarm, for example 
-by reducing momentum or increasing importance of local maxima.
+by reducing momentum or increasing importance of local maxima. TODO
 
 Particle Swarm Optimization is quite simple algorithm, but it can achieve good result. Its simplicity allows easy modification and adjusting 
 algorithm for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
@@ -105,40 +103,40 @@ Next step was to implement two classes, one which inherits by \(BaseCallPolicies
 and second which inherits by \(BaseReport\) and specifies format of creating report of training, which is written to file during algorithm work.
 Then, those classes had to be added to \(EvaluatorWrapper\) which is responsible for running chosen algorithm, 
 passing arguments from user and creating report. Code below shows modification of that class, where PSO was added.
-\begin{lstlisting}
-class EvaluatorWrapper
-{
-public:
+% \begin{lstlisting}
+% class EvaluatorWrapper
+% {
+% public:
 
-        ...
+%         ...
 
-    typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
+%     typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
 
-    enum MethodType
-    {
-        ...
+%     enum MethodType
+%     {
+%         ...
 
-        PSO,  // Particle Swarm Optimization
-        EMPTY
-    };
-        ...
+%         PSO,  // Particle Swarm Optimization
+%         EMPTY
+%     };
+%         ...
 
-    EvaluatorWrapper(
-        EvaluatorPtrR const&	pEvaluator,
-        MethodType              pMethodType,
-        Point const&	        pStartPoint,
-        PSOCallPolicy const& 	pPolicy);
+%     EvaluatorWrapper(
+%         EvaluatorPtrR const&	pEvaluator,
+%         MethodType              pMethodType,
+%         Point const&	        pStartPoint,
+%         PSOCallPolicy const& 	pPolicy);
 
-        ...
+%         ...
     
-    void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
+%     void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
 
-private:
-        ...
+% private:
+%         ...
     
-    PSOCallPolicy mPSOCPA;
-};
-\end{lstlisting}
+%     PSOCallPolicy mPSOCPA;
+% };
+% \end{lstlisting}
     
 % \begin{lstlisting}
 %         ...

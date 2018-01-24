@@ -27,10 +27,13 @@
 \renewcommand{\ttdefault}{pcr} % Using Courier font
 % \usepackage{fullpage}
 % \usepackage{placeins} %for floats position barrier
-% \usepackage{float}
 
 %tables
 \usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 % \usepackage{caption} 
 % \usepackage{multirow, supertabular}
 % \usepackage{array}
@@ -45,6 +48,7 @@
 % \bibliographystyle{abbrv}
 
 %graphics
+\usepackage{float}
 % \usepackage{graphicx}
 % \usepackage{subcaption}
 
@@ -81,6 +85,7 @@
 
 \tableofcontents
 
+\include{tex/Terminology}
 \include{tex/Chapter1_Introduction}
 \include{tex/Chapter2_Tests}
 \include{tex/Chapter3_AssociationMeasure}

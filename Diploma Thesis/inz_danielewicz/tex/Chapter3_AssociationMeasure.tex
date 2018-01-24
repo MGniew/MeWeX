@@ -1,8 +1,6 @@
 \chapter{New association measure}
 
-
-\section{Termopl}
-Natural Language Processing is developing very quickly nowadays, but extraction of collocations is still quite low advanced field. 
+Natural Language Processing is developing very quickly nowadays, but extraction of collocations is still quite low advanced field \cite{ramisch}. 
 In recent years couple papers and books have been published in this topic, but most of them describes method for extraction of MWE in english 
 and since this task is strongly language dependent, polish literature about this subject is much more valuable for this thesis.
 In 2016 polish sciencists published paper about their application for polish terminology extraction \cite{termopl}. 
@@ -20,16 +18,6 @@ accordingly to the obtained score, but TermoPL uses for that purpose C-value mea
 Extending availble list of association measures by this new function can improve efficiency of the system.
 
 \section{C-Value}
-
-\subsection{Motivation}
-MeWeX contains many association measure which base on frequency, expected frequency, order, number of relation etc. 
-and using vector association measure it can make an advantage of all those features at once. That leads to assumption that adding new measure, 
-which values properties not considered before, should increase quality of result. C-value base on frequency and length of phrase, 
-but also it takes into account number of different contexts it takes. This property is not covered by any other already implemented function.
-Measure W Order is quite similar, but this one checks only number of other relations in which given tuples occured, 
-while C-value also accounts tuples which contains given phrase and measures also frequency.
-
-\subsection{Measure description}
 Most significant factor in C-value is frequency of given phrase what is a common practice in association measures. 
 Longer tuples are less frequent, so multipling by logarithm of tuple length reduces that disadvantage. 
 The most distinctive part from other measures is substracting frequencies of all tuples containig given phrase divided by number of those tuples. 
@@ -49,6 +37,15 @@ Where: \\
 This function was modified in relation to the one used in TermoPL. In original measure, function \(l(p) = ln(length(p)) + C\) 
 contained also constant, because it was based on assumption that length of \(p\) can be equal to 1. This constant was removed 
 from formula as it became redundant for MWE.
+
+\subsection{Motivation}
+MeWeX contains many association measure which base on frequency, expected frequency, order, number of relation etc. 
+and using vector association measure it can make an advantage of all those features at once. That leads to assumption that adding new measure, 
+which values properties not considered before, should increase quality of result. C-value base on frequency and length of phrase, 
+but also it takes into account number of different contexts it takes. This property is not covered by any other already implemented function.
+Measure W Order is quite similar, but this one checks only number of other relations in which given tuples occured, 
+while C-value also accounts tuples which contains given phrase and measures also frequency.
+
 
 \subsection{Measure implementation}
 Expanded structure and modular architecture of MeWeX made simple further extensions of code. To implement new association 
@@ -83,8 +80,8 @@ Creators::FunctionMapping const AssociationFunctionCreators::MAPPING(
 {
     ...
 
-    {"c_value",				&Cvalue},
-    {"cval",				&Cvalue},
+    {"c_value",     &Cvalue},
+    {"cval",        &Cvalue},
 
     ...
 });
@@ -116,5 +113,12 @@ double Cvalue::rankUsingTable(
 \end{lstlisting}
 
 \subsection{Quality evaluation}
-Quality of this measure, method and setup for verification is described in chapter \ref{verification}.
-TODO
+In the figure \ref{img_cval} are presented examplary results obtained with use of C-value association measure. 
+In top 50 tuples from k-best list all suits the definition of collocation, so that is good score. More precise evaluation, 
+quality of this measure, method and setup for verification is described in chapter \ref{verification}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.4]{img/cval.png}
+    \caption{Results obtained with use of C-value association measure}
+    \label{img_cval}
+\end{figure}
