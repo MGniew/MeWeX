@@ -85,13 +85,16 @@ public:
         this->mNumberOfEvaluations++;
 
         double sumVelocity;
+        const double omega = this->mCallPoliciesArguments.getOmega();
+        const double omegaL = this->mCallPoliciesArguments.getOmegaL();
+        const double omegaG = this->mCallPoliciesArguments.getOmegaG();
 
         while(!step.isFinished())
         {
             sumVelocity = 0.0;
             for(auto& particle : swarm)
             {
-                particle.move(this->mBest);
+                particle.move(this->mBest, omega, omegaL, omegaG);
                 mpEvaluator->evaluate(particle);
                 if(particle.getLocalBest().getEvaluationPerformance().isGreater(particle.getEvaluationPerformance()))
                 {
@@ -104,7 +107,7 @@ public:
                 sumVelocity += particle.getVelocityLengthSquared();
                 // report.reportStep(step.getCurrentStep(), particle);//TMP!!!!!!
             }
-            if((sumVelocity / (double)swarm.size()) < 0.01)
+            if((sumVelocity / (double)swarm.size()) < 0.05)
                 massMutation(swarm, this->mBest);
             this->mNumberOfEvaluations++;
             report.reportStep(step.getCurrentStep(), this->mBest);

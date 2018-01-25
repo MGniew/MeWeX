@@ -7,7 +7,7 @@ namespace machine_learning
 	{
 
 std::uniform_real_distribution<double> Random::distance(0.0, 1.0);
-std::normal_distribution<double> Random::normal(0.0, 0.1);
+std::normal_distribution<double> Random::normal(0.0, 0.25);
 std::mt19937_64 Random::generator(time(nullptr));
 
 

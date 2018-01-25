@@ -68,9 +68,8 @@ void Particle::addParameter(const BaseParameter& rParameter)
     mVelocity.emplace_back();
 }
 
-void Particle::move(const Point& rBest)
+void Particle::move(const Point& rBest, double w, double wl, double wg)
 {
-    double c1 = 1.0, c2 = 0.2, c3 = 0.8;
     double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
     for(int i = 0; i < mVelocity.size(); i++)
     {
@@ -80,7 +79,7 @@ void Particle::move(const Point& rBest)
         mBest->getParameterAt(i).getValueAt(0).get(mX);
         mParameters[i]->getValueAt(0).get(cX);
         rBest.getParameterAt(i).getValueAt(0).get(rX);
-        v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
+        v = (w * r1 * v) + (wl * r2 * (mX - cX)) + (wg * r3 * (rX - cX));
         data.set(v);
         mVelocity[i]->setValueAt(0, data);
         data.set(cX + v);

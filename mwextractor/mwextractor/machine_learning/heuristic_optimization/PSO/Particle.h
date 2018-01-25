@@ -27,7 +27,7 @@ public:
     void setLocalBest(const Point& rPoint);
     const Point& getLocalBest() const;
     double getVelocityLengthSquared() const;
-    void move(const Point& rBest);
+    void move(const Point& rBest, double w = 1.0, double wl = 0.2, double wg = 0.8);
     void setRandomParameters(void);
     std::string toString(void) const;
 
