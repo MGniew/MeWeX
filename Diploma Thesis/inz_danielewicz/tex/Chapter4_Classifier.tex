@@ -41,12 +41,12 @@ Particles move toward local and global maxima making swarm more dense in surroun
 That property entail swarm for searching better solutions.
 Below there is formula for updating velocity of the particles.
 \[ 
-    V \gets \omega V + \omega _{p} r _{p} (p - x) + \omega _{g} r _{g} (g - x)
+    V \gets \omega V + \omega _{l} r _{l} (p - x) + \omega _{g} r _{g} (g - x)
 \]
 Where: \\
 \(V\)  - velocity of given particle, it is vector of size equal to number of dimensions in search space \\
-\(r _{p}, r _{g}\) - random numbers from interval \((0,1)\) \\
-\(\omega, \omega _{p}, \omega _{g}\) - parameters, chosen by the user, which controls behaviour of the PSO \\
+\(r _{l}, r _{g}\) - random numbers from interval \((0,1)\) \\
+\(\omega, \omega _{l}, \omega _{g}\) - parameters, chosen by the user, which controls behaviour of the PSO \\
 \(x\)  - position of given particle \\
 \(p\)  - position of best solution achieved by given particle \\
 \(g\)  - position of global best solution achieved by the swarm \\
@@ -72,7 +72,7 @@ Expanded structure and modular architecture of MeWeX made simple further extensi
 presents the structure of implemented algorithm.
 \begin{figure}[ht]
 \centering
-    \includegraphics[scale=0.5]{img/pso_class.png}
+    \includegraphics[scale=0.2]{img/pso_class.png}
     \caption{Class diagram of Particle Swarm Optimization}
     \label{img_pso_class}
 \end{figure}
@@ -86,127 +86,127 @@ and fuction \(Point\ start()\) which executes whole algorithm and returns best f
 Next step was to implement two classes, one which inherits by \(BaseCallPoliciesArguments\) and defines parameters that can be passed by user, 
 and second which inherits by \(BaseReport\) and specifies format of creating report of training, which is written to file during algorithm work.
 Then, those classes had to be added to \(EvaluatorWrapper\) which is responsible for running chosen algorithm, 
-passing arguments from user and creating report. Code below shows modification of that class, where PSO was added.
-% \begin{lstlisting}
-% class EvaluatorWrapper
-% {
-% public:
+passing arguments from user and creating report.
+    % \begin{lstlisting}
+    % class EvaluatorWrapper
+    % {
+    % public:
 
-%         ...
+    %         ...
 
-%     typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
+    %     typedef particle_swarm_optimization::CallPoliciesArgumentsPSO	PSOCallPolicy;
 
-%     enum MethodType
-%     {
-%         ...
+    %     enum MethodType
+    %     {
+    %         ...
 
-%         PSO,  // Particle Swarm Optimization
-%         EMPTY
-%     };
-%         ...
+    %         PSO,  // Particle Swarm Optimization
+    %         EMPTY
+    %     };
+    %         ...
 
-%     EvaluatorWrapper(
-%         EvaluatorPtrR const&	pEvaluator,
-%         MethodType              pMethodType,
-%         Point const&	        pStartPoint,
-%         PSOCallPolicy const& 	pPolicy);
+    %     EvaluatorWrapper(
+    %         EvaluatorPtrR const&	pEvaluator,
+    %         MethodType              pMethodType,
+    %         Point const&	        pStartPoint,
+    %         PSOCallPolicy const& 	pPolicy);
 
-%         ...
-    
-%     void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
-
-% private:
-%         ...
-    
-%     PSOCallPolicy mPSOCPA;
-% };
-% \end{lstlisting}
-    
-% \begin{lstlisting}
-%         ...
-
-% EvaluatorWrapper::EvaluatorWrapper(
-%     EvaluatorPtrR const&	pEvaluator,
-%     MethodType 			pMethodType,
-%     Point const&		pStartPoint,
-%     PSOCallPolicy const& 	pPolicy)
-% :
-%     mMethodType(pMethodType),
-%     mStartPoint(pStartPoint),
-%     mEvaluator(pEvaluator),
-%     mPSOCPA(pPolicy)
-% {}
-
-% auto EvaluatorWrapper::parseMethodType(std::string const& pMethod) -> MethodType
-% {
-%     if(boost::iequals(pMethod, "RS"))
-%     {
-%         return RS;
-%     }    
-    
-%         ...
+    %         ...
         
-%     else if(boost::iequals(pMethod, "PSO"))
-%     {
-%         return PSO;
-%     }
-%         ...
+    %     void setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy);
 
-% void EvaluatorWrapper::setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy)
-% {
-%     mPSOCPA = pPolicy;
-% }
-
-% auto EvaluatorWrapper::start() -> Point
-% {
-%         ...
-
-% typedef particle_swarm_optimization::ParticleSwarmOptimization<
-%             particle_swarm_optimization::CallPoliciesArgumentsPSO,
-%             unsigned int,
-%             Step,
-%             time_t,
-%             Timer,
-%             particle_swarm_optimization::ReportPSO> PSOAlgorithm;
-
-%         ...
-
-% switch(mMethodType)
-% {
-%         ...
+    % private:
+    %         ...
         
-%     case PSO:
-%     {
-%         return PSOAlgorithm(mStartPoint, mEvaluator, mPSOCPA).start();
-%     }
-%     break;
+    %     PSOCallPolicy mPSOCPA;
+    % };
+    % \end{lstlisting}
+        
+    % \begin{lstlisting}
+    %         ...
 
-%         ...
-% \end{lstlisting}
+    % EvaluatorWrapper::EvaluatorWrapper(
+    %     EvaluatorPtrR const&	pEvaluator,
+    %     MethodType 			pMethodType,
+    %     Point const&		pStartPoint,
+    %     PSOCallPolicy const& 	pPolicy)
+    % :
+    %     mMethodType(pMethodType),
+    %     mStartPoint(pStartPoint),
+    %     mEvaluator(pEvaluator),
+    %     mPSOCPA(pPolicy)
+    % {}
+
+    % auto EvaluatorWrapper::parseMethodType(std::string const& pMethod) -> MethodType
+    % {
+    %     if(boost::iequals(pMethod, "RS"))
+    %     {
+    %         return RS;
+    %     }    
+        
+    %         ...
+            
+    %     else if(boost::iequals(pMethod, "PSO"))
+    %     {
+    %         return PSO;
+    %     }
+    %         ...
+
+    % void EvaluatorWrapper::setParticleSwarmOptimizationPolicy(PSOCallPolicy const& pPolicy)
+    % {
+    %     mPSOCPA = pPolicy;
+    % }
+
+    % auto EvaluatorWrapper::start() -> Point
+    % {
+    %         ...
+
+    % typedef particle_swarm_optimization::ParticleSwarmOptimization<
+    %             particle_swarm_optimization::CallPoliciesArgumentsPSO,
+    %             unsigned int,
+    %             Step,
+    %             time_t,
+    %             Timer,
+    %             particle_swarm_optimization::ReportPSO> PSOAlgorithm;
+
+    %         ...
+
+    % switch(mMethodType)
+    % {
+    %         ...
+            
+    %     case PSO:
+    %     {
+    %         return PSOAlgorithm(mStartPoint, mEvaluator, mPSOCPA).start();
+    %     }
+    %     break;
+
+    %         ...
+    % \end{lstlisting}
 Last step is to implement algorithm itself, but it needs a class that represents particle and MeWeX machine learning module implements only class \(Point\).
 Class \(Particle\) was created by author of this thesis by inheriting class \(Point\), adding velocity vector and best local position and defining 
 function \(void\ move(const\ Point\&\ rBest)\).
-% \begin{lstlisting}
-% void Particle::move(const Point& rBest)
-% {
-%     double c1 = 1.0, c2 = 0.2, c3 = 0.8;
-%     double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
-%     for(int i = 0; i < mVelocity.size(); i++)
-%     {
-%         double v,mX,rX,cX;
-%         auto data = mVelocity[i]->getValueAt(0);
-%         mVelocity[i]->getValueAt(0).get(v);
-%         mBest->getParameterAt(i).getValueAt(0).get(mX);
-%         mParameters[i]->getValueAt(0).get(cX);
-%         rBest.getParameterAt(i).getValueAt(0).get(rX);
-%         v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
-%         data.set(v);
-%         mVelocity[i]->setValueAt(0, data);
-%         data.set(cX + v);
-%         mParameters[i]->setValueAt(0, data);
-%     }
-% }
-% \end{lstlisting}
+    % \begin{lstlisting}
+    % void Particle::move(const Point& rBest)
+    % {
+    %     double c1 = 1.0, c2 = 0.2, c3 = 0.8;
+    %     double r1 = Random::random(), r2 = Random::random(), r3 = Random::random();
+    %     for(int i = 0; i < mVelocity.size(); i++)
+    %     {
+    %         double v,mX,rX,cX;
+    %         auto data = mVelocity[i]->getValueAt(0);
+    %         mVelocity[i]->getValueAt(0).get(v);
+    %         mBest->getParameterAt(i).getValueAt(0).get(mX);
+    %         mParameters[i]->getValueAt(0).get(cX);
+    %         rBest.getParameterAt(i).getValueAt(0).get(rX);
+    %         v = (c1 * r1 * v) + (c2 * r2 * (mX - cX)) + (c2 * r2 * (rX - cX));
+    %         data.set(v);
+    %         mVelocity[i]->setValueAt(0, data);
+    %         data.set(cX + v);
+    %         mParameters[i]->setValueAt(0, data);
+    %     }
+    % }
+    % \end{lstlisting}
 Having implemented class \(Particle\) it was possible to write fuction \(Point\ start()\) which executes algorithm. 
 
 
