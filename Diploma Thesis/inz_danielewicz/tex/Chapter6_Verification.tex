@@ -4,7 +4,7 @@ Final stage of this thesis is to verify quality of newly implemented features. R
 It performs f-fold, r-round cross validation to evaluate given association measure or aggregator. Features which will be aim of 
 this verification are C-value association measure and aggregated set of measures with weigths trained by Particle Sworm Optimization. 
 Same examination were conducted also for previously implemented measures to compare results. As a final score average from each round 
-and each fold of given validation were taken.
+and each fold of given validation was taken.
 
 \section{Setup for verification}
 Verification was performed with use of the datased described in section \ref{dataset}. Association measures listed below 
@@ -24,11 +24,31 @@ were used as a reference.
     \item W Term Frequency Order
 \end{itemize}
 
-Final verification have been done with 3 folds and 5 round cross validation. As a final score average from 
-all rounds and all folds was taken.
+Due to fact, that used method of extraction collocations bases on statistical data inaproapriate use of cross validation 
+may corrupt the verification. When set of tuples is divided into folds then distribution of relations and tuples 
+changes and that cause to diminish the score after evaluation. To reduce that effect final verification 
+have been done with 3 folds and 5 round cross validation. As a final score average from all rounds and all folds was taken.
 
 \section{Results}
-
+Figures \ref{cval_verif} and \ref{cval_verif} presents quality of the measured evaluators with use of Average Precision function. 
+On X axis there is a length of a k-best list for which the score was evaluated.
 \subsection{C-value}
+As it can be seen on the figure \ref{cval_verif} C-value appeared to be one of the best measures used in the reasearch. 
+On ranking length from 3 to 50 it achives 3rd best score, after W Term Frequency Ordear and T-score, then Mutual Expectation 
+overtake its position. This result proves that new association measure will influence the system improvement.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.32]{img/cval_verif.png}
+    \caption{Plot of average precision of C-value compared to others measures}
+    \label{cval_verif}
+\end{figure}
 
 \subsection{Aggregated measures with weigths trained with PSO}
+Vector of aggregated association measures obtained better score than all other association measure functions for every length of list.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.32]{img/cval_verif.png}
+    \caption{Plot of average precision of vector association measure trained with PSO compared to others measures}
+    \label{pso_verif}
+\end{figure}
