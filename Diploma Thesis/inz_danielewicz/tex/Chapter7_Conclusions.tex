@@ -1,20 +1,29 @@
 \chapter{Conclusions}
 
-\section{Conclusions}
-
-TODO
+All described in this thesis steps contibuted the improvement of the MeWeX system. Unit testing led to detection of 
+misimplementations of several fuctions and some other minor errors in code, what in result allowed to fix all of them. 
+New association measure C-value adopted from TermoPL \cite{termopl} - tool for extraction terminology, appeared to be effective also in extraction of collocations. 
+Generated list of MWE contained many proper candidates, what states about its quality, but also verification with use of Cross-validation 
+method confirmed its effectivness.
 
 \section{Further development}
+MeWeX is a system which still leaves great field for improvements. At first set of relations should be carefully examined. 
+Selecting candidates with WCCL operators is a first step of extraction and significantly affects following stages. 
+Having availble such large corpus like plWordNet Corpus 10.0 with inapropriate set of relations it can generate huge number of improper candidates, 
+what makes further calculations longer and worsens the results. That is why it is important to create set of more specific relatons, 
+which will produce more valuable candidates, reducing computation time and increasing efficacy of training and improving quality of results.
 
-TODO
+Next possible enchancement is to implement additional stage of collocation extraction procces, similar to the one described in \cite{termopl}.
+This checks the pointwise mutual information for all bigrams included in tuples with more elements and basing on obtained values it can 
+filter out subtuples with low value what in fact suggest that these are improper callocations. That additional step will reduce the number of 
+not correct MWE what will lead to improving the quality of the score.
+
+Finally aggregators
 
 
 
 
-% śr:
-%     1 obrazek (klas)
-%     WYSŁAĆ PIASECKIEMU
-%     wrzucić na gita!!!
+
 % czw:
 %     chap 6
 %     5.2 i 5.3
