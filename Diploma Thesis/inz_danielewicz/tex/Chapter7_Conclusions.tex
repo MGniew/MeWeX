@@ -4,7 +4,11 @@ All described in this thesis steps contibuted the improvement of the MeWeX syste
 misimplementations of several fuctions and some other minor errors in code, what in result allowed to fix all of them. 
 New association measure C-value adopted from TermoPL \cite{termopl} - tool for extraction terminology, appeared to be effective also in extraction of collocations. 
 Generated list of MWE contained many proper candidates, what states about its quality, but also verification with use of Cross-validation 
-method confirmed its effectivness.
+method confirmed its effectivness. Aggregator of measures during training with Particle Swarm Optimization were achieving promising results, 
+but cross-validation revealed much worse score. This could be caused by improper tuning methods, but several clues inicate other reason. 
+At first, for creating folds during verification, the same dataset was used as for training, so overfitting would not diminish quality of 
+the result to this level. Same problem met author of the \cite{mgr} using other methods for tuning weigths, so that can exclude 
+problem with the algorithm itself. Possible justification may be error in implementation of aggregator of vector association measure.
 
 \section{Further development}
 MeWeX is a system which still leaves great field for improvements. At first set of relations should be carefully examined. 
@@ -18,7 +22,10 @@ This checks the pointwise mutual information for all bigrams included in tuples 
 filter out subtuples with low value what in fact suggest that these are improper callocations. That additional step will reduce the number of 
 not correct MWE what will lead to improving the quality of the score.
 
-Finally aggregators
+Finally, code of aggregator of vector association measures should be investigated to find out what caused such a disproportion between results
+obtained during training and performing Cross-validation. Some misimplementation is likely to be an explanation, taking into consideration, 
+that performed unit tests showed that some errors were present in the code. As it was described in section \ref{vam_descr} aggregator of measures 
+can greatly increase quality of the result, so this can be the most profitable improvement with the least cost.
 
 
 
