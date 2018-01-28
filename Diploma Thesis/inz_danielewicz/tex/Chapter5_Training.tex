@@ -31,7 +31,7 @@ That was motivation to utilize only part of that resource. To preserve variety o
 \subsection{PLWordNet}
 Wordnet is a "lexically-semantic" web, which nodes are lexical units and edges are semantic relations connecting those units.
 PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continously developed, 
-for now version plWordnet3.1 contains 198000 words, 285000 word's meanings and 670000 semantic relations." Author of this thesis decided to use that resource 
+for now version plWordnet3.1 contains 198000 words, 285000 word's meanings and 670000 semantic relations. Author of this thesis decided to use that resource 
 as a source of proper collocations. They were obtained as a set of wccl operators, while MeWeX accepts only MWE listed in file one per line, 
 so they had to be preprocessed. This source provided 66853 collocations.
 
@@ -189,12 +189,28 @@ to increase its efficiency and shorten computation time.
 To select proper size of the swarm, short reaserch was conducted on NKJP Subcorpus only, to analyze influence of the number of particles on 
 algortihm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly 4000, 2000, 1000, 500 iterations, 
 to preserve the same number of particle evaluations and as a result the same computation time.
-
 Also parameters \(\omega, \omega _l, \omega _g\), were choosen in similar way, by training on small data, with different configurations, 
 to select the best found set of values.
 
-% TODO
+Final values that were choosen for training were: \\
+\[
+\omega = 1.0, \quad
+\omega _l = 0.2, \quad
+\omega _g = 0.8, \quad
+swarm\_size = 40
+\]
 
+Measure of quality, that were used as a target for an optimization is Average Precision. It is precisely described in section \ref{ap_desc}.
 \section{Results}
+Figure \ref{pso_train} presents to process of training showing value of best achieved Average precision value for given iteration.
+From the beggining ut to 300 iteration aggregator achieves average score, comparable to aquired by other association measures. 
+Next iterations bring vast improvement, quality of the result increases quickly till 1250 iteration, where it reaches the maximum 
+obtained by this algorithm. Final returned value of Average Precision is 0.673891.
 
-% TODO
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.45]{img/pso_train.png}
+    \caption{Flow chart of Particle Swarm Optimization}
+    \label{pso_train}
+\end{figure}
