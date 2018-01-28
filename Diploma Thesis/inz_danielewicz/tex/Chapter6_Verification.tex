@@ -29,9 +29,22 @@ may corrupt the verification. When set of tuples is divided into folds then dist
 changes and that cause to diminish the score after evaluation. To reduce that effect final verification 
 have been done with 3 folds and 5 round cross validation. As a final score average from all rounds and all folds was taken.
 
+\section{Quality measure}
+For quality evaluation of the examined functions Average Precision measure were used.
+Precision is the fraction of correctly classified elements from set of elements above specified position in the ranking. 
+Average Precision is a modification of the Precision measure, for every position in the ranking there is calculated its 
+Precision and as a result average taken from all values above that position in a ranking is assigned.
+
+\[
+    AP(n) = \frac{1}{n} * \sum_{i=1}^{n}{\frac{|\{MWE\} \cap \{Tuple_{1..i}\}|}{i}}
+\]
+where: \\
+\(MWE\) - set of proper collocations \\
+\(Tuple_{1..i}\) - set of tuples in positions range from 1 to i
+
 \section{Results}
-Figures \ref{cval_verif} and \ref{cval_verif} presents quality of the measured evaluators with use of Average Precision function. 
-On X axis there is a length of a k-best list for which the score was evaluated.
+Figures \ref{cval_verif} and \ref{pso_verif} presents quality of the measured evaluators with use of Average Precision function. 
+On X axis there is a length of a ranking list for which the score was evaluated.
 \subsection{C-value}
 As it can be seen on the figure \ref{cval_verif} C-value appeared to be one of the best measures used in the reasearch. 
 On ranking length from 3 to 50 it achives 3rd best score, after W Term Frequency Ordear and T-score, then Mutual Expectation 
@@ -44,11 +57,15 @@ overtake its position. This result proves that new association measure will infl
 \end{figure}
 
 \subsection{Aggregated measures with weigths trained with PSO}
-Vector of aggregated association measures obtained better score than all other association measure functions for every length of list.
+Figure \ref{pso_verif} shows the results of classifier trained with Particle Swarm Optimization compared with reference set of measures. 
+Vector of aggregated association measures obtained average score score. Depending on the ranking length half or even more measures from 
+relevant set. That result is much worse than expected because the same aggregator during training were achieving Average Precision 
+reaching 0.7, so that is large di. Machine learning algoritms in verification usually obtain not so high score as in training but 
+such disproportion may suggest some error in methodology or misimplementation.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.32]{img/cval_verif.png}
+    \includegraphics[scale=0.32]{img/pso_verif.png}
     \caption{Plot of average precision of vector association measure trained with PSO compared to others measures}
     \label{pso_verif}
 \end{figure}
