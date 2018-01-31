@@ -1,14 +1,26 @@
 
 \chapter{Introduction}
-Thesis describe process of improving web based system for extraction of collocations called MeWeX. 
+
+% In nowadays there are many
+
+
+Important issue in many NLP appliance is to arrange proper treatment for collocations. What is collocation will be described in 
+section \ref{col_def}, but for now assume that it is "habitual recurrent word combinations of everyday language"\cite{ramisch}.
+It is essential because multi-word expressions occure very frequently, some researches\footnote{
+\textit{The Architecture of the Language Faculty}, Jackendoff R., 1997} shows that they constitute half of the native speakers lexicon.
+If some NLP application does not handle MWE properly it will probably generate ungrammatical or unnatural output.
+To avoid such situation, dictionaries, that are used in NLP, should include collocations as well. Completion of those dictionaries 
+requires significant manual labor, so to facilitate this process programs for automatic extraction of collocations are used.
+
+Thesis describes the process of improving web based system for extraction of collocations called MeWeX. 
 At first it introduces the problem of automatic extraction of collocations and introduces the system itself, 
 its structure and functioning. Next chapters present all steps which were performed in order to improve quality of the MeWeX.
 
 \section{Definition of collocation}\label{col_def}
-Precise defining collocation is not a simple task. This problem was illustrated by Choueka in \cite{evert} 
+Precise defining collocation is not a simple task and this issue was illustrated in \cite{evert} 
 \textit{"Even though any two lexicographers would agree that ’once upon a time’, ’hit the road’ and similar idioms are collocations,
 they would most certainly disagree on almost anything else."}.
-Lexicographers argued over the years on correct defining what collocation is and because of that there is not one fixed definition of collocation  
+Lexicographers argued over the years on correct defining what collocation is and because of that there is no one fixed definition of collocation  
 and in relevant literature we can find many different versions but most of them have one common characteristic, 
 collocation is a multiword expression that are syntactically and/or semantically idiomatic. Because this thesis will base on MeWeX system 
 it assumes the same definition as in \cite{mgr}, for which purpose MeWeX was created.
@@ -19,29 +31,52 @@ it assumes the same definition as in \cite{mgr}, for which purpose MeWeX was cre
     % niekompozycyjne terminy ogólne. Mogą być one zarówno ciągłe, w szyku przemiennym, jak i
     % ustalonym.
 \end{quote}
-This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish MWE dictionary. 
+This definition was motivated by similarity to others definitions used by lexicographers and it fits the needs for creating polish multi-word expressions dictionary. 
 
 \section{Methods for extraction of collocations} \label{extraction_method}
-Automatic extraction of collocations is a hard task \cite[c.1,2]{ramisch}. First of all precise specification of collocation is required.
+Automatic extraction of collocations is a hard task \cite{ramisch}. First of all precise specification of collocation is required.
 Method of extraction is dependent on choosen definition of MWE but also on other factors like language. 
 Even having precisly specified all conditions it may be performed in many different ways. 
 Usually finding MWE consists of three steps. At first candidates for collocation are extracted from the text using some rules and filters, 
 which most often base on grammar of given language. Second step is to evaluate quality of the candidates 
 using some association measure or more sophisticated algorithms and sorting it according to obtained values. 
-Finally collocations are choosen from generated ranking. Method used in MeWeX fits in mentioned above general way, 
+Finally collocations are choosen from generated ranking. Method used in MeWeX is similar to the mentioned above general way, 
 more detailed description is included in section \ref{mewex_workflow}.
 
-\section{MeWex}
-MeWeX is a system designed for extraction of collocations. It is designed as a set of separate programs 
+\section{MeWeX}
+MeWeX is a system designed for extraction of collocations created for purposes of \cite{mgr}. It is designed as a set of separate programs 
 that preforms consequitive parts of extraction process, but it can be also used as a software library in other projects. 
 This design gives huge flexibility, because it allows to run given part many times in different setup, 
 or to preprocess large data and save result of every step. This capabilities are very useful in conducting reaserch. 
 It is also helpful in natural language processing where often size of data is very large, so possibility 
 to preprocess input once and repeating further stages many times with different setup can save a lot of time.
 
-\subsection{Structure of the program}
+\subsection{Analysis of functional and nonfunctional requirements}
+some words about requirements
+\\\textbf{Functional requirements}
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item Filter out tuples using specified by the user filter.
+    \item Extract candidates from given corpus using specified set of WCCL operators.
+    \item Evaluate quality of tuple using association measure.
+    \item Evaluate quality of tuple using aggregated vector of association measures.
+    \item Create ranking basing on tuple's score.
+    \item Examine coverage of extracted collocations in relations set.
+    \item Creates matrix that shows intersection of extracted tuples between relations.
+    \item Reduce the number of false candidates from set of all generated tuples.
+    \item Evaluate quality of results using specified measure.
+    \item Return k-best list from given text file.
+\end{itemize}
+\textbf{Nonfunctional requirements}
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item Has possibility to extend set of association measures with new ones.
+    \item "Number of measures?"
+\end{itemize}
+
+\subsection{Structure of the system}
 MeWeX has a lot functionalities, so to preserve clear and maintainable code it has expanded stucture. 
-This also simplify further extensions and modifications of the system. Part of the system structure of more important 
+This also simplifie further extensions and modifications of the system. Part of the system structure of more important 
 or significant for this thesis components of MeWeX is presented on figure \ref{img_structure} in the form of package diagram.
 
 \begin{figure}[ht]
@@ -100,7 +135,7 @@ This design, to construct different chains of programs, extends set of possibili
 	\label{img_workflow1}
 \end{figure}
 \\ Figure \ref{img_workflow1} shows schema of typical path for evaluation of efficiency of given association measure or classifier.
-\\ \textbf{Step 1: Tuples generating}\\
+\\ \textbf{Step 1: Tuples generation}\\
 First step is to generate tuples from text using WCCL operators, which determine what groups of words are selected for candidates. 
 To preform that step program TuplesBuilder is used. It requires list of corpora, corpus reader and name of tagset and 
 set of mentioned before wccl operators. Output of this program is CSV file with one tuple per line, consisting information about relation, 
@@ -216,30 +251,30 @@ one with k-best list and second includes quality evaluation of this lists, becau
 Purpose of this thesis is to improve efficiency of the MeWeX. Due to complexity of this system this task 
 will consist of few parts listed in sections below.
 
-\subsection{Test association measure functions}
+\subsection{Testing association measure functions}
 First step is to perform unit testing of association measures implementation. Author of the MeWeX did not prepared unit tests for this part of the system, 
 so there exists possibility, that those functions are incorrectly implemented. Errors generated on this stage will propagate in following data process, 
 so it can preclude improving further stages. That is why it is important to start with checking correctness of the implementation 
 at the beggining.
 
-\subsection{Implement new association measure}
+\subsection{Implementing new association measure}
 MeWeX was implemented in 2014 and natural language processing is a branch of science developing rapidly nowadays, 
-so from that time new association measures may were invented. Task for the author of this tesis is to carefully examine recently written literature 
+so from that time new association measures could be invented. Task for the author of this tesis is to carefully examine recently written literature 
 in search of newly proposed association measures which would be suitable for rating MWE. If some measure will satisfy those condition it should 
 be implemented and the last step would be to verify efficiency of that measure.
 
-\subsection{Imlement algorithm for training weigths for vector association measure}
+\subsection{Imlementing algorithm for training weigths for vector association measure}
 In MeWeX we can evaluate candidates for collocation using not only single association measure, but also aggregated score from more than one measure. 
 In that case vector of measures is created and each measure has assigned weigth. Currently in MeWeX there are implemented few simple algorithms 
 based on machine learning which trains vector of weigths. For purpose of this thesis new algorithm should be found and implemented.
 
-\subsection{Train classifier on new data}
+\subsection{Training classifier on new data}
 Mentioned section above algorithms for training weigths needs proper training data. This includes corpora of polish texts and set 
 of proper collocations. Author of \cite{mgr} while working on MeWeX had quite large corpora, but insufficient set of correct MWE limited his results. 
 Now in polish Wordnet there is availble much bigger set of collocations. Many of them was gathered with use of MeWeX.
 Using new, more copmplete, dataset weigths for aggregators should be retrained in order to obtain better results.
 
-\subsection{Compare new results with previous ones}
+\subsection{Comparing new results with previous ones}
 Last step is to compare results achived by improved version with score that author of MeWeX achieved in his thesis.
 To do that, some of the examinations conducted in \cite{mgr} will be repeated with new implemented or improved features. 
 Only part of experiments will be conducted again, because scope of this thesis does not cover all functionalities offered by MeWeX.

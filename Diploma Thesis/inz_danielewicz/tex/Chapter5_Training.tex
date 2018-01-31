@@ -10,7 +10,7 @@ Below there are described datasets and its sources which was used for purpose of
 Manually annotated subcorpus of NKJP is a part of the National Corpus of Polish, which is a initiative of four institutions: 
 Institute of Computer Science at the Polish Academy of Sciences, Institute of Polish Language at the Polish Academy of Sciences, 
 Polish Scientific Publishers PWN, and the Department of Computational and Corpus Linguistics at the University of Łódź.
-It contains one milion tokens and was manually morfosyntactically "and semantically" annotated by lexicographers. 
+It contains one milion tokens and was manually morfosyntactically and semantically annotated by lexicographers. 
 Similarly to the main corpus of NKJP it contains text from diverse sources like classic literature, daily newspapers, 
 specialist periodicals and journals, transcripts of conversations, and a variety of short-lived and internet texts. 
 Manual annotation guarantee correctness of data and it is relatively large what makes it valuable choice for training data.
@@ -28,8 +28,8 @@ long enough to make it impossible to perform tuning weigths and verification of 
 That was motivation to utilize only part of that resource. To preserve variety of text, new subcorpus was prepared by randomly picking 
 10\% of sentences and dropping rest. Then plain text was annotated by the tager Morphodita\footnote{http://ws.clarin-pl.eu/morphoDiTa.shtml} and stored in CCL format.
 
-\subsection{PLWordNet}
-Wordnet is a "lexically-semantic" web, which nodes are lexical units and edges are semantic relations connecting those units.
+\subsection{MWE set from PLWordNet}
+Wordnet is a lexically-semantic web, which nodes are lexical units and edges are semantic relations connecting those units.
 PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continously developed, 
 for now version plWordnet3.1 contains 198000 words, 285000 word's meanings and 670000 semantic relations. Author of this thesis decided to use that resource 
 as a source of proper collocations. They were obtained as a set of wccl operators, while MeWeX accepts only MWE listed in file one per line, 
@@ -177,7 +177,7 @@ for all stages following tuples generating, because it decreased number of candi
         Sum & 46703 & 10411380 & 0.44857 \\
         \hline
     \end{tabular} 
-    \caption{Coverage of proper collocations per relation}
+    \caption{Coverage of proper collocations from plWordNet per relation in tuples extracted from plWordNet Corpus 10.0 and Manually Annotated Subcorpus of NKJP}
     \label{cover_rel_stats}
 \end{table}
 
@@ -186,7 +186,7 @@ To train vector of weigths PSO algorithm with modifications described in section
 Dataset used for learning was both Manually Annotated Subcorpus of NKJP and plWordNet Corpus 10.0. Tuples were generated using reduced set of relations
 to increase its efficiency and shorten computation time.
 
-To select proper size of the swarm, short reaserch was conducted on NKJP Subcorpus only, to analyze influence of the number of particles on 
+To select proper size of the swarm, short research was conducted on NKJP Subcorpus only, to analyze influence of the number of particles on 
 algortihm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly 4000, 2000, 1000, 500 iterations, 
 to preserve the same number of particle evaluations and as a result the same computation time.
 Also parameters \(\omega, \omega _l, \omega _g\), were choosen in similar way, by training on small data, with different configurations, 

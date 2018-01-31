@@ -6,7 +6,7 @@ aggregators of the association measures. This feature allows to join properties 
 better score. Influence on final result of each measure can be controlled by vector of weigths. Proper adjustment 
 of weigths values is crucial. It can be done with use of machine learning algorithms, which can tune vector of weigths 
 in order to maximize correctness of the result. MeWeX contains several heuristic and metaheuristic algorithms, 
-which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by the autor of the MeWeX to work with the rest of the system.
+which were implemented in \(Optimizer\)\cite{klyk} and adopted by the autor of the MeWeX to work with the rest of the system.
 \begin{itemize}
     \setlength\itemsep{0em}
     \item Evolutionary Algorithm 
@@ -18,7 +18,7 @@ which were implemented by Łukasz Kłyk in his \(Optimizer\) and adopted by the 
 
 \section{Particle Swarm Optimization}\label{pso_def}
 
-Particle Swarm Optimization is an algorithm for optimization of a problem. It tries to improve a candidate solution 
+Particle Swarm Optimization is a method for optimization of a problem. It tries to improve a candidate solution 
 accordingly to a given measure of quality. PSO have population of particles called swarm and solves problem by iteratively moving those particles 
 through the search space using formula that involves particle velocity, local best solution and global best solution. 
 
@@ -57,8 +57,8 @@ New velocity is composed from three vectors and strength of influence for each o
 of corresponding \(\omega\) parameter. By modifing those parameters it is possible to control behavior of the swarm, for example 
 by reducing momentum or increasing importance of local maxima.
 
-Particle Swarm Optimization is quite simple algorithm, but it can achieve good result. Its simplicity allows easy modification and adjusting 
-algorithm for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
+Particle Swarm Optimization is a quite simple method, but it can achieve good result. Its simplicity allows easy modification and adjusting 
+it for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
 Disadvantage of this algorithm is that it has tendency to fall in the local maxima. Next problem is that for high dimensional search spaces 
 swarm has to be more populated what greatly increases computational time. 
 
