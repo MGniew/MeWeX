@@ -80,12 +80,14 @@
 	\includepdf[pages={1}]{titlepage.pdf}
 \end{titlepage}
 
-
+\pagenumbering{none}
 \include{tex/Abstract}
 
 \tableofcontents
 
 \include{tex/Terminology}
+\pagenumbering{arabic}
+\setcounter{page}{1}
 \include{tex/Chapter1_Introduction}
 \include{tex/Chapter2_Tests}
 \include{tex/Chapter3_AssociationMeasure}

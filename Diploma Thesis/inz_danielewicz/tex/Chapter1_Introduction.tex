@@ -50,7 +50,7 @@ It is also helpful in natural language processing where often size of data is ve
 to preprocess input once and repeating further stages many times with different setup can save a lot of time.
 
 \subsection{Analysis of functional and nonfunctional requirements}
-Below there is a list of functional and nonfunctional requirements that are significant for this thesis.
+Below there is a list of functional and nonfunctional requirements that are significant for the thesis.
 \\\textbf{Functional requirements}
 \begin{itemize}
     \setlength\itemsep{0em}
@@ -61,18 +61,13 @@ Below there is a list of functional and nonfunctional requirements that are sign
     \item Examine coverage of extracted collocations in relations set.
     \item Creates matrix that shows intersection of extracted tuples between relations.
     \item Create ranking basing on tuple's score.
-    \item Reduce the number of false candidates from set of all generated tuples.
-    \item Filter out tuples using specified by the user filter.
-    \item Return k-best list from given text file.
 \end{itemize}
 \textbf{Nonfunctional requirements}
 \begin{itemize}
     \setlength\itemsep{0em}
-    \item Set of available association measures is extensible.
-    \item .
-    \item "errors in measures?"
-    \item "Quality of results?"
-    \item "Number of measures?"
+    \item Set of available association measures should be extensible.
+    \item Data should be stored after every step of extraction to allow repeating of those steps.
+    \item There should be 30 assciation measures.
 \end{itemize}
 
 \subsection{Structure of the system}

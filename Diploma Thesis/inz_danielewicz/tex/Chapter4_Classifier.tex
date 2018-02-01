@@ -56,7 +56,7 @@ like it would have momentum, smoothing its movement. Particle aims toward global
 New velocity is composed from three vectors and strength of influence for each of them can be adjusted by changing value 
 of corresponding \(\omega\) parameter. By modifying those parameters it is possible to control behavior of the swarm, for example 
 by reducing momentum or increasing importance of local maxima.
-
+\clearpage
 Particle Swarm Optimization is a quite simple method, but it can achieve good result. Its simplicity allows easy modification and adjusting 
 it for needs of the user. It has three parameters that can influence behavior of the swarm, but their tuning is intuitive. 
 Disadvantage of this algorithm is that it has tendency to fall in the local maxima. Next problem is that for high dimensional search spaces 
@@ -251,7 +251,7 @@ For creation of that probability distribution there was used class, provided by 
 \textit{template< class RealType = double > class normal\_distribution;} which produces random numbers with normal probability
 with specified mean and standard deviation. Method, which converts normal distribution to the shown on the plot in the figure \ref{img_pso_imp_dist} 
 is shown below.
-
+\vspace{1em}
 \begin{lstlisting}
 std::normal_distribution<double> Random::normal(0.5, 0.1);
 std::mt19937_64 Random::generator(time(nullptr));
