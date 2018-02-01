@@ -1,11 +1,11 @@
 \chapter{Tests}
-To ensure correctness fo the results unit testsing should be performed. They cover implementation of all association measures, 
-as they were not tested before, so there exists a chance that they are incorrectly written. This should be carefuly examined, 
+To ensure correctness of the results unit testing should be performed. They cover implementation of all association measures, 
+as they were not tested before, so there exists a chance that they are incorrectly written. This should be carefully examined, 
 because errors in that stage will propagate further making improvement of next stages pointless.
 
 \section{Available test frameworks}
-There is a lot of unit test frameworks for C++. Thay vary in availble functionalties, in design, differ in their complexity and purpose, 
-some of them are heavy-duty, some are ligthweigth and simple. Few exemplary test frameworks are listed below.
+There is a lot of unit test frameworks for C++. They varies in available functionalties, in design, differ in their complexity and purpose, 
+some of them are heavy-duty, some are ligthweight and simple. Few exemplary test frameworks are listed below.
 \begin{itemize}
     \item \textbf{CppUnit} - test framework that allows testing of C sources as well as C++ with minimal source code modification.
             It was started as a port of JUnit for Windows and ported to Unix. The library is released under the GNU LGP License.
@@ -31,22 +31,22 @@ Finally its capabilities are sufficient for purpose of this project while use of
 
 \subsection{Used technology}\label{test_boost}
 The Boost Test Library Unit Test Framework gives both a simply to use and flexible way of implementation and organization C++ unit test. 
-Writing a unit test module is simple and intuitive for begginers, but framework allows more advanced users to perform complex tests \cite{boost}. 
-Test module gives possibility to have many small test cases and organise them into test suites. It also provide a feedback for a long test by 
-showing the test progress during its work. It does not require any additional library anf for long term usage users of a unit test framework 
+Writing a unit test module is simple and intuitive for beginners, but framework allows more advanced users to perform complex tests \cite{boost}. 
+Test module gives possibility to have many small test cases and organize them into test suites. It also provides a feedback for a long test by 
+showing the test progress during its work. It does not require any additional library and for long term usage users of a unit test framework 
 it is able to build it as a standalone library. The Boost.Test keeps track of all passed/failed testing tools assertions, 
 provides an ability to check the test progress and generates a result report in several different formats.
 
 \section{Method of testing}
-To test association measures at first it was neccesary to prepare contingency tables and additionally for several fuctions additionaly RankerData. 
+To test association measures at first it was necesary to prepare contingency tables and additionally for several functions additionally RankerData. 
 For purpose of generating that objects set of short CCL was used with content prepared to cover all edge cases in evaluation of tuples scores. 
-Text reading, tuples generation and creating contingency table source together with RankerData was performed directly with use of availble functions 
+Text reading, tuples generation and creating contingency table source together with RankerData was performed directly with use of available functions 
 and class instead of using separate program. It was performed only once and stored as a Fixture. Every function was covered by one test case which 
-compared result of function with correct result for every tuple in all prepared texts. All test cases were groupped to one test suite.
+compared result of function with correct result for every tuple in all prepared texts. All test cases were grouped to one test suite.
 
 \section{Result}
 Results of unit test showed that several association measures were incorrectly implemented. In some cases error lies in lacking minus like in 
-LogLikelihood, so it only reverse the score, but in other cases wrong order of operations like in WOrder makes the result completly miscalculated.
+LogLikelihood, so it only reverses the score, but in other cases wrong order of operations like in WOrder makes the result completely miscalculated.
 Table \ref{tbl_test} shows the results of performed unit tests, red names indicates incorrect implementation, orange represents function, 
 which was properly written, but it uses outcome of faulty measure. In remaining functions no errors were found. 
 Last step of this part was to fix those implementations which consisted errors.

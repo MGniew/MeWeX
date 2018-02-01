@@ -4,8 +4,8 @@
 Nowadays natural language processing is widely used, for instance in search engines, machine translations or optical character recognition.
 Important issue in many NLP appliance is to arrange proper treatment for collocations. Definition of collocation will be described in 
 section \ref{col_def}, but for now assume that it is "habitual recurrent word combinations of everyday language"\cite{ramisch}.
-It is essential because multi-word expressions occure very frequently, some researches\footnote{
-\textit{The Architecture of the Language Faculty}, Jackendoff R., 1997} shows that they constitute half of the native speakers lexicon.
+It is essential because multi-word expressions occur very frequently, some researches\footnote{
+\textit{The Architecture of the Language Faculty}, Jackendoff R., 1997} shows that they constitute half of the native speakers' lexicon.
 If some NLP application does not handle MWE properly it will probably generate ungrammatical or unnatural output.
 To avoid such situation, dictionaries, that are used in NLP, should include collocations as well. Completion of those dictionaries 
 requires significant manual labor, so to facilitate this process programs for automatic extraction of collocations are used.
@@ -24,7 +24,7 @@ collocation is a multiword expression that are syntactically and/or semantically
 it assumes the same definition as in \cite{mgr}, for which purpose MeWeX was created.
 \begin{quote}
     Collocation is a multiword specialistic term or noncompositional general term. 
-    It may be both continous or not and both in fixed or flexible order.
+    It may be both continuous or not and both in fixed or flexible order.
     % Za wyrażenie wielowyrazowe uznawane są wieloelementowe terminy specjalistyczne oraz
     % niekompozycyjne terminy ogólne. Mogą być one zarówno ciągłe, w szyku przemiennym, jak i
     % ustalonym.
@@ -33,7 +33,7 @@ This definition was motivated by similarity to others definitions used by lexico
 
 \section{Methods for extraction of collocations} \label{extraction_method}
 Automatic extraction of collocations is a hard task \cite{ramisch}. First of all precise specification of collocation is required.
-Method of extraction is dependent on choosen definition of MWE but also on other factors like language. 
+Method of extraction is dependent on chosen definition of MWE but also on other factors like language. 
 Even having precisly specified all conditions it may be performed in many different ways. 
 Usually finding MWE consists of three steps. At first candidates for collocation are extracted from the text using some rules and filters, 
 which most often base on grammar of given language. Second step is to evaluate quality of the candidates 
@@ -43,37 +43,40 @@ more detailed description is included in section \ref{mewex_workflow}.
 
 \section{MeWeX}
 MeWeX is a system designed for extraction of collocations created for purposes of \cite{mgr}. It is designed as a set of separate programs 
-that preforms consequitive parts of extraction process, but it can be also used as a software library in other projects. 
+that preforms consecuitive parts of extraction process, but it can be also used as a software library in other projects. 
 This design gives huge flexibility, because it allows to run given part many times in different setup, 
-or to preprocess large data and save result of every step. This capabilities are very useful in conducting reaserch. 
+or to preprocess large data and save result of every step. These capabilities are very useful in conducting research. 
 It is also helpful in natural language processing where often size of data is very large, so possibility 
 to preprocess input once and repeating further stages many times with different setup can save a lot of time.
 
 \subsection{Analysis of functional and nonfunctional requirements}
-some words about requirements
+Below there is a list of functional and nonfunctional requirements that are significant for this thesis.
 \\\textbf{Functional requirements}
 \begin{itemize}
     \setlength\itemsep{0em}
-    \item Filter out tuples using specified by the user filter.
+    \item Evaluate quality of results using specified measure.
     \item Extract candidates from given corpus using specified set of WCCL operators.
     \item Evaluate quality of tuple using association measure.
     \item Evaluate quality of tuple using aggregated vector of association measures.
-    \item Create ranking basing on tuple's score.
     \item Examine coverage of extracted collocations in relations set.
     \item Creates matrix that shows intersection of extracted tuples between relations.
+    \item Create ranking basing on tuple's score.
     \item Reduce the number of false candidates from set of all generated tuples.
-    \item Evaluate quality of results using specified measure.
+    \item Filter out tuples using specified by the user filter.
     \item Return k-best list from given text file.
 \end{itemize}
 \textbf{Nonfunctional requirements}
 \begin{itemize}
     \setlength\itemsep{0em}
-    \item Has possibility to extend set of association measures with new ones.
+    \item Set of available association measures is extensible.
+    \item .
+    \item "errors in measures?"
+    \item "Quality of results?"
     \item "Number of measures?"
 \end{itemize}
 
 \subsection{Structure of the system}
-MeWeX has a lot functionalities, so to preserve clear and maintainable code it has expanded stucture. 
+MeWeX has a lot functionalities, so to preserve clear and maintainable code it has expanded structure. 
 This also simplifie further extensions and modifications of the system. Part of the system structure of more important 
 or significant for this thesis components of MeWeX is presented on figure \ref{img_structure} in the form of package diagram.
 
@@ -85,7 +88,7 @@ or significant for this thesis components of MeWeX is presented on figure \ref{i
 \end{figure}
 
 All functionalities are provided as a set of programs that together creates complete tool for collocation extraction,
-verification of the results, tunning weigths, result analysis etc. Below there is a list of all of them together with short description.
+verification of the results, tunning weights, result analysis etc. Below there is a list of all of them together with short description.
 \begin{itemize}
     \item \textbf{TuplesBuilder} - Program that reads corpora given as an input and using wccl operators given in input file 
     it creates candidates for collocations.
@@ -96,16 +99,16 @@ verification of the results, tunning weigths, result analysis etc. Below there i
  
     \item \textbf{Normalizer} - Program that performs dispersion on contingency tables.
  
-    \item \textbf{FeatureMaker} - This program prepares feature vector by evaluating association measures specified at input for each tuple. 
-    using output of this program we can train weights for aggregators in reasonable time.
+    \item \textbf{FeatureMaker} - This program prepares feature vector by evaluating association measures specified as input for each tuple. 
+    Using output of this program we can train weights for aggregators in reasonable time.
  
     \item \textbf{Heuristic} - It uses given machine learning algorithm to tune weights for association measures. 
     This process is highly adjustable, all parameters for training can be specified in config file.
  
     \item \textbf{Digger} - This program extract collocations basing on given association measures or vector of them. 
-    It also provide functionality of extracting encountered forms of collocations.
+    It also provides functionality of extracting encountered forms of collocations.
  
-    \item \textbf{Miner} - Program created to perform f-fold, r-round cross validation for choosen association measures or classifiers.
+    \item \textbf{Miner} - Program created to perform f-fold, r-round cross validation for chosen association measures or classifiers.
     
     \item \textbf{Cover} - It examines coverage of extracted collocations in relations set. It also creates matrix 
     that shows intersection of extracted tuples between relations. It allows to check how many tuples was assigned to more than one relation 
@@ -123,7 +126,7 @@ verification of the results, tunning weigths, result analysis etc. Below there i
 \end{itemize}
 
 \subsection{Workflow of the program} \label{mewex_workflow}
-As functionalities of MeWeX are splitted between many separate programs, usually to achive some result several programs must be run in specific order. 
+As functionalities of MeWeX are splitted between many separate programs, usually to achieve some result several programs must be run in specific order. 
 This design, to construct different chains of programs, extends set of possibilities. Some exemplary workflow of the system are described below. 
 \\ \\\textbf{Workflow for evaluation of efficiency of methods for extraction of collocations}
 \begin{figure}[ht]
@@ -139,7 +142,7 @@ To preform that step program TuplesBuilder is used. It requires list of corpora,
 set of mentioned before wccl operators. Output of this program is CSV file with one tuple per line, consisting information about relation, 
 its name, group and size and also all elements of tuple.
 \\ \textbf{Step 2: Normalization}\\
-Second step is optional and allows modification of information about tuples using one of availble dispersion function. 
+Second step is optional and allows modification of information about tuples using one of available dispersion function. 
 It may be useful for processing many corpora of differentiated categories, because it changes frequency distribution of tuples 
 favouring less common candidates.
 \\ \textbf{Step 3: Evaluation}\\
@@ -163,7 +166,7 @@ Those files should be further analized by the user.
         \hline
         Vector association measure & Text representing vector association measure \\
         \hline
-        Aggregator & Aggregator fuction for vector association measure \\
+        Aggregator & Aggregator function for vector association measure \\
         \hline
         Classifier & Text representing classifier which has to be used \\
         \hline
@@ -194,7 +197,7 @@ Steps 1 and 2 are identical as in previous example, so they will not be describe
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.4]{img/mewex_workflow2.png}
-	\caption{Examplary workflow}
+	\caption{Exemplary workflow}
 	\label{img_workflow2}
 \end{figure}
 \textbf{Step 3: Building contingency table}\\
@@ -226,7 +229,7 @@ one with k-best list and second includes quality evaluation of this lists, becau
         \hline
         Vector association measure & Text representing vector association measure \\
         \hline
-        Aggregator & Aggregator fuction for vector association measure \\
+        Aggregator & Aggregator function for vector association measure \\
         \hline
         Classifier & Text representing classifier which has to be used \\
         \hline
@@ -253,7 +256,7 @@ will consist of few parts listed in sections below.
 First step is to perform unit testing of association measures implementation. Author of the MeWeX did not prepared unit tests for this part of the system, 
 so there exists possibility, that those functions are incorrectly implemented. Errors generated on this stage will propagate in following data process, 
 so it can preclude improving further stages. That is why it is important to start with checking correctness of the implementation 
-at the beggining.
+at the beginning.
 
 \subsection{Implementing new association measure}
 MeWeX was implemented in 2014 and natural language processing is a branch of science developing rapidly nowadays, 
@@ -261,7 +264,7 @@ so from that time new association measures could be invented. Task for the autho
 in search of newly proposed association measures which would be suitable for rating MWE. If some measure will satisfy those condition it should 
 be implemented and the last step would be to verify efficiency of that measure.
 
-\subsection{Imlementing algorithm for training weigths for vector association measure}
+\subsection{Implementing algorithm for training weights for vector association measure}
 In MeWeX we can evaluate candidates for collocation using not only single association measure, but also aggregated score from more than one measure. 
 In that case vector of measures is created and each measure has assigned weigth. Currently in MeWeX there are implemented few simple algorithms 
 based on machine learning which trains vector of weigths. For purpose of this thesis new algorithm should be found and implemented.
@@ -269,10 +272,10 @@ based on machine learning which trains vector of weigths. For purpose of this th
 \subsection{Training classifier on new data}
 Mentioned section above algorithms for training weigths needs proper training data. This includes corpora of polish texts and set 
 of proper collocations. Author of \cite{mgr} while working on MeWeX had quite large corpora, but insufficient set of correct MWE limited his results. 
-Now in polish Wordnet there is availble much bigger set of collocations. Many of them was gathered with use of MeWeX.
-Using new, more copmplete, dataset weigths for aggregators should be retrained in order to obtain better results.
+Now in polish Wordnet there is available much bigger set of collocations. Many of them was gathered with use of MeWeX.
+Using new, more complete, dataset weights for aggregators should be retrained in order to obtain better results.
 
 \subsection{Comparing new results with previous ones}
-Last step is to compare results achived by improved version with score that author of MeWeX achieved in his thesis.
+Last step is to compare results achieved by improved version with score that author of MeWeX achieved in his thesis.
 To do that, some of the examinations conducted in \cite{mgr} will be repeated with new implemented or improved features. 
 Only part of experiments will be conducted again, because scope of this thesis does not cover all functionalities offered by MeWeX.

@@ -1,12 +1,12 @@
-\chapter{Imlement algorithm for training weigths for vector association measure}\label{vam_descr}
+\chapter{Implement algorithm for training weights for vector association measure}\label{vam_descr}
 
 Different association measures evaluate their scores basing on different statistics like frequency of the tuple, 
 expected frequency, frequency of subtuples, size of tuple etc, so to improve quality of the results MeWeX uses 
 aggregators of the association measures. This feature allows to join properties of many measures in order to achieve 
-better score. Influence on final result of each measure can be controlled by vector of weigths. Proper adjustment 
-of weigths values is crucial. It can be done with use of machine learning algorithms, which can tune vector of weigths 
+better score. Influence on final result of each measure can be controlled by vector of weights. Proper adjustment 
+of weights values is crucial. It can be done with use of machine learning algorithms, which can tune vector of weights 
 in order to maximize correctness of the result. MeWeX contains several heuristic and metaheuristic algorithms, 
-which were implemented in \(Optimizer\)\cite{klyk} and adopted by the autor of the MeWeX to work with the rest of the system.
+which were implemented in \(Optimizer\)\cite{klyk} and adopted by the author of the MeWeX to work with the rest of the system.
 \begin{itemize}
     \setlength\itemsep{0em}
     \item Evolutionary Algorithm 
@@ -25,9 +25,9 @@ through the search space using formula that involves particle velocity, local be
 Algorithm starts with placing all particles in search space choosing random uniformly distributed positions for them and initializing its velocity to 0. 
 Then for first particle solution is evaluated, next it assigns its starting position as a local and global best position. 
 This step is repeated for all particles in the swarm, but global best position is changed only when new one achieves higher score. 
-From that point all steps are performed in a loop till stop condition will not be satisfied. For every paricle, at first 
+From that point all steps are performed in a loop till stop condition will not be satisfied. For every particle, at first 
 velocity is updated, then its position is changed by the velocity vector and quality of new position is evaluated. 
-If new score is is higher than local or global best, then they are updated accordingly. When algorithm reaches stop conition 
+If new score is higher than local or global best, then they are updated accordingly. When algorithm reaches stop condition 
 then position of global best solution is returned as a result.
 In the figure \ref{pso_flowchart} there is presented flow chart of Particle Swarm Optimization.
 \begin{figure}[ht]
@@ -48,13 +48,13 @@ Where: \\
 \(r _{l}, r _{g}\) - random numbers from interval \((0,1)\) \\
 \(\omega, \omega _{l}, \omega _{g}\) - parameters, chosen by the user, which controls behaviour of the PSO \\
 \(x\)  - position of given particle \\
-\(p\)  - position of best solution achieved by given particle \\
-\(g\)  - position of global best solution achieved by the swarm \\
+\(p\)  - position of the best solution achieved by given particle \\
+\(g\)  - position of the global best solution achieved by the swarm \\
 
 One of the factor for calculating new velocity is its previous value. Preserving partially old velocity makes particle behavior 
 like it would have momentum, smoothing its movement. Particle aims toward global and local best, but force of those both factors is randomized.
 New velocity is composed from three vectors and strength of influence for each of them can be adjusted by changing value 
-of corresponding \(\omega\) parameter. By modifing those parameters it is possible to control behavior of the swarm, for example 
+of corresponding \(\omega\) parameter. By modifying those parameters it is possible to control behavior of the swarm, for example 
 by reducing momentum or increasing importance of local maxima.
 
 Particle Swarm Optimization is a quite simple method, but it can achieve good result. Its simplicity allows easy modification and adjusting 
@@ -63,7 +63,7 @@ Disadvantage of this algorithm is that it has tendency to fall in the local maxi
 swarm has to be more populated what greatly increases computational time. 
 
 \subsection{Motivation}
-One of the method to increase efficiency of the MeWeX was to improve selection of weigths for aggregators. 
+One of the method to increase efficiency of the MeWeX was to improve selection of weights for aggregators. 
 Implementing new algorithm Particle Swarm Optimization was reasonable solution taking into account its simplicity 
 connected with good efficacy. Susceptibility on modifications and easy adjustment of parameters make it also a good choice.
 
@@ -78,7 +78,7 @@ presents the structure of implemented algorithm.
 \end{figure}
 
 
-To make possible using new algorithm in the same way as already implemented few steps was neccesary to perform.
+To make possible using new algorithm in the same way as already implemented few steps was necesary to perform.
 At first, class \(ParticleSwarmOptimization\) had to be created base on implementation of other machine learning algorithms. 
 It does not need to inherit any other class, but it has to be template class, with the same set of template parameters like in other classes. 
 Next requirement is that it must define constructor \textit{ParticleSwarmOptimization(const Point\& rStartPoint, Evaluator* pEvaluator, const ArgumentsType\& rArgs)} 
@@ -238,7 +238,7 @@ increased efficacy of the algorithm by realocating particles when they stop in p
 Second problem with PSO was that search space had a lot of dimensions, and by reason of long computation time to evaluate single particle solution, 
 size of the swarm was limited. This caused that only small part of search space was explored. Solution of that problem, 
 proposed by the author of this thesis was to change the distribution of starting positions. Instead of uniform distribution, positions was randomized 
-with more problability beeing close to edge. This distibution is presented on figure \ref{img_pso_imp_dist}.
+with more problability being close to edge. This distribution is presented on figure \ref{img_pso_imp_dist}.
 
 \begin{figure}[ht]
 	\centering

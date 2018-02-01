@@ -1,26 +1,26 @@
 \chapter{New association measure}
 
 Natural Language Processing is developing very quickly nowadays, but extraction of collocations is still quite low advanced field \cite{ramisch}. 
-In the recent years a couple of papers and books have been published in this topic, but most of them describes method for extraction of MWE in english 
+In the recent years a couple of papers and books have been published in this topic, but most of them describes method for extraction of MWE in English 
 and since this task is strongly language dependent, polish literature about this subject is much more valuable for this thesis.
-In 2016 Polish sciencists published paper about their application for polish terminology extraction \cite{termopl}. 
+In 2016 Polish scientists published paper about their application for polish terminology extraction \cite{termopl}. 
 Method that they use for that task is very similar to described in section \ref{extraction_method}. 
 Whole extraction is a 3-stage process. At first candidates for terms are selected from text basing on grammar rules. 
 Second step is evaluation of candidates using term quality measure and making ranking accordingly to the obtained score. 
 Final step is filtering out general terms used in many domains by comparing phrases containing that terms to those obtained from non-domain corpora.
-Principle of working is similar to the one used in MeWeX, also definidion of terminology used in that paper 
-partialy cover definition of collocation used in this thesis. The difference is, that in opposition to MWE, term can be a single word, 
-also terminology is domain-specific only while collocation can be also non-compositional general expression. 
+Principle of working is similar to the one used in MeWeX, also definition of terminology used in that paper 
+partially cover definition of collocation used in this thesis. The difference is, that in opposition to MWE, term can be a single word, 
+also terminology is domain-specific only while collocation can be also noncompositional general expression. 
 These discrepancies may be easily walk around by adding some simple constraints and then the same method can be used for extracting MWE. 
 First stage of processing is very similar to already implemented, so this can be skipped. Last one filters out general terms, 
 which is not desired step in collocation extraction. Middle stage uses quality measure to evaluate candidates and sort them 
 accordingly to the obtained score, but TermoPL uses for that purpose C-value measure, which is not implemented in MeWeX. 
-Extending availble list of association measures by this new function can improve efficiency of the system.
+Extending available list of association measures by this new function can improve efficiency of the system.
 
 \section{C-Value}
 Most significant factor in C-value is frequency of given phrase what is a common practice in association measures. 
-Longer tuples are less frequent, so multipling by logarithm of tuple length reduces that disadvantage. 
-The most distinctive part from other measures is substracting frequencies of all tuples containig given phrase divided by number of those tuples. 
+Longer tuples are less frequent, so multiplying by logarithm of tuple length reduces that disadvantage. 
+The most distinctive part from other measures is subtracting frequencies of all tuples containing given phrase divided by number of those tuples. 
 This part decreases score for candidates which occure often in different context.
 \[ 
     C{\text -}value(p) = \begin{cases}
@@ -43,13 +43,13 @@ MeWeX contains many association measure which base on frequency, expected freque
 and using vector association measure it can make an advantage of all those features at once. That leads to assumption that adding new measure, 
 which values properties not considered before, should increase quality of result. C-value base on frequency and length of phrase, 
 but also it takes into account number of different contexts it takes. This property is not covered by any other already implemented function.
-Measure W Order is quite similar, but this one checks only number of other relations in which given tuples occured, 
+Measure W Order is quite similar, but this one checks only number of other relations in which given tuples occurred, 
 while C-value also accounts tuples which contains given phrase and measures also frequency.
 
 
 \subsection{Measure implementation}
 Expanded structure and modular architecture of MeWeX made simple further extensions of code. To implement new association 
-it was neccesary to create new class that inherits class \(AssociationFunction\).
+it was necesary to create new class that inherits class \(AssociationFunction\).
 \begin{lstlisting}[float,floatplacement=H]
 #include "AssociationFunction.h"
 
@@ -113,7 +113,7 @@ double Cvalue::rankUsingTable(
 \end{lstlisting}
 
 \subsection{Quality evaluation}
-In the figure \ref{img_cval} are presented examplary results obtained with use of C-value association measure. 
+In the figure \ref{img_cval} are presented exemplary results obtained with use of C-value association measure. 
 It is hard to manually evaluate quality of all results but in top 50 tuples from k-best list almost all suits the definition of collocation, 
 so that is satisfactionary score. More precise evaluation, quality of this measure, method and setup for verification 
 is described in chapter \ref{verification}.

@@ -1,7 +1,7 @@
 \chapter{Training classifier}
 
 \section{Dataset}\label{dataset}
-During tuning weigths vector 
+During tuning weights vector 
 All association measures base on statistical data, so in order to obtain reliable results large dataset should be provided.
 Machine learning algorithms also need vast and differentiated resources to produce satisfactory result.
 Below there are described datasets and its sources which was used for purpose of this thesis.
@@ -10,35 +10,35 @@ Below there are described datasets and its sources which was used for purpose of
 Manually annotated subcorpus of NKJP is a part of the National Corpus of Polish, which is a initiative of four institutions: 
 Institute of Computer Science at the Polish Academy of Sciences, Institute of Polish Language at the Polish Academy of Sciences, 
 Polish Scientific Publishers PWN, and the Department of Computational and Corpus Linguistics at the University of Łódź.
-It contains one milion tokens and was manually morfosyntactically and semantically annotated by lexicographers. 
+It contains one million tokens and was manually morfosyntactically and semantically annotated by lexicographers. 
 Similarly to the main corpus of NKJP it contains text from diverse sources like classic literature, daily newspapers, 
 specialist periodicals and journals, transcripts of conversations, and a variety of short-lived and internet texts. 
 Manual annotation guarantee correctness of data and it is relatively large what makes it valuable choice for training data.
 
 \subsection{plWordNet Corpus 10.0}
 
-It contains over 4 bilions tokens and it is probably the largest corpus of Polish texts created in controlled way. 
+It contains over 4 billions tokens and it is probably the largest corpus of Polish texts created in controlled way. 
 In the article \cite{kgr10} we can find short description of its content: \emph{It consists of IPI PAN Corpus, 
 the first annotated corpus of Polish,  National Corpus of Polish, Polish Wikipedia (from 2016), Rzeczpospolita Corpus 
 -- corpus of electronic editions of a Polish newspaper from the years 1993-2003, supplemented with text acquired from the Web 
 -- only text with small percentage of words unknown to a very comprehensive morphological analyser Morfeusz 2.0 
 were included; duplicates were automatically eliminated from the merged corpus.}
 Enormous size of this corpus caused computation time to process such amount of information 
-long enough to make it impossible to perform tuning weigths and verification of the results on whole corpus. 
+long enough to make it impossible to perform tuning weights and verification of the results on whole corpus. 
 That was motivation to utilize only part of that resource. To preserve variety of text, new subcorpus was prepared by randomly picking 
-10\% of sentences and dropping rest. Then plain text was annotated by the tager Morphodita\footnote{http://ws.clarin-pl.eu/morphoDiTa.shtml} and stored in CCL format.
+10\% of sentences and dropping rest. Then plain text was annotated by the tagger Morphodita\footnote{http://ws.clarin-pl.eu/morphoDiTa.shtml} and stored in CCL format.
 
 \subsection{MWE set from PLWordNet}
 Wordnet is a lexically-semantic web, which nodes are lexical units and edges are semantic relations connecting those units.
-PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continously developed, 
+PLWordNet is the biggest polish wordnet, it was founded by G4.19 Research Group in 2006 and still it is continuously developed, 
 for now version plWordnet3.1 contains 198000 words, 285000 word's meanings and 670000 semantic relations. Author of this thesis decided to use that resource 
 as a source of proper collocations. They were obtained as a set of wccl operators, while MeWeX accepts only MWE listed in file one per line, 
 so they had to be preprocessed. This source provided 66853 collocations.
 
 \subsection{Set of relations}
 First stage of collocation extraction, selecting candidates, requires set of relations, to reduce number of candidates only to syntactically reasonable. 
-These relations has to be in form of WCCL operators. They can specify size of the tuple, part of speech and other properties of phrase element, 
-order of tuple or even particular lemma. Set used for purpose of this thesis was taken from resources availble in the MeWeX system. 
+These relations have to be in form of WCCL operators. They can specify size of the tuple, part of speech and other properties of phrase element, 
+order of tuple or even particular lemma. Set used for purpose of this thesis was taken from resources available in the MeWeX system. 
 At first all relations were used in tuples generation, but examination with use of program \(Cover\) showed that in selected candidates 
 there is only 0.44\% of proper collocations. Precise statistics from the output of this program can be found in table \ref{cover_rel_stats}.
 Having such large disproportion of positive to negative samples makes training very ineffective. To increase efficacy of learning 
@@ -182,17 +182,17 @@ for all stages following tuples generating, because it decreased number of candi
 \end{table}
 
 \section{Methods used for training}
-To train vector of weigths PSO algorithm with modifications described in section \ref{pso_improv} was used. 
+To train vector of weights PSO algorithm with modifications described in section \ref{pso_improv} was used. 
 Dataset used for learning was both Manually Annotated Subcorpus of NKJP and plWordNet Corpus 10.0. Tuples were generated using reduced set of relations
 to increase its efficiency and shorten computation time.
 
 To select proper size of the swarm, short research was conducted on NKJP Subcorpus only, to analyze influence of the number of particles on 
-algortihm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly 4000, 2000, 1000, 500 iterations, 
+algorithm efficacy. Test was carried out for sizes: 5, 10, 20, 40 and accordingly 4000, 2000, 1000, 500 iterations, 
 to preserve the same number of particle evaluations and as a result the same computation time.
-Also parameters \(\omega, \omega _l, \omega _g\), were choosen in similar way, by training on small data, with different configurations, 
+Also parameters \(\omega, \omega _l, \omega _g\), bave been chosen in similar way, by training on small data, with different configurations, 
 to select the best found set of values.
 
-Final values that were choosen for training were: \\
+Final values that have been chosen for training were: \\
 \[
 \omega = 1.0, \quad
 \omega _l = 0.2, \quad
@@ -203,8 +203,8 @@ swarm\_size = 40
 Measure of quality, that were used as a target for an optimization is Average Precision. It is precisely described in section \ref{ap_desc}.
 
 \section{Results}
-Figure \ref{pso_train} presents to process of training showing value of best achieved Average precision value for given iteration.
-From the beggining ut to 300 iteration aggregator achieves average score, comparable to aquired by other association measures. 
+Figure \ref{pso_train} presents the process of training showing value of best achieved Average precision value for given iteration.
+From the beginning up to 300 iteration aggregator achieves average score, comparable to aquired by other association measures. 
 Next iterations bring vast improvement, quality of the result increases quickly till 1250 iteration, where it reaches the maximum 
 obtained by this algorithm. Final returned value of Average Precision is 0.673891.
 
