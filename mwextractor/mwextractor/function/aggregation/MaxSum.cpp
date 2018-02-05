@@ -18,7 +18,8 @@ double MaxSum::compute(std::vector<double> const& pValues) const
 	double res = 0.0;
 	for (size_t i = 0; i < pValues.size(); ++i)
 	{
-		res += pValues[i] * getWeightVector()[i];
+		if(pValues[i] == pValues[i]) // check if value is not null
+			res += pValues[i] * getWeightVector()[i];
 	}
 	return res;
 }
