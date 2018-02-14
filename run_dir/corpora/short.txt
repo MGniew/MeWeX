@@ -1,0 +1,2 @@
+corpora/short.ccl
+corpora/mwe-short.ccl

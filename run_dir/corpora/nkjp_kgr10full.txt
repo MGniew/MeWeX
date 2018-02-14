@@ -1,0 +1,3 @@
+/home/igor/CLARIN_Projects/Corpus/kgr1g_morpho.ccl
+/home/igor/CLARIN_Projects/Corpus/nkjp1m_disamb.ccl
+/home/igor/CLARIN_Projects/Corpus/kgr78kk.ccl

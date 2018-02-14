@@ -1,0 +1,1 @@
+/home/igor/CLARIN_Projects/Corpus/nkjp1m_disamb.ccl
