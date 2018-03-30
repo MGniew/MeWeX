@@ -343,9 +343,9 @@ venv.bak/
 */*/.vscode/*
 
 #Project related
-Diploma Thesis/*
+Diploma Thesis
 */bin/*
-run_dir/results/*
-eun_dir/tuples/*
+run_dir/results/
+run_dir/tuples/
 .code-workspace
 
