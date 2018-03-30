@@ -341,3 +341,11 @@ venv.bak/
 ### VisualStudioCode ###
 *.vscode/* # don't know why this does not work :(
 */*/.vscode/*
+
+#Project related
+Diploma Thesis/*
+*/bin/*
+run_dir/results/*
+eun_dir/tuples/*
+.code-workspace
+
