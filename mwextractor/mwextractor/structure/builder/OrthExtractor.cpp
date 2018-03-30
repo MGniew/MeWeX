@@ -99,6 +99,7 @@ void OrthExtractor::extract(
 
 		std::vector<TupleStorage::WordId> 	vecPosWord;
 		std::vector<std::string> 			vecPosOrth;
+		std::vector<std::string> 			vecPos;
 		Corpus2::Sentence::Ptr 				sentence;
 		while ((sentence = reader->get_next_sentence()) != nullptr)
 		{
@@ -107,6 +108,7 @@ void OrthExtractor::extract(
 			{
 				vecPosWord.resize(sentenceSize);
 				vecPosOrth.resize(sentenceSize);
+				vecPos.resize(sentenceSize);
 			}
 
 			for (size_t t = 0; t < sentenceSize; ++t)
@@ -120,6 +122,7 @@ void OrthExtractor::extract(
 				TupleStorage::WordT word = TupleStorage::WordT(posId, lexem.lemma_utf8(), 0.0, 0);
 				vecPosWord[t] = pStorage->findWordIdSilent(word);
 				vecPosOrth[t] = token->orth_utf8();
+				vecPos[t] = pTagset.tag_to_string(lexem.tag());
 			}
 
 			for (size_t t = 0; t < sentenceSize; ++t)
@@ -170,7 +173,18 @@ void OrthExtractor::extract(
 						}
 					}
 
+					std::stringstream posstr;
+					for (auto pos = indices.begin(); pos != indices.end(); ++pos)
+					{
+						posstr << vecPos[*pos];
+						if (*pos < *indices.rbegin())
+						{
+							posstr << ' ';
+						}
+					}
+
 					findOrthForm.form = str.str();
+					findOrthForm.tag = posstr.str();
 
 					auto setIter = iter->second.find(findOrthForm);
 					if (setIter != iter->second.end())
@@ -186,6 +200,7 @@ void OrthExtractor::extract(
 
 			vecPosWord.clear();
 			vecPosOrth.clear();
+			vecPos.clear();
 		}									// for every sentence
 
 		utils::Time corpusTimeEnd;

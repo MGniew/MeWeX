@@ -181,6 +181,18 @@ void MatrixTupleStorage::recomputeTuplesGlobalFrequency()
 }
 
 
+std::string	MatrixTupleStorage::createTupleReprezentationWebTool(TupleT const& pTuple) const
+{
+	std::stringstream str;
+	str << pTuple.getMetadata().getGlobalFrequency();
+	str << '\t' << pTuple.getRelationCopy()->getName() << '\t';
+	for (size_t i = 0; i < pTuple.size(); ++i)
+	{
+		str << ' ' << createWordReprezentation(pTuple[i]);
+	}
+	return str.str();
+}
+
 std::string	MatrixTupleStorage::createTupleReprezentation(TupleT const& pTuple) const
 {
 	std::stringstream str;
@@ -190,6 +202,12 @@ std::string	MatrixTupleStorage::createTupleReprezentation(TupleT const& pTuple) 
 		str << '\t' << createWordReprezentation(pTuple[i]);
 	}
 	return str.str();
+}
+
+
+std::string MatrixTupleStorage::createTupleReprezentationWebTool(TupleId const& pTupleId) const
+{
+	return createTupleReprezentationWebTool(findTuple(pTupleId));
 }
 
 

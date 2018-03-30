@@ -18,11 +18,61 @@ void KBestTupleWithOrthsListIO::write(
 	KBestTupleList const&	pKBest,
 	OrthFormMap const&		pOrthMap,
 	TupleStorage const&		pStorage,
-	std::string const&		pFilePath) const
+	std::string const&		pFilePath,
+	bool					useWebToolFormat) const
 {
-	writeSome(pKBest, pOrthMap, pStorage, pFilePath, pKBest.size());
+	if(useWebToolFormat)
+		writeSomeWebTool(pKBest, pOrthMap, pStorage, pFilePath, pKBest.size());
+	else
+		writeSome(pKBest, pOrthMap, pStorage, pFilePath, pKBest.size());
 }
 
+
+void KBestTupleWithOrthsListIO::writeSomeWebTool(
+	KBestTupleList const&	pKBest,
+	OrthFormMap const&		pOrthMap,
+	TupleStorage const& 	pStorage,
+	std::string const&		pFilePath,
+	size_t					pCount) const
+{
+	size_t trueSize = std::min(pCount, pKBest.size());
+
+	std::fstream file(pFilePath, std::ios_base::out);
+	EXCEPTION(file.is_open(), "KBestTupleWithOrthsListIO::write(): cannot open a file '" << pFilePath << "'.");
+
+	utils::setStreamMaxDoublePrecision(file);
+
+	file << pKBest.getDescription() << '\n';
+	file << trueSize;
+
+	std::vector<OrthForm> temp;
+	for (size_t i = 0; i < trueSize; ++i)
+	{
+		file << '\n'
+			<< pKBest[i].score << '\t'
+			<< pStorage.createTupleReprezentationWebTool(pKBest[i].element);
+
+		auto const& orthFromMap = pOrthMap.find(pKBest[i].element)->second;
+		for (auto iter = orthFromMap.begin(); iter != orthFromMap.end(); ++iter)
+		{
+			temp.push_back(*iter);
+		}
+
+		auto comparator = [](OrthForm const& fs1, OrthForm const& fs2) -> bool { return fs1.frequency > fs2.frequency; };
+		std::sort(temp.begin(), temp.end(), comparator);
+
+		file << '\t';
+
+		for (size_t i = 0; i < temp.size(); ++i)
+		{
+			file << temp[i].frequency << ':' << temp[i].form << " (" << temp[i].tag << "), ";
+		}
+
+		temp.clear();
+	}
+
+	file.close();
+}
 
 void KBestTupleWithOrthsListIO::writeSome(
 	KBestTupleList const&	pKBest,

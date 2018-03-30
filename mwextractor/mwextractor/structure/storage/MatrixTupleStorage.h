@@ -109,7 +109,9 @@ public:
 	void					recomputeTuplesGlobalFrequency();
 
 	std::string				createTupleReprezentation(TupleT const& pTuple)				const;
+	std::string				createTupleReprezentationWebTool(TupleT const& pTuple)		const;
 	std::string				createTupleReprezentation(TupleId const& pTupleId)			const;
+	std::string				createTupleReprezentationWebTool(TupleId const& pTupleId)	const;
 
 	TupleId					parseTupleReprezentation(std::string const& pTupleString)	const;
 

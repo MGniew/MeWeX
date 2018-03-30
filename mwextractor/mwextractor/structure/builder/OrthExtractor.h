@@ -43,6 +43,7 @@ public:
 
 		mutable size_t 	frequency;
 		std::string 	form;
+		std::string 	tag;
 
 		bool operator==(OrthForm const& pOrthForm)	const;
 		bool operator!=(OrthForm const& pOrthForm)	const;

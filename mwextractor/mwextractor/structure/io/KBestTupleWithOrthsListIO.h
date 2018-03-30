@@ -33,10 +33,18 @@ public:
 	void write(
 		KBestTupleList const&	pKBest,
 		OrthFormMap const&		pOrthMap,
-		TupleStorage const& 	pStorage,
-		std::string const&		pFilePath) const;
+		TupleStorage const&		pStorage,
+		std::string const&		pFilePath,
+		bool					useWebToolFormat = false) const;
 
 	void writeSome(
+		KBestTupleList const&	pKBest,
+		OrthFormMap const&		pOrthMap,
+		TupleStorage const& 	pStorage,
+		std::string const&		pFilePath,
+		size_t					pCount) const;
+
+	void writeSomeWebTool(
 		KBestTupleList const&	pKBest,
 		OrthFormMap const&		pOrthMap,
 		TupleStorage const& 	pStorage,

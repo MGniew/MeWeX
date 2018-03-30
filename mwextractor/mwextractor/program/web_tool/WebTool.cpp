@@ -212,7 +212,7 @@ void WebTool::writeKBest(RankerDataPtrS const& 	pRanker,
 
 	if (mConfig.extractOrths)
 	{
-		KBestTupleWithOrthsListIO().write(pKBestList, pOrthMap, *pRanker->getMatrixTupleStorage(), mConfig.kbestFilepath);
+		KBestTupleWithOrthsListIO().write(pKBestList, pOrthMap, *pRanker->getMatrixTupleStorage(), mConfig.kbestFilepath, true);
 	}
 	else
 	{
