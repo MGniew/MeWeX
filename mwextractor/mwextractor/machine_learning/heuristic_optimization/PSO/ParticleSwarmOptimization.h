@@ -27,10 +27,10 @@ namespace machine_learning
 */
 template<typename ArgumentsType,
          typename StepType,
-         template<typename ArgumentsType, typename StepType> class StepCounter,
+         template<typename InnerArgumentsType, typename InnerStepType> class StepCounter,
          typename TimeType,
-         template<typename ArgumentsType, typename TimeType> class Timer,
-         template<typename ArgumentsType, typename TimeType, typename StepType> class Report>
+         template<typename InnerArgumentsType, typename InnerTimeType> class Timer,
+         template<typename InnerArgumentsType, typename InnerTimeType, typename InnerStepType> class Report>
 class ParticleSwarmOptimization
 {
 public:

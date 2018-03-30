@@ -1,2 +1,2 @@
-/home/igor/CLARIN_Projects/Corpus/nkjp1m_disamb.ccl
-/home/igor/CLARIN_Projects/Corpus/kgr78kk.ccl
+/home/igor/corpora/nkjp1m_disamb.ccl
+/home/igor/corpora/kgr78kk.ccl

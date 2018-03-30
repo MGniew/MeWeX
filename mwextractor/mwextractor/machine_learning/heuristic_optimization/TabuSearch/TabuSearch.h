@@ -28,13 +28,13 @@ namespace machine_learning
 */
 template<typename ArgumentsType,
          typename NeighbourhoodScheme,
-         template<typename ArgumentsType, typename NeighbourhoodSchemeType, typename TabuListType> class Neighbourhood,
-         template<typename ArgumentsType> class TabuList,
+         template<typename InnerArgumentsType, typename InnerNeighbourhoodSchemeType, typename TabuListType> class Neighbourhood,
+         template<typename InnerArgumentsType> class TabuList,
          typename StepType,
-         template<typename ArgumentsType, typename StepType> class StepCounter,
+         template<typename InnerArgumentsType, typename InnerStepType> class StepCounter,
          typename TimeType,
-         template<typename ArgumentsType, typename TimeType> class Timer,
-         template<typename ArgumentsType, typename TimeType, typename StepType, typename NeighbourhoodType, typename TabuListType> class Report>
+         template<typename InnerArgumentsType, typename InnerTimeType> class Timer,
+         template<typename InnerArgumentsType, typename InnerTimeType, typename InnerStepType, typename NeighbourhoodType, typename TabuListType> class Report>
 class TabuSearch
 {
 public:

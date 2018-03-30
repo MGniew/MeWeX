@@ -12,7 +12,11 @@ VAM='vam('
 
 for var in "${@:3}"
 do
-VAM+=$var'(),'
+if ! [[ $var = *'('*')'* ]]; then
+  VAM+=$var'(),'
+else
+  VAM+=$var','
+fi
 AGGREGATOR+='0,'
 done
 
@@ -27,7 +31,8 @@ bin/Heuristic \
 -g $TUPLES/index.csv \
 -s $TUPLES/contingency \
 -c $LC \
--r mwe/mwe.txt
+-r mwe/mwe_filtered.txt
+#-r mwe/mwe.txt
 
 echo $VAM > heuristic/$1'_'$2'_report'  
 sed -n '7~1s/[^[]*\(\[[^]]*]\)./\1,/gp' report_file >> heuristic/$1'_'$2'_report'

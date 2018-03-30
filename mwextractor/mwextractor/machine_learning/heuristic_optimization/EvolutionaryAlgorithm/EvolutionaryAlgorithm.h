@@ -28,15 +28,15 @@ namespace machine_learning
 * @author Lukasz Klyk <a href="mailto:klyk.lukasz@gmail.com">klyk.lukasz@gmail.com</a>
 */
 template<typename ArgumentsType,
-         template<typename ArgumentsType, typename Mutation, typename Crossover> class Population,
-         template<typename ArgumentsType, typename PopulationType> class SelectionRule,
-         template<typename ArgumentsType> class MutationScheme,
-         template<typename ArgumentsType> class CrossoverScheme,
+         template<typename InnerArgumentsType, typename Mutation, typename Crossover> class Population,
+         template<typename InnerArgumentsType, typename PopulationType> class SelectionRule,
+         template<typename InnerArgumentsType> class MutationScheme,
+         template<typename InnerArgumentsType> class CrossoverScheme,
          typename StepType,
-         template<typename ArgumentsType, typename StepType> class StepCounter,
+         template<typename InnerArgumentsType, typename InnerStepType> class StepCounter,
          typename TimeType,
-         template<typename ArgumentsType, typename TimeType> class Timer,
-         template<typename ArgumentsType, typename TimeType, typename StepType, typename PopulationType> class Report>
+         template<typename InnerArgumentsType, typename InnerTimeType> class Timer,
+         template<typename InnerArgumentsType, typename InnerTimeType, typename InnerStepType, typename PopulationType> class Report>
 class EvolutionaryAlgorithm
 {
 public:

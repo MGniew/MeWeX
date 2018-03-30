@@ -125,8 +125,8 @@ struct FixtureWrapper
 };
 
 
-BOOST_AUTO_TEST_SUITE(Master)
-BOOST_GLOBAL_FIXTURE(FixtureWrapper)
+BOOST_AUTO_TEST_SUITE(Master);
+BOOST_GLOBAL_FIXTURE(FixtureWrapper);
 typedef std::map<std::string, double> Tmap;
 typedef std::pair<std::string, double> Tpair;
 
