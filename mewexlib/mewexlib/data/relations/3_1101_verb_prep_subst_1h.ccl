@@ -1,0 +1,24 @@
+///
+@b:"1101_CZASOWNIK + PRZYIMEK + nieciągłość + RZECZOWNIK_3"(
+	and(
+		inter(class[0], {pact,ppas,winien,praet,bedzie,fin,impt,aglt,ger,imps,inf,pant,pcon}),
+		inter(class[1], prep),
+		inter(class[3], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1101_CZASOWNIK + nieciągłość + PRZYIMEK + RZECZOWNIK_3"(
+	and(
+		inter(class[0], {pact,ppas,winien,praet,bedzie,fin,impt,aglt,ger,imps,inf,pant,pcon}),
+		inter(class[2], prep),
+		inter(class[3], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2),
+		setvar($Pos3, 3)
+	)
+)

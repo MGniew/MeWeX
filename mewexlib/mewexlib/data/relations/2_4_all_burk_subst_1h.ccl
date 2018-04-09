@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"4_BURKINOSTKA + nieciągłość + RZECZOWNIK_2" (
+	and(
+		inter(class[2], {subst,ger,depr,ign}),
+		inter(class[0], {burk}), 
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	) 
+)
+
+@b:"4_RZECZOWNIK + nieciągłość + BURKINOSTKA_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[2], {burk}), 
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	) 
+)

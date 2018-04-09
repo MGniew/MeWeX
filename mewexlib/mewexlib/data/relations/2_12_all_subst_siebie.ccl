@@ -1,0 +1,21 @@
+///////////////////////////////////////////////
+@b:"12_RZECZOWNIK + SIEBIE_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[1], {siebie}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)
+
+@b:"12_SIEBIE + RZECZOWNIK_2" (
+	and(
+		inter(class[1], {subst,ger,depr,ign}),
+		inter(class[0], {siebie}),
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+)
+ 

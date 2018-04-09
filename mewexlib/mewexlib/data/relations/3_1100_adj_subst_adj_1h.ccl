@@ -1,0 +1,75 @@
+///
+@b:"1100_PRZYMIOTNIK + RZECZOWNIK + nieciągłość + PRZYMIOTNIK_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], subst),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1100_PRZYMIOTNIK + nieciągłość + RZECZOWNIK + PRZYMIOTNIK_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[2], subst),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2),
+		setvar($Pos3, 3)
+	)
+)
+
+
+@b:"1100_PRZYMIOTNIK + PRZYMIOTNIK + nieciągłość + RZECZOWNIK_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 3),
+		setvar($Pos3, 1)
+	)
+)
+
+@b:"1100_PRZYMIOTNIK + nieciągłość + PRZYMIOTNIK + RZECZOWNIK_3"(
+	and(
+		inter(class[0], {adj,pact,ppas}),
+		inter(class[2], {adj,pact,ppas}),
+		inter(class[3], subst),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 3),
+		setvar($Pos3, 2)
+	)
+)
+
+
+@b:"1100_RZECZOWNIK + PRZYMIOTNIK + nieciągłość + PRZYMIOTNIK_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[1], {adj,pact,ppas}),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0),
+		setvar($Pos3, 3)
+	)
+)
+
+@b:"1100_RZECZOWNIK + nieciągłość + PRZYMIOTNIK + PRZYMIOTNIK_3"(
+	and(
+		inter(class[0], subst),
+		inter(class[2], {adj,pact,ppas}),
+		inter(class[3], {adj,pact,ppas}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0),
+		setvar($Pos3, 3)
+	)
+)
+

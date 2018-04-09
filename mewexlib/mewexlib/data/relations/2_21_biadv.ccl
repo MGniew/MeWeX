@@ -1,0 +1,10 @@
+///////////////////////////////////////////////
+@b:"21_PRZYSŁÓWEK_ZŁOŻONY_2" (
+	and(
+		inter(class[1], {subst,ger,depr,ign,adjp,burk}),
+		inter(class[0], {prep}),
+		
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)   
+	)
+)

@@ -1,0 +1,20 @@
+/////////////////////////////////////////////// 
+@b:"5_GERUNDIUM + KUBLIK_2" (
+	and(
+		inter(class[0], {ger}),
+		inter(class[1], {qub}),   
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)
+
+@b:"5_KUBLIK + GERUNDIUM_2" (
+	and(
+		inter(class[1], {ger}),
+		inter(class[0], {qub}),   
+
+		setvar($Pos1, 1),
+		setvar($Pos2, 0)
+	)
+)

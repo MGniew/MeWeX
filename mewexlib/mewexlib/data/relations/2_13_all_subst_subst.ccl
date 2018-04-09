@@ -1,0 +1,10 @@
+/////////////////////////////////////////////// 
+@b:"13_RZECZOWNIK + RZECZOWNIK_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[1], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 1)
+	)
+)

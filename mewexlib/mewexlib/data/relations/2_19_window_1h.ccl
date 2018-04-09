@@ -1,0 +1,9 @@
+///////////////////////////////////////////////
+@b:"19_WYRAZ + nieciągłość + WYRAZ_2"(
+        and (
+                not(empty(orth[2])),
+
+                setvar($Pos1, 0),
+                setvar($Pos2, 2)
+        )
+)

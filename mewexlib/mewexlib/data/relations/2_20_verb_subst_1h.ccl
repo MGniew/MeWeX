@@ -1,0 +1,20 @@
+///////////////////////////////////////////////
+@b:"20_CZASOWNIK + nieciągłość + RZECZOWNIK_2" (
+	and(
+		inter(class[2], {subst,ger,depr,ign}),
+		inter(class[0], {pact,ppas,winien,praet,bedzie,fin,impt,aglt,ger,imps,inf,pant,pcon}),
+		
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)   
+	)
+)
+
+@b:"20_RZECZOWNIK + nieciągłość + CZASOWNIK_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[2], {pact,ppas,winien,praet,bedzie,fin,impt,aglt,ger,imps,inf,pant,pcon}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)

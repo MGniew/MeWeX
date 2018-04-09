@@ -1,0 +1,22 @@
+///////////////////////////////////////////////
+@b:"17_ZAIMEK 3. OS. + nieciągłość + RZECZOWNIK w gen._2" (
+	and(
+		inter(class[0], {ppron3}),
+		inter(cas[0], {gen}),
+		inter(class[2], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)
+
+@b:"17_RZECZOWNIK w gen. + nieciągłość + ZAIMEK 3. OS._2" (
+	and(
+		inter(class[2], {ppron3}),
+		inter(cas[2], {gen}),
+		inter(class[0], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)

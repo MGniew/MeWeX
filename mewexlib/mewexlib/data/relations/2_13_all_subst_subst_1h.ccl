@@ -1,0 +1,10 @@
+///////////////////////////////////////////////
+@b:"13_RZECZOWNIK + nieciągłość + RZECZOWNIK_2" (
+	and(
+		inter(class[0], {subst,ger,depr,ign}),
+		inter(class[2], {subst,ger,depr,ign}),
+
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)

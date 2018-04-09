@@ -1,0 +1,20 @@
+/////////////////////////////////////////////// 
+@b:"3_PRZYSŁÓWEK/KUBLIK + nieciągłość + IMIESŁÓW PRZYMIOTNIKOWY_2" (
+	and(
+		inter(class[2], {pact,ppas}),
+		inter(class[0], {adv,qub}), 
+		
+		setvar($Pos1, 0),
+		setvar($Pos2, 2)
+	)
+)
+
+@b:"3_IMIESŁÓW PRZYMIOTNIKOWY + nieciągłość + PRZYSŁÓWEK/KUBLIK_2" (
+	and(
+		inter(class[0], {pact,ppas}),
+		inter(class[2], {adv,qub}), 
+
+		setvar($Pos1, 2),
+		setvar($Pos2, 0)
+	)
+)
