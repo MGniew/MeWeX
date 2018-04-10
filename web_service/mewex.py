@@ -25,8 +25,8 @@ class MewexWorker(NLPWorker):
         args['output_file'] = output_path+"/mewex.csv";
 
         mwl.call_mewex(**args)
-        self.cut_lines(output_path+"/mewex.csv",output_path+"/mewexshort.csv",1000);
         self.lemmatize(output_path+"/mewex.csv",output_path+"/mewexlemmatized.csv");
+        self.cut_lines(output_path+"/mewexlemmatized.csv",output_path+"/mewexshort.csv",1000);
 
     def cut_lines(self,inf,outf,lines):
         f = open(inf, "r")
