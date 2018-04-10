@@ -188,7 +188,7 @@ std::string	MatrixTupleStorage::createTupleReprezentationWebTool(TupleT const& p
 	str << '\t' << pTuple.getRelationCopy()->getName() << '\t';
 	for (size_t i = 0; i < pTuple.size(); ++i)
 	{
-		str << ' ' << createWordReprezentation(pTuple[i]);
+		str << createWordReprezentation(pTuple[i]) << ' ';
 	}
 	return str.str();
 }

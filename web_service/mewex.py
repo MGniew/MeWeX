@@ -42,8 +42,9 @@ class MewexWorker(NLPWorker):
     def lemmatize(self,inf,outf):
         input_file = io.open(inf, "r", encoding="utf-8")
         output_file = open(outf, "w")
-        output_file.write(next(input_file))
-        output_file.write(next(input_file)) # First two rows are header rows, so just copy them
+        next(input_file)
+        next(input_file) # First two rows are header rows, so just skip them
+        output_file.write("Rank\tQuantity\tRealtion\tBase form\tLemmatized form\n")
         orthreg = re.compile(ur'[0-9]+:([^(]+)\(([^)]+)\).*')
         basereg = re.compile(ur'[^:]+:([^ ]+)')
         for line in input_file:
