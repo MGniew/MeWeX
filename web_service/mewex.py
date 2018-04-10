@@ -17,8 +17,8 @@ class MewexWorker(NLPWorker):
         args = _parse_mewex_options(task_options.get('mewex_options') or {})
         args['input_files'] = (
             [os.path.join(input_path, f) for f in os.listdir(input_path)]
-            if os.path.isdir(input_path)
-            else (input_path,)
+            if os.path.isdir(input_path.encode("utf-8"))
+            else (input_path.encode("utf-8"),)
         )
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -45,8 +45,8 @@ class MewexWorker(NLPWorker):
         next(input_file)
         next(input_file) # First two rows are header rows, so just skip them
         output_file.write("Rank\tQuantity\tRealtion\tBase form\tLemmatized form\n")
-        orthreg = re.compile(ur'[0-9]+:([^(]+)\(([^)]+)\).*')
-        basereg = re.compile(ur'[^:]+:([^ ]+)')
+        orthreg = re.compile(r'[0-9]+:([^(]+)\(([^)]+)\).*')
+        basereg = re.compile(r'[^:]+:([^ ]+)')
         for line in input_file:
             splited = line.split('\t')
             orthtuple = orthreg.findall(splited[4])
