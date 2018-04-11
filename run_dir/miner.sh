@@ -2,7 +2,7 @@
 
 if [ $# -ne 3 ]
   then
-    printf "\nScript that runs program Miner to evaluate quality of given VAM. It takes 3 arguments: directory with tuples, file with VAM and length of k-best list.\n\nexample:\n \"./medium_all_3 vam1 100\"\n\n"
+    printf "\nScript that runs program Miner to evaluate quality of given VAM. It takes 3 arguments: directory with tuples, file with VAM and length of k-best list.\n\nexample:\n \"./miner.sh medium_all_3 vam1 100\"\n\n"
 
 else
 
@@ -15,7 +15,7 @@ bin/Miner \
 -I 'tuples/'$1 \
 -O results/$1 \
 -P n \
--r mwe/mwe.txt \
+-r mwe/new_mwe.txt \
 -F 3 \
 -R 5 \
 -e 0 \

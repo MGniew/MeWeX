@@ -23,7 +23,7 @@ done
 VAM=${VAM::-1}')'
 AGGREGATOR=${AGGREGATOR::-1}')'
 
-LC="lc(method=PSO,methods_config=config.ini,vam=$VAM,aggregator=$AGGREGATOR,quality_function=ap(length=$2),quality_kbest_length=$2,threads=6,min_value=-1.0,max_value=1.0,step_value=0.01)"
+LC="lc(method=PSO,methods_config=config.ini,vam=$VAM,aggregator=$AGGREGATOR,quality_function=ap(length=$2),quality_kbest_length=$2,threads=6,min_value=-1.0,max_value=1.0,step_value=0.001)"
 
 bin/Heuristic \
 -I $TUPLES \
@@ -31,7 +31,7 @@ bin/Heuristic \
 -g $TUPLES/index.csv \
 -s $TUPLES/contingency \
 -c $LC \
--r mwe/mwe_filtered.txt
+-r mwe/new_mwe.txt
 #-r mwe/mwe.txt
 
 echo $VAM > heuristic/$1'_'$2'_report'  

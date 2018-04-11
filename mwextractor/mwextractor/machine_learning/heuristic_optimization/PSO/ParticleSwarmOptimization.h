@@ -55,7 +55,7 @@ public:
     */
     ~ParticleSwarmOptimization(void) {}
 
-    void massMutation(std::vector<Particle>& swarm, const Point& mBest)
+    void massMutation(std::vector<Particle>& swarm, Point& mBest)
     {
         Particle particle(mBest);
         for(int i = 0;i < this->mCallPoliciesArguments.getSwarmSize();i++)
@@ -64,6 +64,10 @@ public:
             mpEvaluator->evaluate(particle);
             particle.setLocalBest(particle);
             swarm[i] = particle;
+            if(particle.getEvaluationPerformance().isGreater(mBest.getEvaluationPerformance()))
+            {
+                mBest = particle;
+            }
         }
     }
 
