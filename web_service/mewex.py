@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 import os
 import re
 import io
@@ -16,9 +16,9 @@ class MewexWorker(NLPWorker):
     def process(self, input_path, task_options, output_path):
         args = _parse_mewex_options(task_options.get('mewex_options') or {})
         args['input_files'] = (
-            [os.path.join(input_path, f).encode("utf-8") for f in os.listdir(input_path)]
+            [os.path.join(input_path, f) for f in os.listdir(input_path)]
             if os.path.isdir(input_path)
-            else (input_path.encode("utf-8"),)
+            else (input_path,)
         )
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -42,8 +42,7 @@ class MewexWorker(NLPWorker):
     def lemmatize(self,inf,outf):
         input_file = io.open(inf, "r", encoding="utf-8")
         output_file = open(outf, "w")
-        next(input_file)
-        next(input_file) # First two rows are header rows, so just skip them
+        next(input_file); next(input_file) # First two rows are header rows, so just skip them
         output_file.write("Rank\tQuantity\tRealtion\tBase form\tLemmatized form\n")
         orthreg = re.compile(r'[0-9]+:([^(]+)\(([^)]+)\).*')
         basereg = re.compile(r'[^:]+:([^ ]+)')
@@ -54,12 +53,9 @@ class MewexWorker(NLPWorker):
             base = u' '.join(baselist)
             orth = orthtuple[0][0]
             tag = orthtuple[0][1]
-            result = self._lemmatizer.lemmatizeS(orth.encode('utf-8').strip(),
-                                                 base.encode('utf-8'),
-                                                 tag.encode('utf-8'), False)
-            splited_utf = [x.encode('utf-8') for x in splited]
-            splited_utf[4] = result
-            output_file.write('\t'.join(splited_utf) + '\n')
+            result = self._lemmatizer.lemmatizeS(orth.strip(), base, tag, False)
+            splited[4] = result
+            output_file.write('\t'.join(splited) + '\n')
         input_file.close()
         output_file.close()
 
