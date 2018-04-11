@@ -16,8 +16,8 @@ class MewexWorker(NLPWorker):
     def process(self, input_path, task_options, output_path):
         args = _parse_mewex_options(task_options.get('mewex_options') or {})
         args['input_files'] = (
-            [os.path.join(input_path, f) for f in os.listdir(input_path)]
-            if os.path.isdir(input_path.encode("utf-8"))
+            [os.path.join(input_path, f).encode("utf-8") for f in os.listdir(input_path)]
+            if os.path.isdir(input_path)
             else (input_path.encode("utf-8"),)
         )
         if not os.path.exists(output_path):
