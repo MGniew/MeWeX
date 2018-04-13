@@ -1,5 +1,6 @@
 
 #include <sstream>
+#include <ctime>
 
 #include "../../utils/Textual.h"
 #include "../../utils/Debug.h"
@@ -17,7 +18,8 @@ MultilayerPerceptron::MultilayerPerceptron()
 :
 	mErorr(0.0),
 	mLearningRate(0.0),
-	mMomentum(0.0)
+	mMomentum(0.0),
+	mEpoch(1)
 {
 
 }
@@ -30,7 +32,8 @@ MultilayerPerceptron::MultilayerPerceptron(
 :
 	mErorr(0.0),
 	mLearningRate(pLearningRate),
-	mMomentum(pMomentum)
+	mMomentum(pMomentum),
+	mEpoch(1)
 {
 	buildFromTopology(pTopology);
 }
@@ -40,7 +43,8 @@ MultilayerPerceptron::MultilayerPerceptron(Model const& pModel)
 :
 	mErorr(0.0),
 	mLearningRate(pModel.netData.learningRate),
-	mMomentum(pModel.netData.momentum)
+	mMomentum(pModel.netData.momentum),
+	mEpoch(1)
 {
 	buildFromModel(pModel);
 }
@@ -54,7 +58,8 @@ MultilayerPerceptron::MultilayerPerceptron(
 	mLayerVector(pLayerVector),
 	mErorr(0.0),
 	mLearningRate(pLearningRate),
-	mMomentum(pMomentum)
+	mMomentum(pMomentum),
+	mEpoch(1)
 {
 
 }
@@ -72,6 +77,7 @@ auto MultilayerPerceptron::retrieveFunctionParameters() const -> StringParameter
 	{
 		{"learning_rate", "0.15"},
 		{"momentum", "0.5"},
+		{"epoch", "10"},
 		{"model", "none"}
 	};
 }
@@ -81,6 +87,11 @@ void MultilayerPerceptron::build(
 	StringParameterMap const& pParameters,
 	StringParameterMap const& pUnnamedParameters)
 {
+	std::string epoch_str = pParameters.find("epoch")->second;
+	if (!epoch_str.empty())
+	{
+		mEpoch = std::stoi(epoch_str);
+	}
 	std::string modelFilePath = pParameters.find("model")->second;
 	if (!modelFilePath.empty())
 	{
@@ -180,7 +191,7 @@ std::string	MultilayerPerceptron::reprezentation() const
 {
 	std::stringstream str;
 	utils::setStreamMaxDoublePrecision(str);
-	str << name() << "(learning_rate=" << mLearningRate << ",momentum=" << mMomentum;
+	str << name() << "(learning_rate=" << mLearningRate << ",momentum=" << mMomentum << ",epoch=" << mEpoch;
 	for (size_t i = 0; i < getLayerCount(); ++i)
 	{
 		str << ',' << getLayer(i).sizeUnbiased();
@@ -290,13 +301,19 @@ auto MultilayerPerceptron::retrieveModel() const -> Model
 void MultilayerPerceptron::construct(TupleIdVector const& pTrainData)
 {
 	std::vector<double> target(1);
-	for (size_t i = 0; i < pTrainData.size(); ++i)
+	for (size_t epoch = 0; epoch < mEpoch; epoch++)
 	{
-		Instance instance = getRankerData()->constructInstance(pTrainData[i]);
-		target[0] = static_cast<double>(instance.getClass());
+		clock_t begin = clock();
+		for (size_t i = 0; i < pTrainData.size(); ++i)
+		{
+			Instance instance = getRankerData()->constructInstance(pTrainData[i]);
+			target[0] = static_cast<double>(instance.getClass());
 
-		feedForward(instance.getFeatureVector());
-		backPropagation(target);
+			feedForward(instance.getFeatureVector());
+			backPropagation(target);
+		}
+		clock_t end = clock();
+		printf("Epoch %i evaluated in %f s\n", epoch, double(end - begin) / CLOCKS_PER_SEC);
 	}
 }
 

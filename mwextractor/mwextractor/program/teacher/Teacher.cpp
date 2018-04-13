@@ -110,6 +110,7 @@ void Teacher::teach(RankerDataPtrS const& pRankerData) const
 	utils::parallelFor(0, perceptrons.size(), [&](size_t pThreadId, size_t pJob){
 		perceptrons[pJob] = std::static_pointer_cast<MultilayerPerceptron>(
 			FunctionFactory().createClassifier(mConfig.multilayerPerceptrons[pJob]));
+			std::cerr << perceptrons[pJob]->reprezentation() << std::endl;
 		perceptrons[pJob]->initialize(pRankerData);
 		perceptrons[pJob]->construct(tuples);
 	}, mConfig.threadCount);

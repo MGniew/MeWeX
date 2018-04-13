@@ -172,6 +172,7 @@ private:
 	double		mErorr;
 	double 		mLearningRate;
 	double 		mMomentum;
+	int 		mEpoch;
 };
 
 
