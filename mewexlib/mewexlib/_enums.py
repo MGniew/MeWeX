@@ -97,14 +97,7 @@ class RankerFunction(enum.Enum):
         'mlp(model={})'.format(pkgr.resource_filename(*_MLP_MODEL_LOC)),
         (
             '-f',
-            'vam(wsc(),sfbmd(),me(),tscore(),g2(),jaccard(),sorgenfrei(),'
-            'us(),sec(e=3.8),wsec(e=1.15),wo(),wtfo(),ct1(),ct2())',
-            '-p',
-            'normalization(-0.000113472,0.0172224,-63.3211,-6,1.76302e-14,'
-            '0.00116278,-4857.71,387.906,-1.38093e-08,1.94893e+06,'
-            '4.42166e-07,0.333333,1.33549e-28,0.25,-48.7993,13.3291,-83.7851,'
-            '-15.3503,-0.000335203,0.0133202,1,6.83304e+33,1,1.65093e+38,'
-            '-0.0497013,-3.98724e-08,0.170691,0.938039)',
+            'vam(wsc(),sfbmd(),me(),tscore(),g2(),jaccard(),sorgenfrei(),us(),sec(e=3.8),wsec(e=1.15),cval(),ct1(),ct2(),wo())'
         ),
     )
 
